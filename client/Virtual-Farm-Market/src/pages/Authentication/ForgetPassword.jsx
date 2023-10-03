@@ -35,8 +35,15 @@ function ForgetPassword() {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={useStyles}>
-        <MailOutlineIcon style={{ fontSize: 80, color: "#3f51b5" }} />
-        <Typography component="h1" variant="h5">
+        <MailOutlineIcon
+          style={{ fontSize: 80, color: "#3f51b5", width: "100%" }}
+          fullWidth
+        />
+        <Typography
+          component="h1"
+          className="d-flex justify-content-center"
+          variant="h5"
+        >
           Forget Password
         </Typography>
         <Formik
@@ -44,14 +51,18 @@ function ForgetPassword() {
             email: "",
           }}
           validationSchema={ForgetPasswordSchema}
-          onSubmit={(values,) => {
-            
-              console.log(values);
-             
+          onSubmit={(values) => {
+            console.log(values);
           }}
         >
           {({ isSubmitting }) => (
             <Form style={{ width: "100%", marginTop: "1rem" }}>
+              <div>
+                <p>
+                  Enter your Registered email address below to receive password
+                  reset instruction
+                </p>
+              </div>
               <Field
                 as={TextField}
                 variant="outlined"
@@ -76,9 +87,8 @@ function ForgetPassword() {
                 variant="contained"
                 color="primary"
                 style={{ marginTop: "1rem" }}
-                
               >
-             Send Reset Link
+                Send Reset Link
               </Button>
               <Grid container>
                 <Grid item xs>

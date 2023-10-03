@@ -32,10 +32,12 @@ const ResetPasswordSchema = Yup.object().shape({
   ),
   password: Yup.string()
   .required("Please enter your password")
-  .matches(
-    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-    "Must contain 8 characters, one uppercase, one lowercase, one number, and one special character"
-  ),
+  .required("Required")
+  .min(8, "Must be 8 characters or more")
+  .matches(/[a-z]+/, "One lowercase character")
+  .matches(/[A-Z]+/, "One uppercase character")
+  .matches(/[@$!%*#?&]+/, "One special character")
+  .matches(/\d+/, "One number"),
 });
 
 function ResetPassword() {
@@ -90,6 +92,8 @@ function ResetPassword() {
                 label="Password"
                 type="password"
                 id="password"
+                autoComplete="new-password" 
+
               />
               <ErrorMessage
                 name="password"

@@ -15,9 +15,15 @@ import {
   Typography,
   Container,
   styled,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { NavLink } from "react-router-dom";
+import { useState } from "react";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+
 
 const useStyles = styled("div")({
   display: "flex",
@@ -28,17 +34,22 @@ const useStyles = styled("div")({
 const ChangePasswordSchema = Yup.object().shape({
   oldPassword: Yup.string().required("Old Password is required"),
   newPassword: Yup.string()
-    .required("Please enter your password")
-    .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      "Must contain 8 characters, one uppercase, one lowercase, one number, and one special character"
-    ),
+    .required("Required")
+  .min(8, "Must be 8 characters or more")
+  .matches(/[a-z]+/, "One lowercase character")
+  .matches(/[A-Z]+/, "One uppercase character")
+  .matches(/[@$!%*#?&]+/, "One special character")
+  .matches(/\d+/, "One number"),
   confirmNewPassword: Yup.string()
     .oneOf([Yup.ref("newPassword"), null], "Passwords must match")
     .required("Confirm New Password is required"),
 });
 
 function ChangePassword() {
+
+  const [isVisible,setIsVisible] = useState(false)
+  const [isVisibleConfirm,setIsVisibleConfirm] = useState(false)
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -100,8 +111,25 @@ function ChangePassword() {
                 id="newPassword"
                 label="New Password"
                 name="newPassword"
-                type="password"
+                type={!isVisible ? `password` : `text`}
                 autoComplete="off"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setIsVisible(!isVisible)}
+                        aria-label="password visibility"
+                        edge="end"
+                      >
+                        {isVisible ? (
+                          <VisibilityIcon />
+                        ) : (
+                          <VisibilityOffIcon />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
               <ErrorMessage
                 name="newPassword"
@@ -118,8 +146,25 @@ function ChangePassword() {
                 id="confirmNewPassword"
                 label="Confirm New Password"
                 name="confirmNewPassword"
-                type="password"
+                type={!isVisibleConfirm ? `password` : `text`}
                 autoComplete="off"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setIsVisibleConfirm(!isVisibleConfirm)}
+                        aria-label="password visibility"
+                        edge="end"
+                      >
+                        {isVisibleConfirm ? (
+                          <VisibilityIcon />
+                        ) : (
+                          <VisibilityOffIcon />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
               <ErrorMessage
                 name="confirmNewPassword"
