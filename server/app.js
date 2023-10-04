@@ -9,6 +9,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use((err, req, res, next) => {
+  if (err instanceof validationResult) {
+    return res.status(422).json({ errors: err.array() });
+  }
+  next(err);
+});
+
 app.use("/api", AuthRouter);
 
 mongoose.connect(config.MongoDBURL);

@@ -1,8 +1,34 @@
 const bcrypt = require("bcrypt");
 const UserModel = require("../../../db/models/User");
+const { validationResult } = require("express-validator");
+const { check } = require("express-validator");
+const config = require("../../../config/index");
+const jwt = require("jsonwebtoken");
 
 module.exports = {
   signUp: async (req, res) => {
+    const validationRules = [
+      check("name").notEmpty().withMessage("Name must be provided"),
+      check("email")
+        .notEmpty()
+        .withMessage("Email must be provided")
+        .isEmail()
+        .withMessage("Invalid email format"),
+      check("password")
+        .isLength({ min: 6 })
+        .withMessage("Password must be at least 6 characters long"),
+      check("phoneNumber")
+        .notEmpty()
+        .withMessage("Phone Number must be provided"),
+      check("city").notEmpty().withMessage("City must be provided"),
+      check("provience").notEmpty().withMessage("Provience must be provided"),
+    ];
+    await Promise.all(validationRules.map((rule) => rule.run(req)));
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ message: errors.array()[0].msg });
+    }
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
     let getUser = await UserModel.findOne({
@@ -22,6 +48,22 @@ module.exports = {
   },
 
   login: async (req, res) => {
+    const validationRules = [
+      check("email")
+        .notEmpty()
+        .withMessage("Email must be provided")
+        .isEmail()
+        .withMessage("Invalid email format"),
+      check("password")
+        .isLength({ min: 6 })
+        .withMessage("Password must be at least 6 characters long"),
+    ];
+    await Promise.all(validationRules.map((rule) => rule.run(req)));
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ message: errors.array()[0].msg });
+    }
+
     const getUser = await UserModel.findOne({ email: req.body.email });
 
     if (!getUser) {
@@ -34,8 +76,25 @@ module.exports = {
         getUser.password
       );
       if (validPassword) {
+        let jwtToken = {
+          _id: getUser._id,
+          email: req.body.email,
+        };
+
+        let accessToken = jwt.sign(jwtToken, config.secret, {
+          expiresIn: config.jwtExpirationTime,
+        });
+        await UserModel.findByIdAndUpdate({
+          _id: getUser._id,
+        }).set({
+          accessToken,
+        });
+        const getUpdatedUser = await UserModel.findOne({
+          email: req.body.email,
+        });
         res.json({
           message: "Welcome! You have successfully logged in",
+          data: getUpdatedUser,
         });
       } else {
         res.json({ message: "Invalid password" });
@@ -50,6 +109,15 @@ module.exports = {
   },
 
   getUser: async (req, res) => {
+    const validationRules = [
+      check("_id").notEmpty().withMessage("_id must be provided"),
+    ];
+    await Promise.all(validationRules.map((rule) => rule.run(req)));
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ message: errors.array()[0].msg });
+    }
+
     try {
       const getUser = await UserModel.findOne({ _id: req.body._id });
 
