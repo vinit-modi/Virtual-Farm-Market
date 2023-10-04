@@ -121,11 +121,7 @@ module.exports = {
     try {
       const getUser = await UserModel.findOne({ _id: req.body._id });
 
-      if (!getUser) {
-        return res.json({
-          message: "User not found",
-        });
-      }
+      if (!getUser) return res.json({ message: "User not found" });
       res.json({ data: getUser });
     } catch (error) {
       res.status(500).json({
