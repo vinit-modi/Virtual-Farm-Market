@@ -28,12 +28,12 @@ const validationSchema = Yup.object().shape({
       "Invalid email address"
     ),
   password: Yup.string()
-  .required("Required")
-  .min(8, "Must be 8 characters or more")
-  .matches(/[a-z]+/, "One lowercase character")
-  .matches(/[A-Z]+/, "One uppercase character")
-  .matches(/[@$!%*#?&]+/, "One special character")
-  .matches(/\d+/, "One number"),
+    .required("Required")
+    .min(8, "Must be 8 characters or more")
+    .matches(/[a-z]+/, "One lowercase character")
+    .matches(/[A-Z]+/, "One uppercase character")
+    .matches(/[@$!%*#?&]+/, "One special character")
+    .matches(/\d+/, "One number"),
 });
 
 function Copyright(props) {
@@ -48,7 +48,6 @@ function Copyright(props) {
       Virtual Farm Market &nbsp;
       {new Date().getFullYear()}
       {"."}
-      
     </Typography>
   );
 }
@@ -94,7 +93,7 @@ export default function SignInSide() {
               initialValues={{
                 email: "",
                 password: "",
-                remember: false,
+                rememberMe: false,
               }}
               validationSchema={validationSchema}
               onSubmit={(values, { setSubmitting }) => {
@@ -109,7 +108,6 @@ export default function SignInSide() {
                   <Field
                     as={TextField}
                     margin="normal"
-                    required
                     variant="outlined"
                     fullWidth
                     id="email"
@@ -127,7 +125,6 @@ export default function SignInSide() {
                   <Field
                     as={TextField}
                     margin="normal"
-                    required
                     fullWidth
                     name="password"
                     label="Password"
@@ -163,8 +160,8 @@ export default function SignInSide() {
                     control={
                       <Field
                         as={Checkbox}
-                        name="remember"
-                        id="remember"
+                        name="rememberMe"
+                        id="rememberMe"
                         color="primary"
                       />
                     }

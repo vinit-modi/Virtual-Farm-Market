@@ -13,9 +13,42 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
-import { IconButton, InputAdornment, Select } from "@mui/material";
+import {
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { useState } from "react";
+
+const validationSchema = Yup.object().shape({
+  email: Yup.string()
+    .required("Email is required")
+    .matches(
+      /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
+      "Invalid email address"
+    ),
+  password: Yup.string()
+    .required("Password Required")
+    .min(8, "Must be 8 characters or more")
+    .matches(/[a-z]+/, "One lowercase character")
+    .matches(/[A-Z]+/, "One uppercase character")
+    .matches(/[@$!%*#?&]+/, "One special character")
+    .matches(/\d+/, "One number"),
+  confirmPassword: Yup.string()
+    .required("Confirm Password Required")
+    .oneOf([Yup.ref("password"), null], "Must Match Both Password"),
+  firstName: Yup.string().required("FirstName Required"),
+  lastName: Yup.string().required("LastName Required"),
+  phoneNumber: Yup.string().required("Phone Required"),
+  address: Yup.string().required("Address Required"),
+  city: Yup.string().required("City Required"),
+});
 
 function Copyright(props) {
   return (
@@ -39,26 +72,24 @@ export default function SignUp() {
   const [isSubscribed, setIsSubscribed] = React.useState(false);
   const [isVisible, setIsVisible] = React.useState(false);
   const [isVisibleConfirm, setIsVisibleConfirm] = React.useState(false);
+  const [province, setProvince] = useState([
+    "Alberta",
+    "British Columbia",
+    "Manitoba",
+    "New Brunswick",
+    "Newfoundland and Labrador",
+    "Northwest Territories",
+    "Nova Scotia",
+    "Nunavut",
+    "Ontario",
+    "Prince Edward Island",
+    "Quebec",
+    "Saskatchewan",
+    "Yukon",
+  ]);
 
   const handleCheckboxChange = (event) => {
     setIsSubscribed(event.target.checked);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const userData = {
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
-      phone: data.get("phone"),
-      address: data.get("address"),
-      email: data.get("email"),
-      password: data.get("password"),
-      confirmPassword: data.get("confirmPassword"),
-      city: data.get("city"),
-      isSubscribed: isSubscribed,
-    };
-    console.log(userData);
   };
 
   return (
@@ -79,99 +110,153 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
+
+          <Formik
+            initialValues={{
+              firstName: "",
+              lastName: "",
+              phoneNumber: "",
+              address: "",
+              email: "",
+              password: "",
+              confirmPassword: "",
+              city: "",
+              province: "",
+              isSubscribed: isSubscribed,
+            }}
+            validationSchema={validationSchema}
+            onSubmit={(values) => {
+              console.log("COMING...", values);
+            }}
           >
-         
-             
+            {({ isSubmitting, values, handleChange }) => (
+              <Form>
                 <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
+                  <Grid className="mb-2" item xs={12} sm={6}>
+                    <Field
+                      as={TextField}
                       autoComplete="given-name"
                       name="firstName"
-                      required
                       fullWidth
                       id="firstName"
                       label="First Name"
                       autoFocus
                     />
+                    <ErrorMessage
+                      name="firstName"
+                      id="firstName"
+                      component="div"
+                      className="error text-danger"
+                    />
                   </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      required
+                  <Grid className="mb-2" item xs={12} sm={6}>
+                    <Field
+                      as={TextField}
                       fullWidth
                       id="lastName"
                       label="Last Name"
                       name="lastName"
                       autoComplete="family-name"
                     />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      required
-                      id="phone"
-                      label="Phone Number"
-                      name="phone"
-                      autoComplete="phone"
+                    <ErrorMessage
+                      name="lastName"
+                      id="lastName"
+                      component="div"
+                      className="error text-danger"
                     />
                   </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
+                </Grid>
+
+                <Grid>
+                  <Grid className="mb-2" xs={12} item>
+                    <Field
+                      as={TextField}
+                      fullWidth
+                      id="phoneNumber"
+                      label="Phone Number"
+                      name="phoneNumber"
+                      autoComplete="phoneNumber"
+                    />
+                    <ErrorMessage
+                      name="phoneNumber"
+                      id="phoneNumber"
+                      component="div"
+                      className="error text-danger"
+                    />
+                  </Grid>
+                  <Grid className="mb-2" item xs={12}>
+                    <Field
+                      as={TextField}
                       fullWidth
                       id="address"
                       label="Home Address"
                       name="address"
                       autoComplete="address"
                     />
+                    <ErrorMessage
+                      name="address"
+                      id="address"
+                      component="div"
+                      className="error text-danger"
+                    />
                   </Grid>
 
-                  <Grid item xs={12}>
-                    <TextField
-                      required
+                  <Grid className="mb-2" item xs={12}>
+                    <Field
+                      as={TextField}
                       fullWidth
                       id="city"
                       label="City"
                       name="city"
                       autoComplete="city"
                     />
+                    <ErrorMessage
+                      name="city"
+                      id="city"
+                      component="div"
+                      className="error text-danger"
+                    />
                   </Grid>
-
-                  {/* <Grid item xs={12}>
-
-                //select
-                <Select
-                  required
-                  fullWidth
-                  id="address"
-                  label="Home Address"
-                  name="address"
-                  autoComplete="address"
-                >
-                  <option>ee</option>
-                  <option>ee</option>
-                  <option>ee</option>
-                </Select>
-              </Grid> */}
-
-                  <Grid item xs={12}>
-                    <TextField
-                      required
+                  <Grid className="mb-2" item xs={12}>
+                    <InputLabel htmlFor="province">Province</InputLabel>
+                    <Field
+                      as={Select}
+                      fullWidth
+                      labelId="demo-simple-select-helper-label"
+                      id="province"
+                      name="province"
+                      label="Province"
+                      onChange={handleChange}
+                    >
+                      <MenuItem selected value="">
+                        <em>None</em>
+                      </MenuItem>
+                      {province.map((item, index) => (
+                        <MenuItem value={item} key={index}>
+                          {item}
+                        </MenuItem>
+                      ))}
+                    </Field>
+                  </Grid>
+                  <Grid className="mb-2" item xs={12}>
+                    <Field
+                      as={TextField}
                       fullWidth
                       id="email"
                       label="Email Address"
                       name="email"
                       autoComplete="email"
                     />
+                    <ErrorMessage
+                      name="email"
+                      id="email"
+                      component="div"
+                      className="error text-danger"
+                    />
                   </Grid>
-
-                  <Grid item xs={12}>
-                    <TextField
-                      required
+                  <Grid className="mb-2" item xs={12}>
+                    <Field
+                      as={TextField}
                       fullWidth
                       name="password"
                       label="Password"
@@ -196,10 +281,16 @@ export default function SignUp() {
                         ),
                       }}
                     />
+                    <ErrorMessage
+                      name="password"
+                      id="password"
+                      component="div"
+                      className="error text-danger"
+                    />
                   </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
+                  <Grid className="mb-1" item xs={12}>
+                    <Field
+                      as={TextField}
                       fullWidth
                       name="confirmPassword"
                       label="Confirm Password"
@@ -226,11 +317,19 @@ export default function SignUp() {
                         ),
                       }}
                     />
+                    <ErrorMessage
+                      name="confirmPassword"
+                      id="confirmPassword"
+                      component="div"
+                      className="error text-danger"
+                    />
                   </Grid>
-                  <Grid item xs={12}>
+
+                  <Grid item xs={12} className="mb-3 ms-2">
                     <FormControlLabel
                       control={
-                        <Checkbox
+                        <Field
+                          as={Checkbox}
                           value="allowExtraEmails"
                           color="primary"
                           onChange={handleCheckboxChange}
@@ -239,27 +338,29 @@ export default function SignUp() {
                       label="I want recieve emails."
                     />
                   </Grid>
-                  <Grid item xs={12}>
+
+                  <Grid className="mb-4" item xs={12}>
                     <Button
                       type="submit"
                       fullWidth
                       variant="contained"
-                      sx={{ mt: 3, mb: 2 }}
+                      xs={{ mt: 3, mb: 2 }}
                     >
                       Sign Up
                     </Button>
                   </Grid>
                 </Grid>
-             
-            <Grid container justifyContent="flex-end">
-              <Grid item>
+              </Form>
+            )}
+          </Formik>
+          <Grid container justifyContent="flex-end">
+            <Grid item>
               Already have an account? &nbsp;
-                <NavLink to="/login" variant="body2">
-                  Sign in
-                </NavLink>
-              </Grid>
+              <NavLink to="/login" variant="body2">
+                Sign in
+              </NavLink>
             </Grid>
-          </Box>
+          </Grid>
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
