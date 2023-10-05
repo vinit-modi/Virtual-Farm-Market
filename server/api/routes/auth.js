@@ -8,5 +8,6 @@ router.post("/login", UserController.login);
 router.get("/getAllUser", UserController.getAllUser);
 router.post("/getUser", UserController.getUser);
 router.get("/getAllCities", UserController.getAllCityNames);
+router.get("/getAllProvinces", UserController.getAllProvinceNames);
 
 module.exports = router;

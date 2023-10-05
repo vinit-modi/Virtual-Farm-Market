@@ -21,9 +21,9 @@ const checkAndInsertData = async () => {
       const citiesData = citiesName;
 
       await City.insertMany(citiesData);
-      console.log("CronJob:Data inserted successfully!");
+      console.log("CronJobForCity: Data inserted successfully!");
     } else {
-      console.log("CronJob:Data already exists in the collection.");
+      console.log("CronJobForCity: Data already exists in the collection.");
     }
   } catch (err) {
     console.error("Error:", err);
@@ -32,7 +32,7 @@ const checkAndInsertData = async () => {
 
 // Schedule the script to run every day at midnight
 cron.schedule("0 0 * * *", () => {
-  console.log("CronJob:Running script to check and insert data...");
+  console.log("CronJobForCity: Running script to check and insert data...");
   checkAndInsertData();
 });
 
