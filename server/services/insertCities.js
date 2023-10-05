@@ -9,7 +9,7 @@ const citySchema = new mongoose.Schema({
   longitude: Number,
 });
 
-const City = mongoose.model("City", citySchema);
+const City = mongoose.model("cities", citySchema);
 
 const mongoDBUrl = config.MongoDBURL;
 
