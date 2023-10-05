@@ -42,3 +42,5 @@ mongoose.connect(mongoDBUrl, {
 });
 
 checkAndInsertData();
+
+module.exports = City;

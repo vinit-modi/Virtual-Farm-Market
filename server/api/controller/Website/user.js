@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const UserModel = require("../../../db/models/User");
+const CityModel = require("../../../services/insertCities");
 const { validationResult } = require("express-validator");
 const { check } = require("express-validator");
 const config = require("../../../config/index");
@@ -129,5 +130,12 @@ module.exports = {
         error: error.message,
       });
     }
+  },
+
+  getAllCityNames: async (req, res) => {
+    await CityModel.find({})
+      .sort({ name: 1 })
+      .then((cities) => res.json({ data: cities }))
+      .catch((err) => res.json(err));
   },
 };

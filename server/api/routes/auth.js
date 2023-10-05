@@ -7,5 +7,6 @@ router.post("/signUp", UserController.signUp);
 router.post("/login", UserController.login);
 router.get("/getAllUser", UserController.getAllUser);
 router.post("/getUser", UserController.getUser);
+router.get("/getAllCities", UserController.getAllCityNames);
 
 module.exports = router;
