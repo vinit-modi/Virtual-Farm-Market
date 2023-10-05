@@ -146,4 +146,50 @@ module.exports = {
       .then((provinces) => res.json({ data: provinces }))
       .catch((err) => res.json(err));
   },
+
+  changePassword: async (req, res) => {
+    const validationRules = [
+      check("currentPassword")
+        .notEmpty()
+        .withMessage("Current password must be provided"),
+      check("newPassword")
+        .notEmpty()
+        .withMessage("New Password must be provided")
+        .isLength({ min: 6 })
+        .withMessage("Password must be at least 6 characters long"),
+    ];
+    await Promise.all(validationRules.map((rule) => rule.run(req)));
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ message: errors.array()[0].msg });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(req.body.newPassword, salt);
+    let getUser = await UserModel.findOne({
+      _id: req.userInfo._id,
+    });
+    if (getUser) {
+      const validPassword = await bcrypt.compare(
+        req.body.currentPassword,
+        getUser.password
+      );
+      if (validPassword) {
+        await UserModel.findByIdAndUpdate({
+          _id: req.userInfo._id,
+        }).set({ password: hashedPassword });
+        res.json({
+          message: "Password changed successfully",
+        });
+      } else {
+        res.json({
+          message: "Your current password did not match",
+        });
+      }
+    } else {
+      res.json({
+        message: "Something went wrong (User not found)",
+      });
+    }
+  },
 };

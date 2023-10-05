@@ -4,5 +4,5 @@ module.exports = {
   ServerPort: 3001,
 
   secret: "VirtualFarmMarket", // jwt secret key
-  jwtExpirationTime: 60 * 60 * 8760,
+  jwtExpirationTime: 7 * 24 * 60 * 60,
 };
