@@ -12,6 +12,7 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Custom middleware to decode JWT token

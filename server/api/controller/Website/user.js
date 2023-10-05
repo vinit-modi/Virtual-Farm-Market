@@ -6,6 +6,20 @@ const { validationResult } = require("express-validator");
 const { check } = require("express-validator");
 const config = require("../../../config/index");
 const jwt = require("jsonwebtoken");
+const multer = require("multer");
+const path = require("path");
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadPath = path.join(__dirname, "../../../uploads/profilePicture");
+    cb(null, uploadPath);
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 module.exports = {
   signUp: async (req, res) => {
@@ -23,7 +37,7 @@ module.exports = {
         .notEmpty()
         .withMessage("Phone Number must be provided"),
       check("city").notEmpty().withMessage("City must be provided"),
-      check("provience").notEmpty().withMessage("Provience must be provided"),
+      check("province").notEmpty().withMessage("Province must be provided"),
     ];
     await Promise.all(validationRules.map((rule) => rule.run(req)));
     const errors = validationResult(req);
@@ -86,14 +100,11 @@ module.exports = {
         let accessToken = jwt.sign(jwtToken, config.secret, {
           expiresIn: config.jwtExpirationTime,
         });
-        await UserModel.findByIdAndUpdate({
-          _id: getUser._id,
-        }).set({
+        const getUpdatedUser = await UserModel.findByIdAndUpdate(
+          { _id: getUser._id },
           accessToken,
-        });
-        const getUpdatedUser = await UserModel.findOne({
-          email: req.body.email,
-        });
+          { new: true }
+        );
         res.json({
           message: "Welcome! You have successfully logged in",
           data: getUpdatedUser,
@@ -191,5 +202,39 @@ module.exports = {
         message: "Something went wrong (User not found)",
       });
     }
+  },
+
+  updateProfile: async (req, res) => {
+    upload.single("profilePicture")(req, res, async (err) => {
+      if (err) {
+        return res.status(400).json({ message: "Error uploading file" });
+      }
+
+      try {
+        if (req.file) {
+          req.body.profilePicture = req.file.path;
+        }
+
+        const updatedUser = await UserModel.findByIdAndUpdate(
+          req.userInfo._id,
+          req.body,
+          { new: true }
+        );
+
+        if (!updatedUser) {
+          return res.status(404).json({ message: "User not found" });
+        }
+
+        res.json({
+          message: "Profile updated successfully",
+          data: updatedUser,
+        });
+      } catch (error) {
+        res.status(500).json({
+          message: "Internal server error",
+          error: error.message,
+        });
+      }
+    });
   },
 };

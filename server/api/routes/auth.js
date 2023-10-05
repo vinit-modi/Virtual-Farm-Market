@@ -10,5 +10,6 @@ router.post("/getUser", UserController.getUser);
 router.get("/getAllCities", UserController.getAllCityNames);
 router.get("/getAllProvinces", UserController.getAllProvinceNames);
 router.post("/changePassword", UserController.changePassword);
+router.post("/updateProfile", UserController.updateProfile);
 
 module.exports = router;
