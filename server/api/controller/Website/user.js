@@ -102,7 +102,7 @@ module.exports = {
         });
         const getUpdatedUser = await UserModel.findByIdAndUpdate(
           { _id: getUser._id },
-          { accessToken: accessToken },
+          { accessToken },
           { new: true }
         );
         res.json({
