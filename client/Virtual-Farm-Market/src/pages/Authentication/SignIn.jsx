@@ -12,13 +12,19 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { IconButton, InputAdornment } from "@mui/material";
+import { Alert, IconButton, InputAdornment } from "@mui/material";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
+
+import Spinner from "react-bootstrap/esm/Spinner";
+import { toast } from "react-toastify";
+import { persistor } from "../../Redux/store";
+import { CLEAR_MESSAGE_ERROR, POST_SIGNIN_USER } from "../../Redux/Reducers/authReducer";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -55,9 +61,33 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignInSide() {
-  const [isRemember, setIsRemember] = useState(false);
-  console.log(isRemember);
   const [isVisible, setIsVisible] = React.useState(false);
+
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    persistor.purge();
+  }, []);
+
+  React.useEffect(() => {
+    if (auth.error) {
+      console.log(auth.error);
+    }
+  }, [auth.error]);
+
+  React.useEffect(() => {
+    if (auth.message) {
+      //Toast...
+      navigate("/dashboard");
+    }
+  }, [auth.message]);
+
+  const handleSubmit = () => {
+    dispatch({ type: CLEAR_MESSAGE_ERROR, payload: "error" });
+    navigate("/register");
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -88,7 +118,9 @@ export default function SignInSide() {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-
+            <div className="m-4">
+              {auth.error && <Alert severity="error">{auth.error}</Alert>}
+            </div>
             <Formik
               initialValues={{
                 email: "",
@@ -97,10 +129,12 @@ export default function SignInSide() {
               }}
               validationSchema={validationSchema}
               onSubmit={(values, { setSubmitting }) => {
-                setTimeout(() => {
-                  console.log(values);
-                  setSubmitting(false);
-                }, 200);
+                console.log(values);
+                const value = {
+                  email: values.email,
+                  password: values.password,
+                };
+                dispatch({ type: POST_SIGNIN_USER, payload: value });
               }}
             >
               {({ isSubmitting, values, handleChange }) => (
@@ -172,9 +206,22 @@ export default function SignInSide() {
                     fullWidth
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
-                    disabled={isSubmitting}
+                    disabled={auth?.loading ? true : false}
                   >
-                    Sign In
+                    {auth.loading ? (
+                      <>
+                        <Spinner
+                          as="span"
+                          animation="grow"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                        />
+                        Loading...
+                      </>
+                    ) : (
+                      `Sign In`
+                    )}
                   </Button>
                 </Form>
               )}
@@ -187,7 +234,8 @@ export default function SignInSide() {
               </Grid>
               <Grid item>
                 Don't have an account? &nbsp;
-                <NavLink to="/register">{"Sign Up"}</NavLink>
+                <Button onClick={() => handleSubmit()}>Sign Up</Button>
+                {/* <NavLink to="/register" >{"Sign Up"}</NavLink> */}
               </Grid>
             </Grid>
             <Copyright sx={{ mt: 5 }} />

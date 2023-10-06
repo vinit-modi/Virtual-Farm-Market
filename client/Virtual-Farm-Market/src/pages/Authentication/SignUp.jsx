@@ -12,8 +12,9 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { NavLink } from "react-router-dom";
+import { NavLink, redirect, useNavigate } from "react-router-dom";
 import {
+  Alert,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -25,6 +26,11 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Spinner from "react-bootstrap/Spinner";
+import { toast } from "react-toastify";
+import { persistor } from "../../Redux/store";
+import { CLEAR_MESSAGE_ERROR, GET_CITY_LIST, GET_PROVINCE_LIST, POST_SIGNUP_USER } from "../../Redux/Reducers/authReducer";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -69,28 +75,31 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [isSubscribed, setIsSubscribed] = React.useState(false);
   const [isVisible, setIsVisible] = React.useState(false);
   const [isVisibleConfirm, setIsVisibleConfirm] = React.useState(false);
-  const [province, setProvince] = useState([
-    "Alberta",
-    "British Columbia",
-    "Manitoba",
-    "New Brunswick",
-    "Newfoundland and Labrador",
-    "Northwest Territories",
-    "Nova Scotia",
-    "Nunavut",
-    "Ontario",
-    "Prince Edward Island",
-    "Quebec",
-    "Saskatchewan",
-    "Yukon",
-  ]);
+
+  React.useEffect(() => {
+    persistor.purge();
+    dispatch({ type: GET_CITY_LIST });
+    dispatch({ type: GET_PROVINCE_LIST });
+  }, []);
+
+  React.useEffect(() => {
+    if (auth.message === "User created successfully..") {
+      navigate("/login");
+      dispatch({ type: CLEAR_MESSAGE_ERROR, payload: "message" });
+    }
+  }, [auth.message]);
 
   const handleCheckboxChange = (event) => {
     setIsSubscribed(event.target.checked);
   };
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -110,6 +119,9 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
+          <div className="m-4">
+            {auth.error && <Alert severity="error">{auth.error}</Alert>}
+          </div>
 
           <Formik
             initialValues={{
@@ -126,7 +138,16 @@ export default function SignUp() {
             }}
             validationSchema={validationSchema}
             onSubmit={(values) => {
-              console.log("COMING...", values);
+              console.log("SUBMIT");
+              const value = {
+                name: values.firstName,
+                email: values.email,
+                password: values.password,
+                phoneNumber: values.phoneNumber,
+                city: values.city,
+                province: values.province,
+              };
+              dispatch({ type: POST_SIGNUP_USER, payload: value });
             }}
           >
             {({ isSubmitting, values, handleChange }) => (
@@ -202,14 +223,26 @@ export default function SignUp() {
                   </Grid>
 
                   <Grid className="mb-2" item xs={12}>
+                    <InputLabel htmlFor="city">City</InputLabel>
                     <Field
-                      as={TextField}
+                      as={Select}
                       fullWidth
+                      labelId="demo-simple-select-helper-label"
                       id="city"
-                      label="City"
                       name="city"
-                      autoComplete="city"
-                    />
+                      label="Province"
+                      onChange={handleChange}
+                    >
+                      <MenuItem selected value="">
+                        <em>None</em>
+                      </MenuItem>
+                      {auth?.cityList?.map((item, index) => (
+                        <MenuItem value={item.name} key={index}>
+                          {item.name}
+                        </MenuItem>
+                      ))}
+                    </Field>
+
                     <ErrorMessage
                       name="city"
                       id="city"
@@ -231,12 +264,19 @@ export default function SignUp() {
                       <MenuItem selected value="">
                         <em>None</em>
                       </MenuItem>
-                      {province.map((item, index) => (
-                        <MenuItem value={item} key={index}>
-                          {item}
-                        </MenuItem>
-                      ))}
+                      {auth.provinceList &&
+                        auth.provinceList.map((item, index) => (
+                          <MenuItem value={item.name} key={index}>
+                            {item.name}
+                          </MenuItem>
+                        ))}
                     </Field>
+                    <ErrorMessage
+                      name="province"
+                      id="province"
+                      component="div"
+                      className="error text-danger"
+                    />
                   </Grid>
                   <Grid className="mb-2" item xs={12}>
                     <Field
@@ -345,8 +385,22 @@ export default function SignUp() {
                       fullWidth
                       variant="contained"
                       xs={{ mt: 3, mb: 2 }}
+                      disabled={auth.loading ? true : false}
                     >
-                      Sign Up
+                      {auth.loading ? (
+                        <>
+                          <Spinner
+                            as="span"
+                            animation="grow"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                          />
+                          Loading...
+                        </>
+                      ) : (
+                        `Sign Up`
+                      )}
                     </Button>
                   </Grid>
                 </Grid>

@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
-function PublicRoute() {
+function PublicRoute({ children }) {
+  const auth = useSelector((state) => state.auth);
   return (
-    <div>
-      PublicRoute
-    </div>
-  )
+    <>{auth.token ? <Navigate to="/dashboard" /> : children}</>
+  );
 }
 
-export default PublicRoute
+export default PublicRoute;
