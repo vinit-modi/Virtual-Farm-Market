@@ -20,13 +20,14 @@ import {
   Alert,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useDispatch, useSelector } from "react-redux";
-import { GET_CHANGE_PASSWORD } from "../../Redux/Reducers/handlePasswordReducer";
-import { persistor } from "../../Redux/store";
+import { CLEAR_MESSAGE_ERROR_CHANGE_PASSWORD, GET_CHANGE_PASSWORD } from "../../Redux/Reducers/handlePasswordReducer";
+import { persistor, store } from "../../Redux/store";
+import authToken from "../../Utils/authToLocalStorage";
 
 const ChangePasswordSchema = Yup.object().shape({
   oldPassword: Yup.string().required("Old Password is required"),
@@ -50,10 +51,6 @@ function ChangePassword() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(()=>{
-    
-  },[])
-
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -72,11 +69,13 @@ function ChangePassword() {
         <Typography component="h1" variant="h5">
           Change Password
         </Typography>
-        {setPassword.error && (
+        {setPassword?.error ? (
           <div className="m-4">
-            <Alert severity="error">{setPassword.error}</Alert>
+            <Alert severity="error">{setPassword?.error}</Alert>
           </div>
-        )}
+        ):
+        setPassword?.message === `Password changed successfully` ?<Navigate to={`/dashboard`} />:null
+        }
         <Formik
           initialValues={{
             oldPassword: "",

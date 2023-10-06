@@ -2,6 +2,8 @@ export const MAKE_REQUEST_PASSWORD = "MAKE_REQUEST_PASSWORD";
 export const FAIL_MESSAGE_PASSWORD = "FAIL_MESSAGE_PASSWORD";
 export const GET_CHANGE_PASSWORD = "GET_CHANGE_PASSWORD";
 export const SET_CHANGE_PASSWORD = "SET_CHANGE_PASSWORD";
+export const CLEAR_MESSAGE_ERROR_CHANGE_PASSWORD = "CLEAR_MESSAGE_ERROR_CHANGE_PASSWORD";
+
 
 export const makeRequestPassword = () => {
     return {
@@ -14,7 +16,12 @@ export const makeRequestPassword = () => {
       payload: error,
     };
   };
-
+  export const clearMessageOnChangePassword = (value) => {
+    return {
+      type: CLEAR_MESSAGE_ERROR_CHANGE_PASSWORD,
+      payload: value,
+    };
+  };
 export const getChangePassword = (value) => {
   return {
     type: GET_CHANGE_PASSWORD,
@@ -49,6 +56,18 @@ export const handlePasswordReducer = (state = initialState, action) => {
         message: null,
         loading: false,
       };
+      case CLEAR_MESSAGE_ERROR_CHANGE_PASSWORD:
+      if (action.payload === "message") {
+        return {
+          ...state,
+          message: null,
+        };
+      } else if (action.payload === "error") {
+        return {
+          ...state,
+          error: null,
+        };
+      }
     case SET_CHANGE_PASSWORD:
       return {
         ...state,
