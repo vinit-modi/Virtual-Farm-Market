@@ -23,15 +23,15 @@ export async function requestProvinceList(payload) {
 }
 
 export async function requestChangePassword(payload) {
-  const response = await Axios.post(`/api/changePassword`, payload, {
-    headers: {
-      Authorization: `${authToken()}`,
-    },
-  });
+  const response = await Axios.post(`/api/changePassword`, payload);
   return response;
 }
 
 export async function requestGetUserDetails(_id) {
   const response = await Axios.post(`/api/getUser`, _id);
+  return response;
+}
+export async function requestUpdatedUserDetail(payload) {
+  const response = await Axios.post(`/api/updateProfile`, payload);
   return response;
 }

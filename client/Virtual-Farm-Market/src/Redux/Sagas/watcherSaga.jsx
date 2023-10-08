@@ -13,8 +13,11 @@ import {
 } from "./handlers/authHandler";
 import { GET_CHANGE_PASSWORD } from "../Reducers/handlePasswordReducer";
 import { fetchChangePassword } from "./handlers/handlePasswordHandler";
-import { GET_USER } from "../Reducers/userReducer";
-import { fetchGetUser } from "./handlers/userDetailsHandler";
+import { GET_UPDATED_USER_DETAIL, GET_USER } from "../Reducers/userReducer";
+import {
+  fetchGetUser,
+  fetchUpdatedUserDetail,
+} from "./handlers/userDetailsHandler";
 
 function* authStuff() {
   yield takeLatest(POST_SIGNUP_USER, fetchPostSignUpUser);
@@ -29,6 +32,7 @@ function* changePassword() {
 
 function* userDetails() {
   yield takeLatest(GET_USER, fetchGetUser);
+  yield takeLatest(GET_UPDATED_USER_DETAIL, fetchUpdatedUserDetail);
 }
 
 const authSaga = [fork(authStuff)];
