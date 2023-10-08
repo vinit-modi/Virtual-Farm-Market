@@ -24,7 +24,7 @@ import { Dialog } from "primereact/dialog";
 import AvatarEdit from "react-avatar-edit";
 import profileEmptyImage from "../../Assets/profileEmptyImage.png";
 import * as Yup from "yup";
-import { NavLink } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import FileDownloadDoneIcon from "@mui/icons-material/FileDownloadDone";
 
 const validationSchema = Yup.object({
@@ -39,6 +39,7 @@ function UpdateUserProfile() {
   const auth = useSelector((state) => state.auth);
   const userDetails = useSelector((state) => state.userDetails);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const param_id = "651e94a6fb0b84e048c1b1b7";
 
@@ -143,9 +144,9 @@ function UpdateUserProfile() {
                 provience: values.province,
                 profilePicture: values.profilePicture,
               };
-
               console.log(value);
               dispatch({ type: GET_UPDATED_USER_DETAIL, payload: value });
+              navigate('/dashboard')
             }}
           >
             {({ handleChange, setFieldValue }) => (
@@ -193,7 +194,7 @@ function UpdateUserProfile() {
                         height={400}
                         onCrop={(image) => {
                           onCrop(image);
-                          setFieldValue("profile", image);
+                          setFieldValue("profilePicture", image);
                         }}
                         onClose={onClose}
                         src={src}
@@ -301,9 +302,7 @@ function UpdateUserProfile() {
                 </Grid>
 
                 <Grid>
-                  <NavLink
-                    className="btn btn-primary w-100 mt-3 mb-2"
-                    to="/dashboard"
+                  <Button
                     type="submit"
                     fullWidth
                     variant="contained"
@@ -311,7 +310,7 @@ function UpdateUserProfile() {
                   >
                     <FileDownloadDoneIcon />
                     Save
-                  </NavLink>
+                  </Button>
                 </Grid>
               </Form>
             )}
