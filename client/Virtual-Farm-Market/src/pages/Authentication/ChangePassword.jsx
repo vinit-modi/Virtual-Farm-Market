@@ -25,9 +25,7 @@ import { useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useDispatch, useSelector } from "react-redux";
-import { CLEAR_MESSAGE_ERROR_CHANGE_PASSWORD, GET_CHANGE_PASSWORD } from "../../Redux/Reducers/handlePasswordReducer";
-import { persistor, store } from "../../Redux/store";
-import authToken from "../../Utils/authToLocalStorage";
+import { GET_CHANGE_PASSWORD } from "../../Redux/Reducers/handlePasswordReducer";
 
 const ChangePasswordSchema = Yup.object().shape({
   oldPassword: Yup.string().required("Old Password is required"),

@@ -102,7 +102,7 @@ export default function SignInSide() {
           component={Paper}
           elevation={6}
           square
-        >
+         >
           <Box
             sx={{
               my: 8,
@@ -121,6 +121,8 @@ export default function SignInSide() {
             <div className="m-4">
               {auth.error && <Alert severity="error">{auth.error}</Alert>}
             </div>
+
+
             <Formik
               initialValues={{
                 email: "",

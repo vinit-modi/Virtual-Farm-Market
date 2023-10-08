@@ -230,7 +230,7 @@ export default function SignUp() {
                       labelId="demo-simple-select-helper-label"
                       id="city"
                       name="city"
-                      label="Province"
+                      label="City"
                       onChange={handleChange}
                     >
                       <MenuItem selected value="">

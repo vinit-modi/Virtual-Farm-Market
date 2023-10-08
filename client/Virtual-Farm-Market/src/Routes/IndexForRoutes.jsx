@@ -8,6 +8,7 @@ import ForgetPassword from "../pages/Authentication/ForgetPassword";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import PublicRoute from "../auth/PublicRoute";
 import ProtectedRoute from "../auth/ProtectedRoute";
+import UpdateUserProfile from "../pages/UpdateProfile/UpdateUserProfile";
 
 function IndexForRoutes() {
   return (
@@ -64,6 +65,15 @@ function IndexForRoutes() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="/updateuserprofile"
+          element={
+            <ProtectedRoute>
+              <UpdateUserProfile />
             </ProtectedRoute>
           }
         />

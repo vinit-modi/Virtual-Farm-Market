@@ -30,3 +30,8 @@ export async function requestChangePassword(payload) {
   });
   return response;
 }
+
+export async function requestGetUserDetails(_id) {
+  const response = await Axios.post(`/api/getUser`, _id);
+  return response;
+}

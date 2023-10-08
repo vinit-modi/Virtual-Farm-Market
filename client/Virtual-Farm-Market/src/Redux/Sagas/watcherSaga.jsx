@@ -13,6 +13,8 @@ import {
 } from "./handlers/authHandler";
 import { GET_CHANGE_PASSWORD } from "../Reducers/handlePasswordReducer";
 import { fetchChangePassword } from "./handlers/handlePasswordHandler";
+import { GET_USER } from "../Reducers/userReducer";
+import { fetchGetUser } from "./handlers/userDetailsHandler";
 
 function* authStuff() {
   yield takeLatest(POST_SIGNUP_USER, fetchPostSignUpUser);
@@ -25,9 +27,14 @@ function* changePassword() {
   yield takeLatest(GET_CHANGE_PASSWORD, fetchChangePassword);
 }
 
+function* userDetails() {
+  yield takeLatest(GET_USER, fetchGetUser);
+}
+
 const authSaga = [fork(authStuff)];
 const changePasswordSaga = [fork(changePassword)];
+const userDetailsSaga = [fork(userDetails)];
 
 export default function* waterSaga() {
-  yield all([...authSaga, ...changePasswordSaga]);
+  yield all([...authSaga, ...changePasswordSaga, ...userDetailsSaga]);
 }

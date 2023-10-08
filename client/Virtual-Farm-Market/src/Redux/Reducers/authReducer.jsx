@@ -5,11 +5,10 @@ export const POST_SIGNUP_USER = "POST_SIGNUP_USER";
 export const SET_SIGNUP_USER_MESSAGE = "SET_SIGNUP_USER_MESSAGE";
 export const POST_SIGNIN_USER = "POST_SIGNIN_USER";
 export const SET_POST_SIGNIN_USER_MESSAGE = "SET_POST_SIGNIN_USER_MESSAGE";
-export const GET_CITY_LIST ='GET_CITY_LIST'
-export const SET_CITY_LIST ='SET_CITY_LIST'
-export const GET_PROVINCE_LIST ='GET_PROVINCE_LIST'
-export const SET_PROVINCE_LIST ='SET_PROVINCE_LIST'
-
+export const GET_CITY_LIST = "GET_CITY_LIST";
+export const SET_CITY_LIST = "SET_CITY_LIST";
+export const GET_PROVINCE_LIST = "GET_PROVINCE_LIST";
+export const SET_PROVINCE_LIST = "SET_PROVINCE_LIST";
 
 export const makeRequest = () => {
   return {
@@ -58,7 +57,6 @@ export const setSignInUser = (value) => {
 export const getCityList = () => {
   return {
     type: GET_CITY_LIST,
-   
   };
 };
 
@@ -71,7 +69,6 @@ export const setCityList = (value) => {
 export const getProvinceList = () => {
   return {
     type: GET_PROVINCE_LIST,
-   
   };
 };
 export const setProvinceList = (value) => {
@@ -80,7 +77,6 @@ export const setProvinceList = (value) => {
     payload: value,
   };
 };
-
 
 const authInitialState = {
   loading: false,
@@ -142,14 +138,13 @@ export const authReducer = (state = authInitialState, action) => {
         cityList: action.payload.data,
       };
     case SET_PROVINCE_LIST:
-        
       return {
         ...state,
         loading: false,
         error: null,
         provinceList: action.payload.data,
       };
-   
+
     default:
       return state;
   }
