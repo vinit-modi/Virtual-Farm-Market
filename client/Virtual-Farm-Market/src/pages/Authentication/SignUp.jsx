@@ -131,10 +131,6 @@ export default function SignUp() {
             alignItems: "center",
           }}
         >
-          <div>
-            <OAuthGoogleLogin />
-            <OAuthGoogleLogout />
-          </div>
           <Avatar sx={{ m: 1, bgcolor: "#c6ff00" }}>
             <LockOutlinedIcon />
           </Avatar>
