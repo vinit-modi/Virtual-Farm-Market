@@ -5,14 +5,13 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { NavLink, redirect, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   Alert,
   IconButton,
@@ -25,12 +24,22 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "react-bootstrap/Spinner";
-import { toast } from "react-toastify";
 import { persistor } from "../../Redux/store";
-import { CLEAR_MESSAGE_ERROR, GET_CITY_LIST, GET_PROVINCE_LIST, POST_SIGNUP_USER } from "../../Redux/Reducers/authReducer";
+import {
+  CLEAR_MESSAGE_ERROR,
+  GET_CITY_LIST,
+  GET_PROVINCE_LIST,
+  POST_SIGNUP_USER,
+} from "../../Redux/Reducers/authReducer";
+import OAuthGoogleLogin from "../../components/GoogleLoginButton/OAuthGoogleLogin";
+import OAuthGoogleLogout from "../../components/GoogleLogoutButton/OAuthGoogleLogout";
+import { gapi } from "gapi-script";
+import { useEffect } from "react";
+
+// const clientId =
+//   "394386949405-3al49a6v8la0v3233o191h3gg8rlvdqr.apps.googleusercontent.com";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -96,10 +105,19 @@ export default function SignUp() {
     }
   }, [auth.message]);
 
+  // useEffect(() => {
+  //   function start() {
+  //     gapi.client.init({
+  //       clientId: clientId,
+  //       scope: "email",
+  //     });
+  //   }
+  //   gapi.load("client:auth2", start);
+  // }, []);
+
   const handleCheckboxChange = (event) => {
     setIsSubscribed(event.target.checked);
   };
-
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -113,6 +131,10 @@ export default function SignUp() {
             alignItems: "center",
           }}
         >
+          <div>
+            <OAuthGoogleLogin />
+            <OAuthGoogleLogout />
+          </div>
           <Avatar sx={{ m: 1, bgcolor: "#c6ff00" }}>
             <LockOutlinedIcon />
           </Avatar>
@@ -407,6 +429,7 @@ export default function SignUp() {
               </Form>
             )}
           </Formik>
+          <Grid>GOOGLE</Grid>
           <Grid container justifyContent="flex-end">
             <Grid item>
               Already have an account? &nbsp;
