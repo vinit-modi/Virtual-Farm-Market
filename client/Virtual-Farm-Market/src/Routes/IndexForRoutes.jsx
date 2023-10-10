@@ -9,11 +9,19 @@ import Dashboard from "../pages/Dashboard/Dashboard";
 import PublicRoute from "../auth/PublicRoute";
 import ProtectedRoute from "../auth/ProtectedRoute";
 import UpdateUserProfile from "../pages/UpdateProfile/UpdateUserProfile";
+import PageNotFound from "../pages/PageNotFound/PageNotFound";
 
 function IndexForRoutes() {
   return (
     <div>
       <Routes>
+      
+      <Route
+          path="*"
+          element={
+              <PageNotFound />
+          }
+        />
         <Route
           exact
           path="/login"
@@ -77,6 +85,7 @@ function IndexForRoutes() {
             </ProtectedRoute>
           }
         />
+        
       </Routes>
     </div>
   );
