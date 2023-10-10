@@ -1,14 +1,7 @@
 import { Avatar, Button, Grid, TextField, Typography } from "@mui/material";
-import {
-  Alert,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  MenuItem,
-  Select,
-} from "@mui/material";
+import { Alert, InputLabel, MenuItem, Select } from "@mui/material";
 import { Box } from "@mui/system";
-import { ErrorMessage, Field, Form, Formik, validateYupSchema } from "formik";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -24,7 +17,7 @@ import { Dialog } from "primereact/dialog";
 import AvatarEdit from "react-avatar-edit";
 import profileEmptyImage from "../../Assets/profileEmptyImage.png";
 import * as Yup from "yup";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import FileDownloadDoneIcon from "@mui/icons-material/FileDownloadDone";
 
 const validationSchema = Yup.object({
@@ -39,7 +32,7 @@ function UpdateUserProfile() {
   const auth = useSelector((state) => state.auth);
   const userDetails = useSelector((state) => state.userDetails);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const param_id = "651e94a6fb0b84e048c1b1b7";
 
@@ -146,7 +139,7 @@ function UpdateUserProfile() {
               };
               console.log(value);
               dispatch({ type: GET_UPDATED_USER_DETAIL, payload: value });
-              navigate('/dashboard')
+              navigate("/dashboard");
             }}
           >
             {({ handleChange, setFieldValue }) => (

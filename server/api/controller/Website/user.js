@@ -56,7 +56,7 @@ module.exports = {
       });
     } else {
       let createUser = await UserModel.create({
-        ...req.body,
+        ...req.body,  
         password: hashedPassword,
       });
       res.json({ message: "User created successfully..", data: createUser });
