@@ -15,13 +15,7 @@ function IndexForRoutes() {
   return (
     <div>
       <Routes>
-      
-      <Route
-          path="*"
-          element={
-              <PageNotFound />
-          }
-        />
+        <Route path="*" element={<PageNotFound />} />
         <Route
           exact
           path="/login"
@@ -85,7 +79,6 @@ function IndexForRoutes() {
             </ProtectedRoute>
           }
         />
-        
       </Routes>
     </div>
   );

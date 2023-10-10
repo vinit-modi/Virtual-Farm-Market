@@ -9,7 +9,6 @@ Axios.interceptors.request.use(
     if (authToken()) {
       config.headers.Authorization = `${authToken()}`;
     }
-
     return config;
   },
   function (error) {

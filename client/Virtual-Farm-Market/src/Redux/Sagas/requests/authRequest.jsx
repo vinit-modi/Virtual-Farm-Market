@@ -1,8 +1,5 @@
 import axios from "axios";
 import Axios from "../../../Utils/Axios";
-import { async } from "regenerator-runtime";
-import { store } from "../../store";
-import authToken from "../../../Utils/authToLocalStorage";
 
 export async function requestPostSignUpUser(payload) {
   const response = await Axios.post(`/api/signUp`, payload);
