@@ -39,7 +39,7 @@ module.exports = {
           data: getUser,
         });
       } else {
-        res.json({ message: "Invalid password" });
+        res.json({ message: "Invalid email or password." });
       }
     }
   },
@@ -94,6 +94,42 @@ module.exports = {
       }
     } catch (err) {
       res.json({ message: err.message });
+    }
+  },
+
+  changePassword: async (req, res) => {
+    const validationRules = [
+      check("_id").notEmpty().withMessage("_id must be provided"),
+      check("currentPassword")
+        .notEmpty()
+        .withMessage("Current password must be provided"),
+      check("newPassword")
+        .notEmpty()
+        .withMessage("New Password must be provided")
+        .isLength({ min: 6 })
+        .withMessage("Password must be at least 6 characters long"),
+    ];
+    await Promise.all(validationRules.map((rule) => rule.run(req)));
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ message: errors.array()[0].msg });
+    }
+
+    let getUser = await AdminModel.findOne({
+      _id: req.body._id,
+      password: req.body.currentPassword,
+    });
+    if (getUser) {
+      await AdminModel.findByIdAndUpdate({
+        _id: req.body._id,
+      }).set({ password: req.body.newPassword });
+      res.json({
+        message: "Password changed successfully",
+      });
+    } else {
+      res.json({
+        message: "Your current password did not match",
+      });
     }
   },
 };
