@@ -72,4 +72,28 @@ module.exports = {
       });
     }
   },
+
+  deleteUser: async (req, res) => {
+    const validationRules = [
+      check("_id").notEmpty().withMessage("_id must be provided"),
+    ];
+    await Promise.all(validationRules.map((rule) => rule.run(req)));
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ message: errors.array()[0].msg });
+    }
+
+    try {
+      const getUser = await UserModel.findOne({ _id: req.body._id });
+
+      if (!getUser) {
+        return res.json({ message: "User not found" });
+      } else {
+        await UserModel.deleteOne({ _id: req.body._id });
+        res.json({ message: "User deleted successfully." });
+      }
+    } catch (err) {
+      res.json({ message: err.message });
+    }
+  },
 };
