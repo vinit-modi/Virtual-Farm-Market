@@ -132,4 +132,27 @@ module.exports = {
       });
     }
   },
+
+  getAdminProfile: async (req, res) => {
+    const validationRules = [
+      check("_id").notEmpty().withMessage("_id must be provided"),
+    ];
+    await Promise.all(validationRules.map((rule) => rule.run(req)));
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ message: errors.array()[0].msg });
+    }
+
+    try {
+      const getAdmin = await AdminModel.findOne({ _id: req.body._id });
+
+      if (!getAdmin) return res.json({ message: "Admin not found" });
+      res.json({ data: getAdmin });
+    } catch (error) {
+      res.status(500).json({
+        message: "Internal server error",
+        error: error.message,
+      });
+    }
+  },
 };
