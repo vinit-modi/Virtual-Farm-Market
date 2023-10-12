@@ -12,6 +12,8 @@ const UserSchema = new mongoose.Schema({
   createdAt: { type: String, default: "" },
   updatedAt: { type: String, default: "" },
   profilePicture: { type: String, default: "" },
+  isEmailConfirmed: { type: Boolean, default: false },
+  emailConfirmationToken: { type: String, default: "" },
 });
 
 UserSchema.pre("save", function (next) {
