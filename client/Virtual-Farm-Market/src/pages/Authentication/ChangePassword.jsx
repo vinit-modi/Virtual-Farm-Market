@@ -17,43 +17,41 @@ import {
   styled,
   InputAdornment,
   IconButton,
+  Alert,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { NavLink } from "react-router-dom";
+import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-
-
-const useStyles = styled("div")({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-});
+import { useDispatch, useSelector } from "react-redux";
+import { GET_CHANGE_PASSWORD } from "../../Redux/Reducers/handlePasswordReducer";
 
 const ChangePasswordSchema = Yup.object().shape({
   oldPassword: Yup.string().required("Old Password is required"),
-  newPassword: Yup.string()
-    .required("Required")
-  .min(8, "Must be 8 characters or more")
-  .matches(/[a-z]+/, "One lowercase character")
-  .matches(/[A-Z]+/, "One uppercase character")
-  .matches(/[@$!%*#?&]+/, "One special character")
-  .matches(/\d+/, "One number"),
-  confirmNewPassword: Yup.string()
-    .oneOf([Yup.ref("newPassword"), null], "Passwords must match")
-    .required("Confirm New Password is required"),
+  // newPassword: Yup.string()
+  //   .required("Required")
+  //   .min(8, "Must be 8 characters or more")
+  //   .matches(/[a-z]+/, "One lowercase character")
+  //   .matches(/[A-Z]+/, "One uppercase character")
+  //   .matches(/[@$!%*#?&]+/, "One special character")
+  //   .matches(/\d+/, "One number"),
+  // confirmNewPassword: Yup.string()
+  //   .oneOf([Yup.ref("newPassword"), null], "Passwords must match")
+  //   .required("Confirm New Password is required"),
 });
 
 function ChangePassword() {
+  const [isVisible, setIsVisible] = useState(false);
+  const [isVisibleConfirm, setIsVisibleConfirm] = useState(false);
 
-  const [isVisible,setIsVisible] = useState(false)
-  const [isVisibleConfirm,setIsVisibleConfirm] = useState(false)
+  const setPassword = useSelector((state) => state.setPassword);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-
       <Paper
         elevation={3}
         sx={{
@@ -69,6 +67,13 @@ function ChangePassword() {
         <Typography component="h1" variant="h5">
           Change Password
         </Typography>
+        {setPassword?.error ? (
+          <div className="m-4">
+            <Alert severity="error">{setPassword?.error}</Alert>
+          </div>
+        ):
+        setPassword?.message === `Password changed successfully` ?<Navigate to={`/dashboard`} />:null
+        }
         <Formik
           initialValues={{
             oldPassword: "",
@@ -78,7 +83,11 @@ function ChangePassword() {
           validationSchema={ChangePasswordSchema}
           onSubmit={(values, { setSubmitting }) => {
             setTimeout(() => {
-              console.log(values);
+              const value = {
+                currentPassword: values.oldPassword,
+                newPassword: values.newPassword,
+              };
+              dispatch({ type: GET_CHANGE_PASSWORD, payload: value });
               setSubmitting(false);
             }, 400);
           }}
@@ -121,11 +130,7 @@ function ChangePassword() {
                         aria-label="password visibility"
                         edge="end"
                       >
-                        {isVisible ? (
-                          <VisibilityIcon />
-                        ) : (
-                          <VisibilityOffIcon />
-                        )}
+                        {isVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
                       </IconButton>
                     </InputAdornment>
                   ),

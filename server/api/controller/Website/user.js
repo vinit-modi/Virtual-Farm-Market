@@ -6,6 +6,20 @@ const { validationResult } = require("express-validator");
 const { check } = require("express-validator");
 const config = require("../../../config/index");
 const jwt = require("jsonwebtoken");
+const multer = require("multer");
+const path = require("path");
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadPath = path.join(__dirname, "../../../uploads/profilePicture");
+    cb(null, uploadPath);
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 module.exports = {
   signUp: async (req, res) => {
@@ -23,7 +37,7 @@ module.exports = {
         .notEmpty()
         .withMessage("Phone Number must be provided"),
       check("city").notEmpty().withMessage("City must be provided"),
-      check("provience").notEmpty().withMessage("Provience must be provided"),
+      check("province").notEmpty().withMessage("Province must be provided"),
     ];
     await Promise.all(validationRules.map((rule) => rule.run(req)));
     const errors = validationResult(req);
@@ -86,14 +100,11 @@ module.exports = {
         let accessToken = jwt.sign(jwtToken, config.secret, {
           expiresIn: config.jwtExpirationTime,
         });
-        await UserModel.findByIdAndUpdate({
-          _id: getUser._id,
-        }).set({
-          accessToken,
-        });
-        const getUpdatedUser = await UserModel.findOne({
-          email: req.body.email,
-        });
+        const getUpdatedUser = await UserModel.findByIdAndUpdate(
+          { _id: getUser._id },
+          { accessToken },
+          { new: true }
+        );
         res.json({
           message: "Welcome! You have successfully logged in",
           data: getUpdatedUser,
@@ -145,5 +156,85 @@ module.exports = {
       .sort({ name: 1 })
       .then((provinces) => res.json({ data: provinces }))
       .catch((err) => res.json(err));
+  },
+
+  changePassword: async (req, res) => {
+    const validationRules = [
+      check("currentPassword")
+        .notEmpty()
+        .withMessage("Current password must be provided"),
+      check("newPassword")
+        .notEmpty()
+        .withMessage("New Password must be provided")
+        .isLength({ min: 6 })
+        .withMessage("Password must be at least 6 characters long"),
+    ];
+    await Promise.all(validationRules.map((rule) => rule.run(req)));
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ message: errors.array()[0].msg });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(req.body.newPassword, salt);
+    let getUser = await UserModel.findOne({
+      _id: req.userInfo._id,
+    });
+    if (getUser) {
+      const validPassword = await bcrypt.compare(
+        req.body.currentPassword,
+        getUser.password
+      );
+      if (validPassword) {
+        await UserModel.findByIdAndUpdate({
+          _id: req.userInfo._id,
+        }).set({ password: hashedPassword });
+        res.json({
+          message: "Password changed successfully",
+        });
+      } else {
+        res.json({
+          message: "Your current password did not match",
+        });
+      }
+    } else {
+      res.json({
+        message: "Something went wrong (User not found)",
+      });
+    }
+  },
+
+  updateProfile: async (req, res) => {
+    upload.single("profilePicture")(req, res, async (err) => {
+      if (err) {
+        return res.status(400).json({ message: "Error uploading file" });
+      }
+
+      try {
+        if (req.file) {
+          req.body.profilePicture = req.file.path;
+        }
+
+        const updatedUser = await UserModel.findByIdAndUpdate(
+          req.userInfo._id,
+          req.body,
+          { new: true }
+        );
+
+        if (!updatedUser) {
+          return res.status(404).json({ message: "User not found" });
+        }
+
+        res.json({
+          message: "Profile updated successfully",
+          data: updatedUser,
+        });
+      } catch (error) {
+        res.status(500).json({
+          message: "Internal server error",
+          error: error.message,
+        });
+      }
+    });
   },
 };

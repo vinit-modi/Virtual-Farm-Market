@@ -7,10 +7,11 @@ const UserSchema = new mongoose.Schema({
   password: String,
   phoneNumber: String,
   city: String,
-  provience: String,
+  province: String,
   accessToken: { type: String, default: "" },
   createdAt: { type: String, default: "" },
   updatedAt: { type: String, default: "" },
+  profilePicture: { type: String, default: "" },
 });
 
 UserSchema.pre("save", function (next) {

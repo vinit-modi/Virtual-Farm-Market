@@ -12,13 +12,19 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { IconButton, InputAdornment } from "@mui/material";
+import { Alert, IconButton, InputAdornment } from "@mui/material";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
+
+import Spinner from "react-bootstrap/esm/Spinner";
+import { toast } from "react-toastify";
+import { persistor } from "../../Redux/store";
+import { CLEAR_MESSAGE_ERROR, POST_SIGNIN_USER } from "../../Redux/Reducers/authReducer";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -28,12 +34,12 @@ const validationSchema = Yup.object().shape({
       "Invalid email address"
     ),
   password: Yup.string()
-  .required("Required")
-  .min(8, "Must be 8 characters or more")
-  .matches(/[a-z]+/, "One lowercase character")
-  .matches(/[A-Z]+/, "One uppercase character")
-  .matches(/[@$!%*#?&]+/, "One special character")
-  .matches(/\d+/, "One number"),
+    .required("Required")
+    .min(8, "Must be 8 characters or more")
+    .matches(/[a-z]+/, "One lowercase character")
+    .matches(/[A-Z]+/, "One uppercase character")
+    .matches(/[@$!%*#?&]+/, "One special character")
+    .matches(/\d+/, "One number"),
 });
 
 function Copyright(props) {
@@ -48,7 +54,6 @@ function Copyright(props) {
       Virtual Farm Market &nbsp;
       {new Date().getFullYear()}
       {"."}
-      
     </Typography>
   );
 }
@@ -56,9 +61,33 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignInSide() {
-  const [isRemember, setIsRemember] = useState(false);
-  console.log(isRemember);
   const [isVisible, setIsVisible] = React.useState(false);
+
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    persistor.purge();
+  }, []);
+
+  React.useEffect(() => {
+    if (auth.error) {
+      console.log(auth.error);
+    }
+  }, [auth.error]);
+
+  React.useEffect(() => {
+    if (auth.message) {
+      //Toast...
+      navigate("/dashboard");
+    }
+  }, [auth.message]);
+
+  const handleSubmit = () => {
+    dispatch({ type: CLEAR_MESSAGE_ERROR, payload: "error" });
+    navigate("/register");
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -73,7 +102,7 @@ export default function SignInSide() {
           component={Paper}
           elevation={6}
           square
-        >
+         >
           <Box
             sx={{
               my: 8,
@@ -89,19 +118,25 @@ export default function SignInSide() {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
+            <div className="m-4">
+              {auth.error && <Alert severity="error">{auth.error}</Alert>}
+            </div>
+
 
             <Formik
               initialValues={{
                 email: "",
                 password: "",
-                remember: false,
+                rememberMe: false,
               }}
               validationSchema={validationSchema}
               onSubmit={(values, { setSubmitting }) => {
-                setTimeout(() => {
-                  console.log(values);
-                  setSubmitting(false);
-                }, 200);
+                console.log(values);
+                const value = {
+                  email: values.email,
+                  password: values.password,
+                };
+                dispatch({ type: POST_SIGNIN_USER, payload: value });
               }}
             >
               {({ isSubmitting, values, handleChange }) => (
@@ -109,7 +144,6 @@ export default function SignInSide() {
                   <Field
                     as={TextField}
                     margin="normal"
-                    required
                     variant="outlined"
                     fullWidth
                     id="email"
@@ -127,7 +161,6 @@ export default function SignInSide() {
                   <Field
                     as={TextField}
                     margin="normal"
-                    required
                     fullWidth
                     name="password"
                     label="Password"
@@ -163,8 +196,8 @@ export default function SignInSide() {
                     control={
                       <Field
                         as={Checkbox}
-                        name="remember"
-                        id="remember"
+                        name="rememberMe"
+                        id="rememberMe"
                         color="primary"
                       />
                     }
@@ -175,9 +208,22 @@ export default function SignInSide() {
                     fullWidth
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
-                    disabled={isSubmitting}
+                    disabled={auth?.loading ? true : false}
                   >
-                    Sign In
+                    {auth.loading ? (
+                      <>
+                        <Spinner
+                          as="span"
+                          animation="grow"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                        />
+                        Loading...
+                      </>
+                    ) : (
+                      `Sign In`
+                    )}
                   </Button>
                 </Form>
               )}
@@ -190,7 +236,8 @@ export default function SignInSide() {
               </Grid>
               <Grid item>
                 Don't have an account? &nbsp;
-                <NavLink to="/register">{"Sign Up"}</NavLink>
+                <Button onClick={() => handleSubmit()}>Sign Up</Button>
+                {/* <NavLink to="/register" >{"Sign Up"}</NavLink> */}
               </Grid>
             </Grid>
             <Copyright sx={{ mt: 5 }} />

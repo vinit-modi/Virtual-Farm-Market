@@ -1,30 +1,34 @@
-import React from 'react'
-import SignUp from "./pages/Authentication/SignUp";
-import SignInSide from "./pages/Authentication/SignIn";
-import PublicRoute from "./auth/PublicRoute";
-
-import ResetPassword from './pages/Authentication/ResetPassword'
-import IndexForRoutes from './Routes/IndexForRoutes';
+import React from "react";
+import IndexForRoutes from "./Routes/IndexForRoutes";
+import { Provider } from "react-redux";
+import { persistor, store } from "./Redux/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
     <>
-      
-   <IndexForRoutes/>
-    
+      <div>
+        <Provider store={store}>
+          <PersistGate persistor={persistor}>
+            <IndexForRoutes />
+          </PersistGate>
+        </Provider>
+        <ToastContainer
+          position="top-right"
+          autoClose={1000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+      </div>
     </>
-    // <div>
-    //   <Switch>
-    //   <Route exact path="/register" component={SignUp}>
-    //   <Route exact path="/login" component={SignInSide} />
-        
-    //     {/* <PublicRoute>
-    //       <Route exact path="/signup"  />
-    //     </PublicRoute> */}
-    //   </Route>
-    // </Switch>
-    // </div>
-  )
+  );
 }
 
-export default App
+export default App;
