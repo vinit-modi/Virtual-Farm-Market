@@ -2,6 +2,21 @@ const AdminModel = require("../../../db/models/adUser");
 const { validationResult } = require("express-validator");
 const { check } = require("express-validator");
 const UserModel = require("../../../db/models/User");
+const multer = require("multer");
+const path = require("path");
+const bcrypt = require("bcrypt");
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadPath = path.join(__dirname, "../../../uploads/profilePicture");
+    cb(null, uploadPath);
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 module.exports = {
   adLogin: async (req, res) => {
@@ -28,10 +43,10 @@ module.exports = {
         message: "This email is not found. Please sign up.",
       });
     } else {
-      const validPassword = await AdminModel.findOne({
-        email: req.body.email,
-        password: req.body.password,
-      });
+      const validPassword = await bcrypt.compare(
+        req.body.password,
+        getUser.password
+      );
 
       if (validPassword) {
         res.json({
@@ -39,7 +54,7 @@ module.exports = {
           data: getUser,
         });
       } else {
-        res.json({ message: "Invalid email or password." });
+        res.json({ message: "Invalid password." });
       }
     }
   },
@@ -187,5 +202,39 @@ module.exports = {
         error: error.message,
       });
     }
+  },
+
+  updateUserProfile: async (req, res) => {
+    upload.single("profilePicture")(req, res, async (err) => {
+      if (err) {
+        return res.status(400).json({ message: "Error uploading file" });
+      }
+
+      try {
+        if (req.file) {
+          req.body.profilePicture = req.file.path;
+        }
+
+        const updatedUser = await UserModel.findByIdAndUpdate(
+          req.body._id,
+          req.body,
+          { new: true }
+        );
+
+        if (!updatedUser) {
+          return res.status(404).json({ message: "User not found" });
+        }
+
+        res.json({
+          message: "Profile updated successfully",
+          data: updatedUser,
+        });
+      } catch (error) {
+        res.status(500).json({
+          message: "Internal server error",
+          error: error.message,
+        });
+      }
+    });
   },
 };

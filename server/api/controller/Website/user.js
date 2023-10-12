@@ -56,7 +56,7 @@ module.exports = {
       });
     } else {
       let createUser = await UserModel.create({
-        ...req.body,  
+        ...req.body,
         password: hashedPassword,
       });
       res.json({ message: "User created successfully..", data: createUser });
@@ -115,7 +115,6 @@ module.exports = {
     }
   },
 
-
   getAllUser: async (req, res) => {
     await UserModel.find({})
       .then((users) => res.json({ data: users }))
@@ -159,7 +158,6 @@ module.exports = {
       .catch((err) => res.json(err));
   },
 
-  //jeel
   changePassword: async (req, res) => {
     const validationRules = [
       check("currentPassword")
@@ -206,8 +204,6 @@ module.exports = {
     }
   },
 
-
-  //update user profile
   updateProfile: async (req, res) => {
     upload.single("profilePicture")(req, res, async (err) => {
       if (err) {

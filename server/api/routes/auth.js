@@ -11,6 +11,7 @@ router.post("/deleteUser", AdUserController.deleteUser);
 router.post("/changePassword", AdUserController.changePassword);
 router.post("/getAdminProfile", AdUserController.getAdminProfile);
 router.post("/updateAdminProfile", AdUserController.updateAdminProfile);
+router.post("/updateUserProfile", AdUserController.updateUserProfile);
 
 router.post("/signUp", UserController.signUp);
 router.post("/login", UserController.login);
