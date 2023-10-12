@@ -60,9 +60,36 @@ module.exports = {
   },
 
   getAllUser: async (req, res) => {
-    await UserModel.find({})
-      .then((users) => res.json({ data: users }))
-      .catch((err) => res.json(err));
+    const page = parseInt(req.body.page) || 1;
+    const limit = parseInt(req.body.limit) || 10;
+    const sortField = req.body.sortField || "name";
+    const sortOrder = req.body.sortOrder || "asc";
+    const search = req.body.search || "";
+
+    try {
+      const skip = (page - 1) * limit;
+      const sort = {};
+      sort[sortField] = sortOrder === "desc" ? -1 : 1;
+
+      const searchFilter = {
+        $or: [
+          { name: { $regex: search, $options: "i" } },
+          { email: { $regex: search, $options: "i" } },
+        ],
+      };
+
+      const users = await UserModel.find(searchFilter)
+        .skip(skip)
+        .limit(limit)
+        .sort(sort);
+
+      res.json({ data: users });
+    } catch (error) {
+      res.status(500).json({
+        message: "Internal server error",
+        error: error.message,
+      });
+    }
   },
 
   getUser: async (req, res) => {

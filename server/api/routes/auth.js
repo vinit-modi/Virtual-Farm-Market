@@ -5,7 +5,7 @@ const UserController = require("../controller/Website/user");
 const AdUserController = require("../controller/Admin/adUser");
 
 router.post("/adLogin", AdUserController.adLogin);
-router.get("/adGetAllUser", AdUserController.getAllUser);
+router.post("/adGetAllUser", AdUserController.getAllUser);
 router.post("/adGetSpecificUser", AdUserController.getUser);
 router.post("/deleteUser", AdUserController.deleteUser);
 router.post("/changePassword", AdUserController.changePassword);
