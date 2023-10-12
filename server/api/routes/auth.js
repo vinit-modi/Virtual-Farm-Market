@@ -10,6 +10,7 @@ router.post("/adGetSpecificUser", AdUserController.getUser);
 router.post("/deleteUser", AdUserController.deleteUser);
 router.post("/changePassword", AdUserController.changePassword);
 router.post("/getAdminProfile", AdUserController.getAdminProfile);
+router.post("/updateAdminProfile", AdUserController.updateAdminProfile);
 
 router.post("/signUp", UserController.signUp);
 router.post("/login", UserController.login);
