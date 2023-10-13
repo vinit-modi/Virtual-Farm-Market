@@ -10,6 +10,13 @@ const multer = require("multer");
 const path = require("path");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
+const fs = require("fs");
+
+const emailTemplatePath = path.join(
+  __dirname,
+  "../../../utils/emailTemplate.html"
+);
+const emailTemplate = fs.readFileSync(emailTemplatePath, "utf8");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -82,7 +89,7 @@ module.exports = {
         from: config.email,
         to: req.body.email,
         subject: "Confirm Your Email",
-        text: `Click the following link to confirm your email: http://localhost:3000/confirmEmail?token=${confirmationToken}`,
+        html: emailTemplate.replace("${confirmationToken}", confirmationToken),
       };
       sendConfirmationEmail(createUser.email, mailOptions);
 
