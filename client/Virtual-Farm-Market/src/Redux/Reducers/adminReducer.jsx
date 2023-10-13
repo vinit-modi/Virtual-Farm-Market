@@ -2,6 +2,7 @@ export const MAKE_ADMIN_REQUEST = "MAKE_ADMIN_REQUEST";
 export const FAIL_ADMIN_MESSAGE = "FAIL_ADMIN_MESSAGE";
 export const GET_ADMIN_LOGIN = "GET_ADMIN_LOGIN";
 export const SET_ADMIN_LOGIN = "SET_ADMIN_LOGIN";
+export const SET_ADMIN_LOGOUT = "SET_ADMIN_LOGOUT";
 
 export const makeAdminRequest = () => {
   return {
@@ -24,6 +25,12 @@ export const getAdminLogin = (value) => {
 export const setAdminLogin = (value) => {
   return {
     type: SET_ADMIN_LOGIN,
+    payload: value,
+  };
+};
+export const setAdminLogout = (value) => {
+  return {
+    type: SET_ADMIN_LOGOUT,
     payload: value,
   };
 };
@@ -57,6 +64,14 @@ export const adminReducer = (state = initialState, action) => {
         message: action.payload.message,
         adminId: action.payload.id,
       };
+      case SET_ADMIN_LOGOUT:
+        return {
+            ...state,
+            loading: false,
+            error: null,
+            message: null,
+            adminId: null,
+        }
     default:
       return state;
   }

@@ -16,24 +16,38 @@ import AdminCategories from "../pages/AdminPages/AdminCategories";
 import AdminDashboard from "../pages/AdminPages/AdminDashboard";
 import AdminPrivacyPolicy from "../pages/AdminPages/AdminPrivacyPolicy";
 import AdminTermsAndCondition from "../pages/AdminPages/AdminTermsAndCondition";
-import AdminLogin from "../pages/AdminPages/Authentication/AdminLogin";
+import AdminPublicRoute from "../auth/authAdmin/AdminPublicRoute";
+import AdminProtectedRoute from "../auth/authAdmin/AdminProtectedRoute";
+import AdminHeader from "../components/AdminHeader/AdminHeader";
 
 function IndexForRoutes() {
   return (
     <div>
       <Routes>
         <Route path="*" element={<PageNotFound />} />
+
+        {/* ADMIN */}
         <Route path="/admin">
-          <Route exact path="login" element={<SignInSide />} />
-          <Route exact path="user" element={<AdminUserList />} />
-          <Route path="categories" element={<AdminCategories />} />
-          <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="privacypolicy" element={<AdminPrivacyPolicy />} />
           <Route
-            path="termsandcondition"
-            element={<AdminTermsAndCondition />}
+            exact
+            path="login"
+            element={
+              <AdminPublicRoute>
+                <SignInSide />
+              </AdminPublicRoute>
+            }
           />
+          <Route
+            exact
+            path="*"
+            element={
+              <AdminHeader/>
+            }
+          />
+          
         </Route>
+        {/* Admin-DONE */}
+
         <Route
           path="/confirmEmail"
           exact

@@ -25,7 +25,20 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LockIcon from "@mui/icons-material/Lock";
 import PolicyIcon from "@mui/icons-material/Policy";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, Route, Routes, useNavigate } from "react-router-dom";
+import { Button, CircularProgress, Menu, MenuItem } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  SET_ADMIN_LOGOUT,
+  adminReducer,
+} from "../../Redux/Reducers/adminReducer";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import AdminProtectedRoute from "../../auth/authAdmin/AdminProtectedRoute";
+import AdminUserList from "../../pages/AdminPages/AdminUserList";
+import AdminCategories from "../../pages/AdminPages/AdminCategories";
+import AdminDashboard from "../../pages/AdminPages/AdminDashboard";
+import AdminPrivacyPolicy from "../../pages/AdminPages/AdminPrivacyPolicy";
+import AdminTermsAndCondition from "../../pages/AdminPages/AdminTermsAndCondition";
 
 const icons = [
   <RecentActorsIcon />,
@@ -106,7 +119,11 @@ export default function AdminHeader() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
+  const dispatch = useDispatch();
+  const adminReducer = useSelector((state) => state.adminReducer);
   const navigate = useNavigate();
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -114,6 +131,27 @@ export default function AdminHeader() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    setAnchorEl(null);
+    dispatch({ type: SET_ADMIN_LOGOUT });
+  };
+
+  const handleProfileEdit = () => {
+    setAnchorEl(null);
+  };
+
+  const handleChangePassword = () => {
+    setAnchorEl(null);
   };
 
   return (
@@ -136,6 +174,47 @@ export default function AdminHeader() {
           <Typography variant="h6" noWrap component="div">
             Admin Panel
           </Typography>
+          <div>
+            <div>
+              {adminReducer.adminId && (
+                <div>
+                  <IconButton
+                    size="large"
+                    aria-label="account of current user"
+                    aria-controls="menu-appbar"
+                    aria-haspopup="true"
+                    onClick={handleMenu}
+                    color="inherit"
+                  >
+                    <AccountCircle />
+                  </IconButton>
+                  <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    <MenuItem onClick={handleProfileEdit}>
+                      Profile Edit
+                    </MenuItem>
+                    <MenuItem onClick={handleChangePassword}>
+                      Change Password
+                    </MenuItem>
+                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                  </Menu>
+                </div>
+              )}
+            </div>
+          </div>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -185,34 +264,60 @@ export default function AdminHeader() {
           ))}
         </List>
         <Divider />
-        {/* <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List> */}
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        <Outlet />
+        {adminReducer.loading ? <Box sx={{ display: 'flex' }}>
+      <CircularProgress />
+    </Box> : (
+          <Routes>
+            <Route
+              exact
+              path="user"
+              element={
+                <AdminProtectedRoute>
+                  <AdminUserList />
+                </AdminProtectedRoute>
+              }
+            />
+            <Route
+              exact
+              path="categories"
+              element={
+                <AdminProtectedRoute>
+                  <AdminCategories />
+                </AdminProtectedRoute>
+              }
+            />
+            <Route
+              exact
+              path="dashboard"
+              element={
+                <AdminProtectedRoute>
+                  <AdminDashboard />
+                </AdminProtectedRoute>
+              }
+            />
+            <Route
+              exact
+              path="privacypolicy"
+              element={
+                <AdminProtectedRoute>
+                  <AdminPrivacyPolicy />
+                </AdminProtectedRoute>
+              }
+            />
+            <Route
+              exact
+              path="termsandcondition"
+              element={
+                <AdminProtectedRoute>
+                  <AdminTermsAndCondition />
+                </AdminProtectedRoute>
+              }
+            />
+          </Routes>
+        )}
       </Box>
     </Box>
   );
