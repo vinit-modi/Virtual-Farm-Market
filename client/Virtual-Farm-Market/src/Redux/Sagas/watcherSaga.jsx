@@ -1,12 +1,14 @@
 import { all, fork, takeLatest } from "redux-saga/effects";
 import {
   GET_CITY_LIST,
+  GET_CONFIRM_EMAIL_FOR_USER,
   GET_PROVINCE_LIST,
   POST_SIGNIN_USER,
   POST_SIGNUP_USER,
 } from "../Reducers/authReducer";
 import {
   fetchCityList,
+  fetchConfirmEmailUser,
   fetchPostSignInUser,
   fetchPostSignUpUser,
   fetchProvinceList,
@@ -24,6 +26,7 @@ function* authStuff() {
   yield takeLatest(POST_SIGNIN_USER, fetchPostSignInUser);
   yield takeLatest(GET_CITY_LIST, fetchCityList);
   yield takeLatest(GET_PROVINCE_LIST, fetchProvinceList);
+  yield takeLatest(GET_CONFIRM_EMAIL_FOR_USER, fetchConfirmEmailUser);
 }
 
 function* changePassword() {

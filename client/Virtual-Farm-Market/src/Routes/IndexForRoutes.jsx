@@ -10,12 +10,22 @@ import PublicRoute from "../auth/PublicRoute";
 import ProtectedRoute from "../auth/ProtectedRoute";
 import UpdateUserProfile from "../pages/UpdateProfile/UpdateUserProfile";
 import PageNotFound from "../pages/PageNotFound/PageNotFound";
+import ConfirmEmail from "../pages/Authentication/ConfirmEmail";
 
 function IndexForRoutes() {
   return (
     <div>
       <Routes>
         <Route path="*" element={<PageNotFound />} />
+        <Route
+          path="/confirmEmail"
+          exact
+          element={
+            <PublicRoute>
+              <ConfirmEmail />
+            </PublicRoute>
+          }
+        />
         <Route
           exact
           path="/login"

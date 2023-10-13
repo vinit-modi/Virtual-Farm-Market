@@ -32,3 +32,17 @@ export async function requestUpdatedUserDetail(payload) {
   const response = await Axios.post(`/api/updateProfile`, payload);
   return response;
 }
+export async function requestConfirmEmailUser(payload) {
+  const response = await Axios.post(`/api/confirmEmail`, payload);
+  return response;
+}
+
+export async function requestGetUserById(payload) {
+  console.log('payload ==>',payload)
+  const idObj = {
+    _id:payload
+  }
+  const response = await Axios.post(`/api/getUser`,idObj);
+ 
+  return response;
+}
