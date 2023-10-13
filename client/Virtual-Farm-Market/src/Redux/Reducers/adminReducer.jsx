@@ -3,6 +3,13 @@ export const FAIL_ADMIN_MESSAGE = "FAIL_ADMIN_MESSAGE";
 export const GET_ADMIN_LOGIN = "GET_ADMIN_LOGIN";
 export const SET_ADMIN_LOGIN = "SET_ADMIN_LOGIN";
 export const SET_ADMIN_LOGOUT = "SET_ADMIN_LOGOUT";
+export const CLEAR_MESSAGE_ADMIN = "CLEAR_MESSAGE_ADMIN";
+export const GET_ADMIN_PROFILE_DATA = "GET_ADMIN_PROFILE_DATA";
+export const SET_ADMIN_PROFILE_DATA = "SET_ADMIN_PROFILE_DATA";
+export const GET_ADMIN_EDIT_PROFILE = "GET_ADMIN_EDIT_PROFILE";
+export const SET_ADMIN_EDIT_PROFILE = "SET_ADMIN_EDIT_PROFILE";
+export const GET_ADMIN_CHANGE_PASSWORD = "GET_ADMIN_CHANGE_PASSWORD";
+export const SET_ADMIN_CHANGE_PASSWORD = "SET_ADMIN_CHANGE_PASSWORD";
 
 export const makeAdminRequest = () => {
   return {
@@ -34,12 +41,56 @@ export const setAdminLogout = (value) => {
     payload: value,
   };
 };
+export const setClearMessage = (value) => {
+  return {
+    type: CLEAR_MESSAGE_ADMIN,
+    payload: value,
+  };
+};
+
+export const getAdminProfileData = (value) => {
+  return {
+    type: GET_ADMIN_PROFILE_DATA,
+    payload: value,
+  };
+};
+export const setAdminProfileData = (value) => {
+  return {
+    type: SET_ADMIN_PROFILE_DATA,
+    payload: value,
+  };
+};
+export const getAdminEditProfile = (value) => {
+  return {
+    type: GET_ADMIN_EDIT_PROFILE,
+    payload: value,
+  };
+};
+export const setAdminEditProfile = (value) => {
+  return {
+    type: SET_ADMIN_EDIT_PROFILE,
+    payload: value,
+  };
+};
+export const getAdminChangePassword = (value) => {
+  return {
+    type: GET_ADMIN_CHANGE_PASSWORD,
+    payload: value,
+  };
+};
+export const setAdminChangePassword = (value) => {
+  return {
+    type: SET_ADMIN_CHANGE_PASSWORD,
+    payload: value,
+  };
+};
 
 const initialState = {
   loading: false,
   error: null,
   message: null,
   adminId: null,
+  profileData: null,
 };
 
 export const adminReducer = (state = initialState, action) => {
@@ -49,12 +100,15 @@ export const adminReducer = (state = initialState, action) => {
         ...state,
         loading: true,
         error: null,
+        
       };
     case FAIL_ADMIN_MESSAGE:
       return {
         ...state,
         loading: false,
+        message: null,
         error: action.payload,
+        profileData: null,
       };
     case SET_ADMIN_LOGIN:
       return {
@@ -64,14 +118,35 @@ export const adminReducer = (state = initialState, action) => {
         message: action.payload.message,
         adminId: action.payload.id,
       };
-      case SET_ADMIN_LOGOUT:
-        return {
-            ...state,
-            loading: false,
-            error: null,
-            message: null,
-            adminId: null,
-        }
+    case SET_ADMIN_LOGOUT:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        message: null,
+        adminId: null,
+      };
+    case CLEAR_MESSAGE_ADMIN:
+      return {
+        ...state,
+        loading: false,
+        message: null,
+      };
+    case SET_ADMIN_PROFILE_DATA:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        message: null,
+        profileData: action?.payload,
+      };
+    case SET_ADMIN_EDIT_PROFILE:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        message: action.payload,
+      };
     default:
       return state;
   }

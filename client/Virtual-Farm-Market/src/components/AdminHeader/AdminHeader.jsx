@@ -29,6 +29,8 @@ import { Outlet, Route, Routes, useNavigate } from "react-router-dom";
 import { Button, CircularProgress, Menu, MenuItem } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  CLEAR_MESSAGE_ADMIN,
+  GET_ADMIN_PROFILE_DATA,
   SET_ADMIN_LOGOUT,
   adminReducer,
 } from "../../Redux/Reducers/adminReducer";
@@ -39,6 +41,9 @@ import AdminCategories from "../../pages/AdminPages/AdminCategories";
 import AdminDashboard from "../../pages/AdminPages/AdminDashboard";
 import AdminPrivacyPolicy from "../../pages/AdminPages/AdminPrivacyPolicy";
 import AdminTermsAndCondition from "../../pages/AdminPages/AdminTermsAndCondition";
+import AdminProfileEdit from "../../pages/AdminPages/HandleAdmin/AdminProfileEdit";
+import AdminChangePassword from "../../pages/AdminPages/HandleAdmin/AdminChangePassword";
+import { useEffect } from "react";
 
 const icons = [
   <RecentActorsIcon />,
@@ -147,12 +152,32 @@ export default function AdminHeader() {
   };
 
   const handleProfileEdit = () => {
+    dispatch({
+      type: GET_ADMIN_PROFILE_DATA,
+      payload: { _id: adminReducer.adminId },
+    });
+    navigate("/admin/profileedit");
     setAnchorEl(null);
   };
 
   const handleChangePassword = () => {
+    navigate("/admin/changepassword");
     setAnchorEl(null);
   };
+
+  React.useEffect(() => {
+    if (adminReducer.message === `Admin profile updated successfully`) {
+      //Toast
+      dispatch({ type: CLEAR_MESSAGE_ADMIN });
+    }
+  }, [adminReducer.message]);
+
+  useEffect(()=>{
+    if(adminReducer.message === ``){
+        //Toast
+      dispatch({ type: CLEAR_MESSAGE_ADMIN });
+    }
+  },[adminReducer.message])
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -235,42 +260,71 @@ export default function AdminHeader() {
             "Categories",
             "Privacy Policy",
             "Terms and Conditions",
-          ].map((text, index) => (
-            <ListItem
-              key={text}
-              onClick={() => navigate("/admin/user")}
-              disablePadding
-              sx={{ display: "block" }}
-            >
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
+          ].map((text, index) => {
+            let urlPath;
+            if (text === `User list`) urlPath = `user`;
+            else if (text === `Dashboard`) urlPath = `dashboard`;
+            else if (text === `Categories`) urlPath = `categories`;
+            else if (text === `Privacy Policy`) urlPath = `privacypolicy`;
+            else if (text === `Terms and Conditions`)
+              urlPath = `termsandcondition`;
+            return (
+              <ListItem
+                key={text}
+                onClick={() => navigate(`/admin/${urlPath}`)}
+                disablePadding
+                sx={{ display: "block" }}
               >
-                <ListItemIcon
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
                   }}
                 >
-                  {icons[index]}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {icons[index]}
+                  </ListItemIcon>
+                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
         </List>
         <Divider />
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        {adminReducer.loading ? <Box sx={{ display: 'flex' }}>
-      <CircularProgress />
-    </Box> : (
+        {adminReducer.loading ? (
+          <Box sx={{ display: "flex" }}>
+            <CircularProgress />
+          </Box>
+        ) : (
           <Routes>
+            <Route
+              exact
+              path="profileedit"
+              element={
+                <AdminProtectedRoute>
+                  <AdminProfileEdit />
+                </AdminProtectedRoute>
+              }
+            />
+            <Route
+              exact
+              path="changepassword"
+              element={
+                <AdminProtectedRoute>
+                  <AdminChangePassword />
+                </AdminProtectedRoute>
+              }
+            />
             <Route
               exact
               path="user"

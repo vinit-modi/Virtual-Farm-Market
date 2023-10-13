@@ -20,8 +20,8 @@ import {
   fetchGetUser,
   fetchUpdatedUserDetail,
 } from "./handlers/userDetailsHandler";
-import { GET_ADMIN_LOGIN } from "../Reducers/adminReducer";
-import { fetchAdminLogin } from "./handlers/adminHandler";
+import { GET_ADMIN_CHANGE_PASSWORD, GET_ADMIN_EDIT_PROFILE, GET_ADMIN_LOGIN, GET_ADMIN_PROFILE_DATA } from "../Reducers/adminReducer";
+import { fetchAdminChangePassword, fetchAdminEditProfile, fetchAdminLogin, fetchAdminProfileData } from "./handlers/adminHandler";
 
 function* authStuff() {
   yield takeLatest(POST_SIGNUP_USER, fetchPostSignUpUser);
@@ -42,6 +42,9 @@ function* userDetails() {
 
 function* adminHandles() {
   yield takeLatest(GET_ADMIN_LOGIN,fetchAdminLogin)
+  yield takeLatest(GET_ADMIN_PROFILE_DATA,fetchAdminProfileData)
+  yield takeLatest(GET_ADMIN_EDIT_PROFILE,fetchAdminEditProfile)
+  yield takeLatest(GET_ADMIN_CHANGE_PASSWORD,fetchAdminChangePassword)
 }
 
 const authSaga = [fork(authStuff)];

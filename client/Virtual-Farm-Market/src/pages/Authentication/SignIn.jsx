@@ -145,7 +145,9 @@ export default function SignInSide() {
               {auth.error && <Alert severity="error">{auth.error}</Alert>}
             </div>
             <div className="m-4">
-              {adminReducer.error && <Alert severity="error">{adminReducer.error}</Alert>}
+              {adminReducer.error && (
+                <Alert severity="error">{adminReducer.error}</Alert>
+              )}
             </div>
 
             <Formik
@@ -162,7 +164,7 @@ export default function SignInSide() {
                   password: values.password,
                 };
                 if (currentPath === `/admin/login`) {
-                  dispatch({type:GET_ADMIN_LOGIN,payload:value})
+                  dispatch({ type: GET_ADMIN_LOGIN, payload: value });
                 } else {
                   dispatch({ type: POST_SIGNIN_USER, payload: value });
                 }
