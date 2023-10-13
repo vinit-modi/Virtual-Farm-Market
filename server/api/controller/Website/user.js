@@ -6,42 +6,16 @@ const { validationResult } = require("express-validator");
 const { check } = require("express-validator");
 const config = require("../../../config/index");
 const jwt = require("jsonwebtoken");
-const multer = require("multer");
+const upload = require("../../../utils/uploadImage");
+const sendConfirmationEmail = require("../../../utils/sendConfirmationEmail");
 const path = require("path");
-const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 const fs = require("fs");
-
 const emailTemplatePath = path.join(
   __dirname,
   "../../../utils/emailTemplate.html"
 );
 const emailTemplate = fs.readFileSync(emailTemplatePath, "utf8");
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadPath = path.join(__dirname, "../../../uploads/profilePicture");
-    cb(null, uploadPath);
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname);
-  },
-});
-
-const upload = multer({ storage: storage });
-
-const sendConfirmationEmail = (to, mailOptions) => {
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-      user: config.email,
-      pass: config.password,
-    },
-  });
-  transporter.sendMail(mailOptions);
-};
 
 module.exports = {
   signUp: async (req, res) => {
@@ -280,29 +254,31 @@ module.exports = {
   },
 
   confirmEmail: async (req, res) => {
+    const token = req.body.token;
     const validationRules = [
       check("token").notEmpty().withMessage("Token must be provided"),
     ];
+
     await Promise.all(validationRules.map((rule) => rule.run(req)));
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return res.status(422).json({ message: errors.array()[0].msg });
     }
 
     try {
-      const user = await UserModel.findOne({
-        emailConfirmationToken: req.body.token,
-      });
+      const user = await UserModel.findOne({ emailConfirmationToken: token });
+
       if (!user) {
         return res.json({
           message: "Something is wrong with your token",
         });
       }
-      await UserModel.updateOne({ emailConfirmationToken: req.body.token }).set(
+      await UserModel.findByIdAndUpdate(
         {
-          isEmailConfirmed: true,
-          // emailConfirmationToken: "",
-        }
+          _id: user._id.toString(),
+        },
+        { isEmailConfirmed: true }
       );
       res.json({
         message: "Email confirmed successfully.",
