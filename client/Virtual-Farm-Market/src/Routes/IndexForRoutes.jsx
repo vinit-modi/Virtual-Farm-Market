@@ -11,12 +11,29 @@ import ProtectedRoute from "../auth/ProtectedRoute";
 import UpdateUserProfile from "../pages/UpdateProfile/UpdateUserProfile";
 import PageNotFound from "../pages/PageNotFound/PageNotFound";
 import ConfirmEmail from "../pages/Authentication/ConfirmEmail";
+import AdminUserList from "../pages/AdminPages/AdminUserList";
+import AdminCategories from "../pages/AdminPages/AdminCategories";
+import AdminDashboard from "../pages/AdminPages/AdminDashboard";
+import AdminPrivacyPolicy from "../pages/AdminPages/AdminPrivacyPolicy";
+import AdminTermsAndCondition from "../pages/AdminPages/AdminTermsAndCondition";
+import AdminLogin from "../pages/AdminPages/Authentication/AdminLogin";
 
 function IndexForRoutes() {
   return (
     <div>
       <Routes>
         <Route path="*" element={<PageNotFound />} />
+        <Route path="/admin">
+          <Route exact path="login" element={<SignInSide />} />
+          <Route exact path="user" element={<AdminUserList />} />
+          <Route path="categories" element={<AdminCategories />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="privacypolicy" element={<AdminPrivacyPolicy />} />
+          <Route
+            path="termsandcondition"
+            element={<AdminTermsAndCondition />}
+          />
+        </Route>
         <Route
           path="/confirmEmail"
           exact

@@ -20,6 +20,8 @@ import {
   fetchGetUser,
   fetchUpdatedUserDetail,
 } from "./handlers/userDetailsHandler";
+import { GET_ADMIN_LOGIN } from "../Reducers/adminReducer";
+import { fetchAdminLogin } from "./handlers/adminHandler";
 
 function* authStuff() {
   yield takeLatest(POST_SIGNUP_USER, fetchPostSignUpUser);
@@ -38,10 +40,20 @@ function* userDetails() {
   yield takeLatest(GET_UPDATED_USER_DETAIL, fetchUpdatedUserDetail);
 }
 
+function* adminHandles() {
+  yield takeLatest(GET_ADMIN_LOGIN,fetchAdminLogin)
+}
+
 const authSaga = [fork(authStuff)];
 const changePasswordSaga = [fork(changePassword)];
 const userDetailsSaga = [fork(userDetails)];
+const adminHandlesSaga = [fork(adminHandles)];
 
 export default function* waterSaga() {
-  yield all([...authSaga, ...changePasswordSaga, ...userDetailsSaga]);
+  yield all([
+    ...authSaga,
+    ...changePasswordSaga,
+    ...userDetailsSaga,
+    ...adminHandlesSaga,
+  ]);
 }

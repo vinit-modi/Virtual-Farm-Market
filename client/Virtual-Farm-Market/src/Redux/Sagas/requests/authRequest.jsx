@@ -38,11 +38,10 @@ export async function requestConfirmEmailUser(payload) {
 }
 
 export async function requestGetUserById(payload) {
-  console.log('payload ==>',payload)
+  console.log("payload ==>", payload);
   const idObj = {
-    _id:payload
-  }
-  const response = await Axios.post(`/api/getUser`,idObj);
- 
+    _id: payload,
+  };
+  const response = await Axios.post(`/api/getUser`, idObj);
   return response;
 }

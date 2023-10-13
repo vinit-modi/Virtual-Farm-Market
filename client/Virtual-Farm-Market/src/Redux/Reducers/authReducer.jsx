@@ -171,7 +171,7 @@ export const authReducer = (state = authInitialState, action) => {
         loading: false,
         error: null,
         message: action.payload.message,
-        isEmailConfirmed:action.payload.isEmailConfirmed
+        isEmailConfirmed: action.payload.isEmailConfirmed,
       };
 
     default:
