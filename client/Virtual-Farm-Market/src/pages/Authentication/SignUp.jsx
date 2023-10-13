@@ -163,10 +163,10 @@ export default function SignUp() {
           <div className="m-4">
             {auth.message ===
               `User created successfully. Check your email for confirmation.` && (
-              <Alert severity="error">
+              <Alert severity="success">
                 {auth.message} &nbsp;
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-primary btn-sm"
                   onClick={() => handleEmailClick()}
                 >
                   Open Email
