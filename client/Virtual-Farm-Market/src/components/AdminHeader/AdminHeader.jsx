@@ -172,18 +172,18 @@ export default function AdminHeader() {
     }
   }, [adminReducer.message]);
 
-  useEffect(()=>{
-    if(adminReducer.message === ``){
-        //Toast
+  useEffect(() => {
+    if (adminReducer.message === ``) {
+      //Toast
       dispatch({ type: CLEAR_MESSAGE_ADMIN });
     }
-  },[adminReducer.message])
+  }, [adminReducer.message]);
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar>
+        <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -196,7 +196,7 @@ export default function AdminHeader() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6" noWrap component="div" style={{float:'left',width:'100%'}}>
             Admin Panel
           </Typography>
           <div>

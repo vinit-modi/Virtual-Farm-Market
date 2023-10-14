@@ -6,12 +6,14 @@ import {
   setAdminEditProfile,
   setAdminLogin,
   setAdminProfileData,
+  setAdminSideUserList,
 } from "../../Reducers/adminReducer";
 import {
   requestAdminChangePassword,
   requestAdminEditProfile,
   requestAdminLogin,
   requestAdminProfileData,
+  requestAdminSideUserList,
 } from "../requests/adminRequest";
 
 export function* fetchAdminLogin({ payload }) {
@@ -65,6 +67,19 @@ export function* fetchAdminChangePassword({ payload }) {
     const response = yield call(requestAdminChangePassword, payload);
     if (response.data.message === ``) {
       yield put(setAdminChangePassword(response.data.message));
+    } else {
+      yield put(failAdminRequest(response.data.message));
+    }
+  } catch (error) {
+    yield put(failAdminRequest(error.message));
+  }
+}
+export function* fetchAdminSideUserList({ payload }) {
+  try {
+    yield put(makeAdminRequest());
+    const response = yield call(requestAdminSideUserList, payload);
+    if (response.data.data) {
+      yield put(setAdminSideUserList(response.data?.data));
     } else {
       yield put(failAdminRequest(response.data.message));
     }

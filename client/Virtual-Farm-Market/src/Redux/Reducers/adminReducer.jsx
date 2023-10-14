@@ -10,6 +10,8 @@ export const GET_ADMIN_EDIT_PROFILE = "GET_ADMIN_EDIT_PROFILE";
 export const SET_ADMIN_EDIT_PROFILE = "SET_ADMIN_EDIT_PROFILE";
 export const GET_ADMIN_CHANGE_PASSWORD = "GET_ADMIN_CHANGE_PASSWORD";
 export const SET_ADMIN_CHANGE_PASSWORD = "SET_ADMIN_CHANGE_PASSWORD";
+export const GET_ADMINSIDE_USER_LIST = "GET_ADMINSIDE_USER_LIST";
+export const SET_ADMINSIDE_USER_LIST = "SET_ADMINSIDE_USER_LIST";
 
 export const makeAdminRequest = () => {
   return {
@@ -84,6 +86,18 @@ export const setAdminChangePassword = (value) => {
     payload: value,
   };
 };
+export const getAdminSideUserList = (value) => {
+  return {
+    type: GET_ADMINSIDE_USER_LIST,
+    payload: value,
+  };
+};
+export const setAdminSideUserList = (value) => {
+  return {
+    type: SET_ADMINSIDE_USER_LIST,
+    payload: value,
+  };
+};
 
 const initialState = {
   loading: false,
@@ -91,6 +105,7 @@ const initialState = {
   message: null,
   adminId: null,
   profileData: null,
+  userList : null
 };
 
 export const adminReducer = (state = initialState, action) => {
@@ -100,7 +115,7 @@ export const adminReducer = (state = initialState, action) => {
         ...state,
         loading: true,
         error: null,
-        
+        userList:null
       };
     case FAIL_ADMIN_MESSAGE:
       return {
@@ -147,6 +162,14 @@ export const adminReducer = (state = initialState, action) => {
         error: null,
         message: action.payload,
       };
+      case SET_ADMINSIDE_USER_LIST:
+        return {
+            ...state,
+            loading:false,
+            error:null,
+            message:null,
+            userList:action.payload
+        }
     default:
       return state;
   }

@@ -15,8 +15,12 @@ export async function requestAdminEditProfile(payload) {
   return response;
 }
 export async function requestAdminChangePassword(payload) {
-    console.log("payload==>>", payload);
   const response = await Axios.post(`/api/changePassword`, payload);
+  return response;
+}
+export async function requestAdminSideUserList(payload) {
+  console.log("payload==>>", payload);
+  const response = await Axios.post(`/api/adGetAllUser`, payload);
   console.log("response==>>", response);
   return response;
 }
