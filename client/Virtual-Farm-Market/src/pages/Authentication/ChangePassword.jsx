@@ -29,16 +29,16 @@ import { GET_CHANGE_PASSWORD } from "../../Redux/Reducers/handlePasswordReducer"
 
 const ChangePasswordSchema = Yup.object().shape({
   oldPassword: Yup.string().required("Old Password is required"),
-  // newPassword: Yup.string()
-  //   .required("Required")
-  //   .min(8, "Must be 8 characters or more")
-  //   .matches(/[a-z]+/, "One lowercase character")
-  //   .matches(/[A-Z]+/, "One uppercase character")
-  //   .matches(/[@$!%*#?&]+/, "One special character")
-  //   .matches(/\d+/, "One number"),
-  // confirmNewPassword: Yup.string()
-  //   .oneOf([Yup.ref("newPassword"), null], "Passwords must match")
-  //   .required("Confirm New Password is required"),
+  newPassword: Yup.string()
+    .required("Required")
+    .min(8, "Must be 8 characters or more")
+    .matches(/[a-z]+/, "One lowercase character")
+    .matches(/[A-Z]+/, "One uppercase character")
+    .matches(/[@$!%*#?&]+/, "One special character")
+    .matches(/\d+/, "One number"),
+  confirmNewPassword: Yup.string()
+    .oneOf([Yup.ref("newPassword"), null], "Passwords must match")
+    .required("Confirm New Password is required"),
 });
 
 function ChangePassword() {

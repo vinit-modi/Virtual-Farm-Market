@@ -119,16 +119,6 @@ export default function SignUp() {
     }
   }, []);
 
-  // useEffect(() => {
-  //   function start() {
-  //     gapi.client.init({
-  //       clientId: clientId,
-  //       scope: "email",
-  //     });
-  //   }
-  //   gapi.load("client:auth2", start);
-  // }, []);
-
   const handleCheckboxChange = (event) => {
     setIsSubscribed(event.target.checked);
   };

@@ -12,6 +12,10 @@ export const GET_ADMIN_CHANGE_PASSWORD = "GET_ADMIN_CHANGE_PASSWORD";
 export const SET_ADMIN_CHANGE_PASSWORD = "SET_ADMIN_CHANGE_PASSWORD";
 export const GET_ADMINSIDE_USER_LIST = "GET_ADMINSIDE_USER_LIST";
 export const SET_ADMINSIDE_USER_LIST = "SET_ADMINSIDE_USER_LIST";
+export const GET_ADMIN_USER_DELETE_REQUEST = "GET_ADMIN_USER_DELETE_REQUEST";
+export const SET_ADMIN_USER_DELETE_REQUEST = "SET_ADMIN_USER_DELETE_REQUEST";
+export const GET_ADMIN_USER_EDIT_OBJECT = "GET_ADMIN_USER_EDIT_OBJECT";
+export const SET_ADMIN_USER_EDIT_OBJECT = "SET_ADMIN_USER_EDIT_OBJECT";
 
 export const makeAdminRequest = () => {
   return {
@@ -98,6 +102,30 @@ export const setAdminSideUserList = (value) => {
     payload: value,
   };
 };
+export const getAdminUserDeleteRequest = (value) => {
+  return {
+    type: GET_ADMIN_USER_DELETE_REQUEST,
+    payload: value,
+  };
+};
+export const setAdminUserDeleteRequest = (value) => {
+  return {
+    type: SET_ADMIN_USER_DELETE_REQUEST,
+    payload: value,
+  };
+};
+export const getAdminUserEditObj = (value) => {
+  return {
+    type: GET_ADMIN_USER_EDIT_OBJECT,
+    payload: value,
+  };
+};
+export const setAdminUserEditObj = (value) => {
+  return {
+    type: SET_ADMIN_USER_EDIT_OBJECT,
+    payload: value,
+  };
+};
 
 const initialState = {
   loading: false,
@@ -105,7 +133,8 @@ const initialState = {
   message: null,
   adminId: null,
   profileData: null,
-  userList : null
+  userList: null,
+  userObjForEdit: null,
 };
 
 export const adminReducer = (state = initialState, action) => {
@@ -115,7 +144,7 @@ export const adminReducer = (state = initialState, action) => {
         ...state,
         loading: true,
         error: null,
-        userList:null
+        userList: null,
       };
     case FAIL_ADMIN_MESSAGE:
       return {
@@ -162,14 +191,28 @@ export const adminReducer = (state = initialState, action) => {
         error: null,
         message: action.payload,
       };
-      case SET_ADMINSIDE_USER_LIST:
-        return {
-            ...state,
-            loading:false,
-            error:null,
-            message:null,
-            userList:action.payload
-        }
+    case SET_ADMINSIDE_USER_LIST:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        message: null,
+        userList: action.payload,
+      };
+    case SET_ADMIN_USER_DELETE_REQUEST:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        message: action.payload,
+      };
+    case SET_ADMIN_USER_EDIT_OBJECT:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        userObjForEdit: action.payload,
+      };
     default:
       return state;
   }

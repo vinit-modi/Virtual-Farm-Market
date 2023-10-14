@@ -9,32 +9,30 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { GET_ADMINSIDE_USER_LIST } from "../../Redux/Reducers/adminReducer";
+import {
+  CLEAR_MESSAGE_ADMIN,
+  GET_ADMINSIDE_USER_LIST,
+  GET_ADMIN_USER_DELETE_REQUEST,
+} from "../../Redux/Reducers/adminReducer";
+import { useEffect } from "react";
 
 const columns = [
-  { id: "name", label: "Name", minWidth: 170 },
-  { id: "email", label: "Email", minWidth: 100 },
+  { id: "name", label: "Name", minWidth: 170, align: "center" },
+  { id: "email", label: "Email", minWidth: 100, align: "center" },
   { id: "phoneNumber", label: "Phone Number", minWidth: 100 },
   {
     id: "city",
     label: "City",
     minWidth: 170,
-    align: "right",
+    align: "center",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "province",
     label: "Province",
     minWidth: 170,
-    align: "right",
+    align: "center",
     format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "actions",
-    label: "Actions",
-    minWidth: 170,
-    align: "right",
-    format: (value) => value.toFixed(2),
   },
 ];
 
@@ -56,74 +54,77 @@ function AdminUserList() {
   const navigate = useNavigate();
   const adminReducer = useSelector((state) => state.adminReducer);
 
-  const updatePayloadObj = () => {
-    setPayloadObj({
-      page: page + 1,
-      limit: rowsPerPage,
-      sortField: sort,
-      sortOrder: order,
-      search: "",
-    });
-  };
+  // const updatePayloadObj = () => {
+  //   setPayloadObj({
+  //     page: page + 1,
+  //     limit: rowsPerPage,
+  //     sortField: sort,
+  //     sortOrder: order,
+  //     search: "",
+  //   });
+  // };
+
+  const prevPayloadObj = React.useRef(payloadObj);
 
   React.useEffect(() => {
-    updatePayloadObj();
-  }, []);
-
-  React.useEffect(() => {
-    if (isCheck) {
-        console.log(payloadObj)
-        dispatch({ type: GET_ADMINSIDE_USER_LIST, payload: payloadObj });
-      setIsCheck(false);
+    if (payloadObj !== prevPayloadObj.current) {
+      console.log(payloadObj);
+      dispatch({ type: GET_ADMINSIDE_USER_LIST, payload: payloadObj });
+      prevPayloadObj.current = payloadObj;
     }
-  }, [isCheck]);
+  }, [payloadObj]);
 
   const handleChangePage = (event, newPage) => {
+    console.log(newPage + 1);
     setPage(newPage);
-    updatePayloadObj();
-    setIsCheck(true);
+    setPayloadObj((prevPayloadObj) => ({
+      ...prevPayloadObj,
+      page: newPage + 1,
+    }));
   };
 
   const handleChangeRowsPerPage = (event) => {
-    const newRowsPerPage = +event.target.value;
-    setRowsPerPage(newRowsPerPage);
+    setRowsPerPage(+event.target.value);
     setPage(0);
-    updatePayloadObj();
-    setIsCheck(true);
+    console.log(+event.target.value);
+    setPayloadObj((prevPayloadObj) => ({
+      ...prevPayloadObj,
+      page: 1,
+      limit: +event.target.value,
+    }));
   };
-
-  //   const handleChangePage = (event, newPage) => {
-  //     console.log(newPage + 1);
-  //     setPage(newPage);
-  //     setPayloadObj((prevPayloadObj) => ({
-  //       ...prevPayloadObj,
-  //       page: newPage + 1,
-  //     }));
-  //   };
-
-  //   const handleChangeRowsPerPage = (event) => {
-  //     setRowsPerPage(+event.target.value);
-  //     setPage(0);
-  //     console.log(+event.target.value);
-  //     setPayloadObj((prevPayloadObj) => ({
-  //       ...prevPayloadObj,
-  //       limit: +event.target.value,
-  //     }));
-  //   };
-  //   React.useEffect(() => {
-  //     console.log(payloadObj);
-  //     // if()
-  //     // dispatch({ type: GET_ADMINSIDE_USER_LIST, payload: payloadObj });
-
-  //   }, [payloadObj]);
 
   React.useEffect(() => {
     if (!adminReducer.userList)
       dispatch({ type: GET_ADMINSIDE_USER_LIST, payload: payloadObj });
   }, []);
 
+  const handleEditClick = (userId) => {
+    console.log(userId);
+    navigate(`/admin/action/edit/${userId}`);
+  };
+
+  const handleDeleteClick = (userId) => {
+    console.log(userId);
+    dispatch({ type: GET_ADMIN_USER_DELETE_REQUEST, payload: { _id: userId } });
+    // navigate(`/admin/action/delete/${userId}`);
+  };
+
+  const handleViewClick = (userId) => {
+    console.log(userId);
+    navigate(`/admin/action/view/${userId}`);
+  };
+
+  useEffect(() => {
+    if (adminReducer.message === `User deleted successfully.`) {
+      //Toast
+      dispatch({ type: CLEAR_MESSAGE_ADMIN });
+    }
+  }, [adminReducer.message]);
+
   return (
     <div>
+      <h1>Active User List</h1>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
@@ -137,7 +138,10 @@ function AdminUserList() {
                   >
                     {column.label}
                   </TableCell>
-                ))}
+                ))}{" "}
+                <TableCell className="d-flex justify-content-center">
+                  Action
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -149,6 +153,7 @@ function AdminUserList() {
                       <TableRow hover role="checkbox" tabIndex={-1} key={index}>
                         {columns.map((column) => {
                           const value = row[column.id];
+
                           return (
                             <TableCell key={column.id} align={column.align}>
                               {column.format && typeof value === "number"
@@ -157,6 +162,17 @@ function AdminUserList() {
                             </TableCell>
                           );
                         })}
+                        <TableCell>
+                          <button onClick={() => handleEditClick(row._id)}>
+                            Edit
+                          </button>
+                          <button onClick={() => handleDeleteClick(row._id)}>
+                            Delete
+                          </button>
+                          <button onClick={() => handleViewClick(row._id)}>
+                            View
+                          </button>
+                        </TableCell>
                       </TableRow>
                     );
                   })}
@@ -166,7 +182,7 @@ function AdminUserList() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 15]}
           component="div"
-          count={adminReducer.userList && adminReducer.userList.length}
+          count={adminReducer.userList ? adminReducer.userList.length : 0}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

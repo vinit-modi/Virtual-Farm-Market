@@ -44,6 +44,8 @@ import AdminTermsAndCondition from "../../pages/AdminPages/AdminTermsAndConditio
 import AdminProfileEdit from "../../pages/AdminPages/HandleAdmin/AdminProfileEdit";
 import AdminChangePassword from "../../pages/AdminPages/HandleAdmin/AdminChangePassword";
 import { useEffect } from "react";
+import AdminEditUser from "../../pages/AdminPages/AdminActions/AdminEditUser";
+import AdminViewUser from "../../pages/AdminPages/AdminActions/AdminViewUser";
 
 const icons = [
   <RecentActorsIcon />,
@@ -367,6 +369,37 @@ export default function AdminHeader() {
               element={
                 <AdminProtectedRoute>
                   <AdminTermsAndCondition />
+                </AdminProtectedRoute>
+              }
+            />
+{/* CRUD FOR USERLIST */}
+<Route
+              exact
+              path="action/edit/:id"
+              element={
+                <AdminProtectedRoute>
+                  <AdminEditUser />
+                </AdminProtectedRoute>
+              }
+            />
+
+{/* <Route
+              exact
+              path="action/delete/:id"
+              element={
+                <AdminProtectedRoute>
+                  <AdminDeleteUser />
+                </AdminProtectedRoute>
+              }
+            /> */}
+
+
+<Route
+              exact
+              path="action/view/:id"
+              element={
+                <AdminProtectedRoute>
+                  <AdminViewUser />
                 </AdminProtectedRoute>
               }
             />
