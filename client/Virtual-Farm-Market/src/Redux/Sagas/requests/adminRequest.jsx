@@ -19,9 +19,9 @@ export async function requestAdminChangePassword(payload) {
   return response;
 }
 export async function requestAdminSideUserList(payload) {
-//   console.log("payload==>>", payload);
+  //   console.log("payload==>>", payload);
   const response = await Axios.post(`/api/adGetAllUser`, payload);
-//   console.log("response==>>", response);
+  //   console.log("response==>>", response);
   return response;
 }
 export async function requestAdminUserDeleteRequest(payload) {
@@ -34,6 +34,12 @@ export async function requestAdminUserDeleteRequest(payload) {
 export async function requestAdminUserEditObj(payload) {
   console.log("payload==>>", payload);
   const response = await Axios.post(`/api/adGetSpecificUser`, payload);
+  console.log("response==>>", response);
+  return response;
+}
+export async function requestAdminUpdateUserProfile(payload) {
+  console.log("payload==>>", payload);
+  const response = await Axios.post(`/api/updateUserProfile`, payload);
   console.log("response==>>", response);
   return response;
 }

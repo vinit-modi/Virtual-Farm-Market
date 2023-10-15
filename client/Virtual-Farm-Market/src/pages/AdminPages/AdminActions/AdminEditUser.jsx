@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { GET_ADMIN_USER_EDIT_OBJECT } from "../../../Redux/Reducers/adminReducer";
+import { useNavigate, useParams } from "react-router-dom";
+import { GET_ADMIN_UPDATE_USER_PROFILE, GET_ADMIN_USER_EDIT_OBJECT } from "../../../Redux/Reducers/adminReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -45,6 +45,7 @@ function AdminEditUser() {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const adminReducer = useSelector((state) => state.adminReducer);
+  const navigate = useNavigate()
 
   const [imageCrop, setImageCrop] = useState(false);
   const [src, setSrc] = useState(false);
@@ -65,9 +66,12 @@ function AdminEditUser() {
   };
 
   useEffect(() => {
-    if (!adminReducer?.userObjForEdit)
+    if (
+      !adminReducer?.userObjForEdit ||
+      adminReducer?.userObjForEdit._id !== id
+    )
       dispatch({ type: GET_ADMIN_USER_EDIT_OBJECT, payload: { _id: id } });
-  }, [id || !adminReducer?.userObjForEdit]);
+  }, [id, adminReducer?.userObjForEdit]);
 
   useEffect(() => {
     const value = {
@@ -77,6 +81,12 @@ function AdminEditUser() {
     dispatch({ type: GET_CITY_LIST });
     dispatch({ type: GET_USER, payload: value });
   }, []);
+
+  useEffect(()=>{
+    if(adminReducer.message === `Profile updated successfully`){
+        navigate('/admin/user')
+    }
+  },[adminReducer.message])
 
   return (
     <div>
@@ -102,6 +112,15 @@ function AdminEditUser() {
         }
         validationSchema={validationSchema}
         onSubmit={(values) => {
+            const payloadObj = {
+                _id:id,
+                name:values.name,
+                phoneNumber:values.phoneNumber,
+                city:values.city,
+                province:values.province,
+                profilePicture:values.profilePicture,
+            }
+            dispatch({type:GET_ADMIN_UPDATE_USER_PROFILE,payload:payloadObj})
           console.log(values);
         }}
       >

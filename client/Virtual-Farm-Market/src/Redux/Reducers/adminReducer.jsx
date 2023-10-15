@@ -16,6 +16,8 @@ export const GET_ADMIN_USER_DELETE_REQUEST = "GET_ADMIN_USER_DELETE_REQUEST";
 export const SET_ADMIN_USER_DELETE_REQUEST = "SET_ADMIN_USER_DELETE_REQUEST";
 export const GET_ADMIN_USER_EDIT_OBJECT = "GET_ADMIN_USER_EDIT_OBJECT";
 export const SET_ADMIN_USER_EDIT_OBJECT = "SET_ADMIN_USER_EDIT_OBJECT";
+export const GET_ADMIN_UPDATE_USER_PROFILE = "GET_ADMIN_UPDATE_USER_PROFILE";
+export const SET_ADMIN_UPDATE_USER_PROFILE = "SET_ADMIN_UPDATE_USER_PROFILE";
 
 export const makeAdminRequest = () => {
   return {
@@ -126,6 +128,18 @@ export const setAdminUserEditObj = (value) => {
     payload: value,
   };
 };
+export const getAdminUpdateUserProfile = (value) => {
+  return {
+    type: GET_ADMIN_UPDATE_USER_PROFILE,
+    payload: value,
+  };
+};
+export const setAdminUpdateUserProfile = (value) => {
+  return {
+    type: SET_ADMIN_UPDATE_USER_PROFILE,
+    payload: value,
+  };
+};
 
 const initialState = {
   loading: false,
@@ -212,6 +226,14 @@ export const adminReducer = (state = initialState, action) => {
         loading: false,
         error: null,
         userObjForEdit: action.payload,
+      };
+    case SET_ADMIN_UPDATE_USER_PROFILE:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        userObjForEdit: null,
+        message: action.payload,
       };
     default:
       return state;

@@ -23,10 +23,11 @@ function ConfirmEmail() {
 
   const searchParams = new URLSearchParams(location.search);
   const token = searchParams.get("token");
+  console.log(token)
   const tokenObj = {
     token: token,
   };
-  console.log(token);
+  
 
   const handleConfirm = () => {
     dispatch({ type: GET_CONFIRM_EMAIL_FOR_USER, payload: tokenObj });

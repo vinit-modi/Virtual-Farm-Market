@@ -139,7 +139,7 @@ export default function SignInSide() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              {currentPath === `/admin/login` ? `Admin Sign in` : `Sign in`}
             </Typography>
             <div className="m-4">
               {auth.error && <Alert severity="error">{auth.error}</Alert>}

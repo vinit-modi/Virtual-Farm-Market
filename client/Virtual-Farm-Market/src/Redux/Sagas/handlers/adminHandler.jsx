@@ -7,6 +7,7 @@ import {
   setAdminLogin,
   setAdminProfileData,
   setAdminSideUserList,
+  setAdminUpdateUserProfile,
   setAdminUserDeleteRequest,
   setAdminUserEditObj,
 } from "../../Reducers/adminReducer";
@@ -16,6 +17,7 @@ import {
   requestAdminLogin,
   requestAdminProfileData,
   requestAdminSideUserList,
+  requestAdminUpdateUserProfile,
   requestAdminUserDeleteRequest,
   requestAdminUserEditObj,
 } from "../requests/adminRequest";
@@ -110,6 +112,19 @@ export function* fetchAdminUserEditObj({ payload }) {
     const response = yield call(requestAdminUserEditObj, payload);
     if (response.status === 200) {
       yield put(setAdminUserEditObj(response.data.data));
+    } else {
+      yield put(failAdminRequest(response.data.message));
+    }
+  } catch (error) {
+    yield put(failAdminRequest(error.message));
+  }
+}
+export function* fetchAdminUpdateUserProfile({ payload }) {
+  try {
+    yield put(makeAdminRequest());
+    const response = yield call(requestAdminUpdateUserProfile, payload);
+    if (response.data.message ===`Profile updated successfully`) {
+      yield put(setAdminUpdateUserProfile(response.data.message));
     } else {
       yield put(failAdminRequest(response.data.message));
     }

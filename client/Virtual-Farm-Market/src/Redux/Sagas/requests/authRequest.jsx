@@ -34,6 +34,7 @@ export async function requestUpdatedUserDetail(payload) {
 }
 export async function requestConfirmEmailUser(payload) {
   const response = await Axios.post(`/api/confirmEmail`, payload);
+  console.log('RESPONCE FOR CONFIREM +>',response)
   return response;
 }
 

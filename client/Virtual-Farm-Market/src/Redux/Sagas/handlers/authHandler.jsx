@@ -79,8 +79,8 @@ export function* fetchConfirmEmailUser({ payload }) {
     const response = yield call(requestConfirmEmailUser, payload);
     if (response.data.message === `Email confirmed successfully.`) {
       const id = store.getState();
-
-      try {
+console.log('1111',id)
+      // try {
         const responseForGetUserAPI = yield call(
           requestGetUserById,
           id?.auth?.userId
@@ -94,9 +94,9 @@ export function* fetchConfirmEmailUser({ payload }) {
           isEmailConfirmed: responseForGetUserAPI.data.data.isEmailConfirmed,
         };
         yield put(setConfirmEmailUser(dataObj));
-      } catch (error) {
-        console.log("ERROR =>>", error);
-      }
+      // } catch (error) {
+      //   console.log("ERROR =>>", error);
+      // }
     } else {
       yield put(failRequest(response.data.message));
     }

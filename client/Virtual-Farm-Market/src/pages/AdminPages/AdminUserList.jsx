@@ -15,6 +15,10 @@ import {
   GET_ADMIN_USER_DELETE_REQUEST,
 } from "../../Redux/Reducers/adminReducer";
 import { useEffect } from "react";
+import { Button, ButtonGroup } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import WysiwygIcon from "@mui/icons-material/Wysiwyg";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 170, align: "center" },
@@ -116,8 +120,16 @@ function AdminUserList() {
   };
 
   useEffect(() => {
-    if (adminReducer.message === `User deleted successfully.`) {
-      //Toast
+    if (
+      adminReducer.message === `User deleted successfully.` ||
+      adminReducer.message === `Profile updated successfully`
+    ) {
+      if (adminReducer.message === `User deleted successfully.`) {
+        //Toast for User deleted successfully.
+      }
+      if (adminReducer.message === `Profile updated successfully`) {
+        //Toast for Profile updated successfully.
+      }
       dispatch({ type: CLEAR_MESSAGE_ADMIN });
     }
   }, [adminReducer.message]);
@@ -163,15 +175,31 @@ function AdminUserList() {
                           );
                         })}
                         <TableCell>
-                          <button onClick={() => handleEditClick(row._id)}>
-                            Edit
-                          </button>
-                          <button onClick={() => handleDeleteClick(row._id)}>
-                            Delete
-                          </button>
-                          <button onClick={() => handleViewClick(row._id)}>
-                            View
-                          </button>
+                          <ButtonGroup
+                            size="large"
+                            aria-label="large button group"
+                          >
+                            <Button
+                              key="edit"
+                              onClick={() => handleEditClick(row._id)}
+                            >
+                              {<BorderColorIcon fontSize="small" />}Edit
+                            </Button>
+                            <Button
+                              key="delete"
+                              onClick={() => handleDeleteClick(row._id)}
+                            >
+                              {" "}
+                              {<DeleteIcon fontSize="small" />} Delete
+                            </Button>
+                            <Button
+                              key="view"
+                              onClick={() => handleViewClick(row._id)}
+                            >
+                              {" "}
+                              {<WysiwygIcon fontSize="small" />} View
+                            </Button>
+                          </ButtonGroup>
                         </TableCell>
                       </TableRow>
                     );
