@@ -20,11 +20,15 @@ import { Alert, IconButton, InputAdornment } from "@mui/material";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-
+import { useLocation } from "react-router-dom";
 import Spinner from "react-bootstrap/esm/Spinner";
 import { toast } from "react-toastify";
 import { persistor } from "../../Redux/store";
-import { CLEAR_MESSAGE_ERROR, POST_SIGNIN_USER } from "../../Redux/Reducers/authReducer";
+import {
+  CLEAR_MESSAGE_ERROR,
+  POST_SIGNIN_USER,
+} from "../../Redux/Reducers/authReducer";
+import { GET_ADMIN_LOGIN } from "../../Redux/Reducers/adminReducer";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -64,12 +68,16 @@ export default function SignInSide() {
   const [isVisible, setIsVisible] = React.useState(false);
 
   const auth = useSelector((state) => state.auth);
+  const adminReducer = useSelector((state) => state.adminReducer);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  React.useEffect(() => {
-    persistor.purge();
-  }, []);
+  const location = useLocation();
+  const currentPath = location.pathname;
+
+  // React.useEffect(() => {
+  //   persistor.purge();
+  // }, []);
 
   React.useEffect(() => {
     if (auth.error) {
@@ -77,32 +85,57 @@ export default function SignInSide() {
     }
   }, [auth.error]);
 
+  // React.useEffect(() => {
+  //   if (auth.message===``) {
+  //     //Toast...
+  //     console.log('SIGNIN FOR DASHBOARD==>',auth.message)
+  //     navigate("/dashboard");
+  //   }
+  // }, [auth.message]);
+
   React.useEffect(() => {
-    if (auth.message) {
+    if (adminReducer.adminId) {
       //Toast...
-      navigate("/dashboard");
+      navigate("/admin/dashboard");
     }
-  }, [auth.message]);
+  }, [adminReducer.adminId]);
 
   const handleSubmit = () => {
     dispatch({ type: CLEAR_MESSAGE_ERROR, payload: "error" });
     navigate("/register");
   };
 
+  React.useEffect(() => {
+    if (
+      auth.message ===
+      `User created successfully. Check your email for confirmation.`
+    ) {
+      dispatch({ type: CLEAR_MESSAGE_ERROR, payload: "message" });
+    }
+  }, [auth.message]);
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
-
         <Grid
           item
-          xs={12}
-          sm={8}
-          md={20}
-          component={Paper}
-          elevation={6}
-          square
-         >
+          xs={false}
+          sm={4}
+          md={7}
+          sx={{
+            backgroundImage:
+              "url(https://source.unsplash.com/random?wallpapers)",
+            backgroundRepeat: "no-repeat",
+            backgroundColor: (t) =>
+              t.palette.mode === "light"
+                ? t.palette.grey[50]
+                : t.palette.grey[900],
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
               my: 8,
@@ -116,12 +149,16 @@ export default function SignInSide() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              {currentPath === `/admin/login` ? `Admin Sign in` : `Sign in`}
             </Typography>
             <div className="m-4">
               {auth.error && <Alert severity="error">{auth.error}</Alert>}
             </div>
-
+            <div className="m-4">
+              {adminReducer.error && (
+                <Alert severity="error">{adminReducer.error}</Alert>
+              )}
+            </div>
 
             <Formik
               initialValues={{
@@ -136,7 +173,11 @@ export default function SignInSide() {
                   email: values.email,
                   password: values.password,
                 };
-                dispatch({ type: POST_SIGNIN_USER, payload: value });
+                if (currentPath === `/admin/login`) {
+                  dispatch({ type: GET_ADMIN_LOGIN, payload: value });
+                } else {
+                  dispatch({ type: POST_SIGNIN_USER, payload: value });
+                }
               }}
             >
               {({ isSubmitting, values, handleChange }) => (
@@ -191,18 +232,19 @@ export default function SignInSide() {
                     component="div"
                     className="error text-danger"
                   />
-
-                  <FormControlLabel
-                    control={
-                      <Field
-                        as={Checkbox}
-                        name="rememberMe"
-                        id="rememberMe"
-                        color="primary"
-                      />
-                    }
-                    label="Remember Me"
-                  />
+                  {currentPath === `/admin/login` ? null : (
+                    <FormControlLabel
+                      control={
+                        <Field
+                          as={Checkbox}
+                          name="rememberMe"
+                          id="rememberMe"
+                          color="primary"
+                        />
+                      }
+                      label="Remember Me"
+                    />
+                  )}
                   <Button
                     type="submit"
                     fullWidth
@@ -228,18 +270,21 @@ export default function SignInSide() {
                 </Form>
               )}
             </Formik>
-            <Grid container>
-              <Grid item xs>
-                <NavLink to="/forgetpassword" variant="body2">
-                  Forgot password?
-                </NavLink>
+
+            {currentPath === `/admin/login` ? null : (
+              <Grid container>
+                <Grid item xs>
+                  <NavLink to="/forgetpassword" variant="body2">
+                    Forgot password?
+                  </NavLink>
+                </Grid>
+                <Grid item>
+                  Don't have an account? &nbsp;
+                  <Button onClick={() => handleSubmit()}>Sign Up</Button>
+                  {/* <NavLink to="/register" >{"Sign Up"}</NavLink> */}
+                </Grid>
               </Grid>
-              <Grid item>
-                Don't have an account? &nbsp;
-                <Button onClick={() => handleSubmit()}>Sign Up</Button>
-                {/* <NavLink to="/register" >{"Sign Up"}</NavLink> */}
-              </Grid>
-            </Grid>
+            )}
             <Copyright sx={{ mt: 5 }} />
           </Box>
         </Grid>

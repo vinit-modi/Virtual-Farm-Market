@@ -9,6 +9,11 @@ export const GET_CITY_LIST = "GET_CITY_LIST";
 export const SET_CITY_LIST = "SET_CITY_LIST";
 export const GET_PROVINCE_LIST = "GET_PROVINCE_LIST";
 export const SET_PROVINCE_LIST = "SET_PROVINCE_LIST";
+export const GET_CONFIRM_EMAIL_FOR_USER = "GET_CONFIRM_EMAIL_FOR_USER";
+export const SET_CONFIRM_EMAIL_FOR_USER = "SET_CONFIRM_EMAIL_FOR_USER";
+export const GET_ALL_USERS = "GET_ALL_USERS";
+export const SET_ALL_USERS = "SET_ALL_USERS";
+export const SET_ONE_USERS = "SET_ONE_USERS";
 
 export const makeRequest = () => {
   return {
@@ -77,6 +82,18 @@ export const setProvinceList = (value) => {
     payload: value,
   };
 };
+export const getConfirmEmailUser = (token) => {
+  return {
+    type: GET_CONFIRM_EMAIL_FOR_USER,
+    payload: token,
+  };
+};
+export const setConfirmEmailUser = (value) => {
+  return {
+    type: SET_CONFIRM_EMAIL_FOR_USER,
+    payload: value,
+  };
+};
 
 const authInitialState = {
   loading: false,
@@ -85,6 +102,8 @@ const authInitialState = {
   token: null,
   cityList: null,
   provinceList: null,
+  isEmailConfirmed: null,
+  userId:''
 };
 
 export const authReducer = (state = authInitialState, action) => {
@@ -102,11 +121,14 @@ export const authReducer = (state = authInitialState, action) => {
         error: action.payload,
         message: null,
         loading: false,
+        isEmailConfirmed: null,
+        allUsers: null,
       };
     case SET_SIGNUP_USER_MESSAGE:
       return {
         ...state,
-        message: action.payload,
+        message: action.payload.message,
+        userId: action.payload.userId,
         loading: false,
         error: null,
       };
@@ -143,6 +165,14 @@ export const authReducer = (state = authInitialState, action) => {
         loading: false,
         error: null,
         provinceList: action.payload.data,
+      };
+    case SET_CONFIRM_EMAIL_FOR_USER:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        message: action.payload.message,
+        isEmailConfirmed: action.payload.isEmailConfirmed,
       };
 
     default:

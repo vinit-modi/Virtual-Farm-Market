@@ -16,9 +16,10 @@ import {
 import { Dialog } from "primereact/dialog";
 import AvatarEdit from "react-avatar-edit";
 import profileEmptyImage from "../../Assets/profileEmptyImage.png";
+import FileDownloadDoneIcon from "@mui/icons-material/FileDownloadDone";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import FileDownloadDoneIcon from "@mui/icons-material/FileDownloadDone";
+import { store } from "../../Redux/store";
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Name is required"),

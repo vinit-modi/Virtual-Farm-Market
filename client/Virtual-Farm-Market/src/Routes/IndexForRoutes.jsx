@@ -10,12 +10,53 @@ import PublicRoute from "../auth/PublicRoute";
 import ProtectedRoute from "../auth/ProtectedRoute";
 import UpdateUserProfile from "../pages/UpdateProfile/UpdateUserProfile";
 import PageNotFound from "../pages/PageNotFound/PageNotFound";
+import ConfirmEmail from "../pages/Authentication/ConfirmEmail";
+import AdminUserList from "../pages/AdminPages/AdminUserList";
+import AdminCategories from "../pages/AdminPages/AdminCategories";
+import AdminDashboard from "../pages/AdminPages/AdminDashboard";
+import AdminPrivacyPolicy from "../pages/AdminPages/AdminPrivacyPolicy";
+import AdminTermsAndCondition from "../pages/AdminPages/AdminTermsAndCondition";
+import AdminPublicRoute from "../auth/authAdmin/AdminPublicRoute";
+import AdminProtectedRoute from "../auth/authAdmin/AdminProtectedRoute";
+import AdminHeader from "../components/AdminHeader/AdminHeader";
 
 function IndexForRoutes() {
   return (
     <div>
       <Routes>
         <Route path="*" element={<PageNotFound />} />
+
+        {/* ADMIN */}
+        <Route path="/admin">
+          <Route
+            exact
+            path="login"
+            element={
+              <AdminPublicRoute>
+                <SignInSide />
+              </AdminPublicRoute>
+            }
+          />
+          <Route
+            exact
+            path="*"
+            element={
+              <AdminHeader/>
+            }
+          />
+          
+        </Route>
+        {/* Admin-DONE */}
+
+        <Route
+          path="/confirmEmail"
+          exact
+          element={
+            <PublicRoute>
+              <ConfirmEmail />
+            </PublicRoute>
+          }
+        />
         <Route
           exact
           path="/login"

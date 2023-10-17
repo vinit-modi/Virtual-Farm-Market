@@ -19,6 +19,7 @@ import {
 } from "redux-persist";
 import { handlePasswordReducer } from "./Reducers/handlePasswordReducer";
 import { userReducer } from "./Reducers/userReducer";
+import { adminReducer } from "./Reducers/adminReducer";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -30,7 +31,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
   auth: authReducer,
   setPassword: handlePasswordReducer,
-  userDetails:userReducer
+  userDetails:userReducer,
+  adminReducer :adminReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -29,6 +29,7 @@ import Spinner from "react-bootstrap/Spinner";
 import { persistor } from "../../Redux/store";
 import {
   CLEAR_MESSAGE_ERROR,
+  GET_ALL_USERS,
   GET_CITY_LIST,
   GET_PROVINCE_LIST,
   POST_SIGNUP_USER,
@@ -76,7 +77,6 @@ function Copyright(props) {
       {"Copyright © "}
       Virtual Farm Market &nbsp;
       {new Date().getFullYear()}
-      {"."}
     </Typography>
   );
 }
@@ -96,27 +96,39 @@ export default function SignUp() {
     persistor.purge();
     dispatch({ type: GET_CITY_LIST });
     dispatch({ type: GET_PROVINCE_LIST });
+    dispatch({ type: CLEAR_MESSAGE_ERROR, payload: "message" });
   }, []);
 
   React.useEffect(() => {
-    if (auth.message === "User created successfully..") {
-      navigate("/login");
-      dispatch({ type: CLEAR_MESSAGE_ERROR, payload: "message" });
+    if (
+      auth.message ===
+      "User created successfully. Check your email for confirmation."
+      // || auth.message ===
+      // "Email confirmed successfully."
+    ) {
+      if (auth.isEmailConfirmed) {
+        navigate("/login");
+        dispatch({ type: CLEAR_MESSAGE_ERROR, payload: "message" });
+      }
     }
   }, [auth.message]);
 
-  // useEffect(() => {
-  //   function start() {
-  //     gapi.client.init({
-  //       clientId: clientId,
-  //       scope: "email",
-  //     });
-  //   }
-  //   gapi.load("client:auth2", start);
-  // }, []);
+  React.useEffect(() => {
+    if (auth.message === "Email confirmed successfully.") {
+      if (auth.isEmailConfirmed) {
+        navigate("/login");
+        dispatch({ type: CLEAR_MESSAGE_ERROR, payload: "message" });
+      }
+    }
+  }, []);
 
   const handleCheckboxChange = (event) => {
     setIsSubscribed(event.target.checked);
+  };
+
+  const handleEmailClick = () => {
+    const emailAddress = "https://mail.google.com/mail/";
+    window.open(emailAddress, "_blank");
   };
 
   return (
@@ -137,8 +149,23 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
+
           <div className="m-4">
             {auth.error && <Alert severity="error">{auth.error}</Alert>}
+          </div>
+          <div className="m-4">
+            {auth.message ===
+              `User created successfully. Check your email for confirmation.` && (
+              <Alert severity="success">
+                {auth.message} &nbsp;
+                {/* <button
+                  className="btn btn-primary btn-sm"
+                  onClick={() => handleEmailClick()}
+                >
+                  Open Email
+                </button> */}
+              </Alert>
+            )}
           </div>
 
           <Formik

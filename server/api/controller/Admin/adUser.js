@@ -2,21 +2,8 @@ const AdminModel = require("../../../db/models/adUser");
 const { validationResult } = require("express-validator");
 const { check } = require("express-validator");
 const UserModel = require("../../../db/models/User");
-const multer = require("multer");
-const path = require("path");
 const bcrypt = require("bcrypt");
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadPath = path.join(__dirname, "../../../uploads/profilePicture");
-    cb(null, uploadPath);
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname);
-  },
-});
-
-const upload = multer({ storage: storage });
+const upload = require("../../../utils/uploadImage");
 
 module.exports = {
   adLogin: async (req, res) => {
