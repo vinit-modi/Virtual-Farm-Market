@@ -103,6 +103,8 @@ export default function SignUp() {
     if (
       auth.message ===
       "User created successfully. Check your email for confirmation."
+      // || auth.message ===
+      // "Email confirmed successfully."
     ) {
       if (auth.isEmailConfirmed) {
         navigate("/login");
@@ -110,6 +112,7 @@ export default function SignUp() {
       }
     }
   }, [auth.message]);
+
   React.useEffect(() => {
     if (auth.message === "Email confirmed successfully.") {
       if (auth.isEmailConfirmed) {
@@ -155,12 +158,12 @@ export default function SignUp() {
               `User created successfully. Check your email for confirmation.` && (
               <Alert severity="success">
                 {auth.message} &nbsp;
-                <button
+                {/* <button
                   className="btn btn-primary btn-sm"
                   onClick={() => handleEmailClick()}
                 >
                   Open Email
-                </button>
+                </button> */}
               </Alert>
             )}
           </div>

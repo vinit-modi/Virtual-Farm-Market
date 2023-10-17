@@ -16,7 +16,7 @@ import {
 } from "../../Redux/Reducers/adminReducer";
 import { useEffect } from "react";
 import { Button, ButtonGroup } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import WysiwygIcon from "@mui/icons-material/Wysiwyg";
 
@@ -57,16 +57,6 @@ function AdminUserList() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const adminReducer = useSelector((state) => state.adminReducer);
-
-  // const updatePayloadObj = () => {
-  //   setPayloadObj({
-  //     page: page + 1,
-  //     limit: rowsPerPage,
-  //     sortField: sort,
-  //     sortOrder: order,
-  //     search: "",
-  //   });
-  // };
 
   const prevPayloadObj = React.useRef(payloadObj);
 
@@ -174,18 +164,22 @@ function AdminUserList() {
                             </TableCell>
                           );
                         })}
-                        <TableCell>
+                        <TableCell className="d-flex justify-content-center">
                           <ButtonGroup
                             size="large"
                             aria-label="large button group"
                           >
                             <Button
+                              color="success"
+                              // variant="contained"
                               key="edit"
                               onClick={() => handleEditClick(row._id)}
                             >
                               {<BorderColorIcon fontSize="small" />}Edit
                             </Button>
                             <Button
+                              color="error"
+                              // variant="contained"
                               key="delete"
                               onClick={() => handleDeleteClick(row._id)}
                             >
@@ -193,6 +187,8 @@ function AdminUserList() {
                               {<DeleteIcon fontSize="small" />} Delete
                             </Button>
                             <Button
+                              variant="contained"
+                              // disableElevation
                               key="view"
                               onClick={() => handleViewClick(row._id)}
                             >

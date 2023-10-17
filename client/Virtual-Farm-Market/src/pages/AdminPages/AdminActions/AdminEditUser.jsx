@@ -13,6 +13,7 @@ import {
   Select,
   MenuItem,
   FormHelperText,
+  CircularProgress,
 } from "@mui/material";
 
 import { Avatar, Typography } from "@mui/material";
@@ -125,7 +126,9 @@ function AdminEditUser() {
         }}
       >
         {({ touched, errors, values, handleChange, setFieldValue }) => (
-          <Form>
+          <Form>{
+            adminReducer.loading?<CircularProgress />:
+            
             <Grid container spacing={2}>
               <Grid>
                 <div className="text-center p-4">
@@ -297,7 +300,7 @@ function AdminEditUser() {
                   Submit
                 </Button>
               </Grid>
-            </Grid>
+            </Grid>}
           </Form>
         )}
       </Formik>

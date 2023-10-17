@@ -75,9 +75,9 @@ export default function SignInSide() {
   const location = useLocation();
   const currentPath = location.pathname;
 
-  React.useEffect(() => {
-    persistor.purge();
-  }, []);
+  // React.useEffect(() => {
+  //   persistor.purge();
+  // }, []);
 
   React.useEffect(() => {
     if (auth.error) {
@@ -85,12 +85,13 @@ export default function SignInSide() {
     }
   }, [auth.error]);
 
-  React.useEffect(() => {
-    if (auth.message) {
-      //Toast...
-      navigate("/dashboard");
-    }
-  }, [auth.message]);
+  // React.useEffect(() => {
+  //   if (auth.message===``) {
+  //     //Toast...
+  //     console.log('SIGNIN FOR DASHBOARD==>',auth.message)
+  //     navigate("/dashboard");
+  //   }
+  // }, [auth.message]);
 
   React.useEffect(() => {
     if (adminReducer.adminId) {
@@ -103,6 +104,15 @@ export default function SignInSide() {
     dispatch({ type: CLEAR_MESSAGE_ERROR, payload: "error" });
     navigate("/register");
   };
+
+  React.useEffect(() => {
+    if (
+      auth.message ===
+      `User created successfully. Check your email for confirmation.`
+    ) {
+      dispatch({ type: CLEAR_MESSAGE_ERROR, payload: "message" });
+    }
+  }, [auth.message]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -222,18 +232,19 @@ export default function SignInSide() {
                     component="div"
                     className="error text-danger"
                   />
-
-                  <FormControlLabel
-                    control={
-                      <Field
-                        as={Checkbox}
-                        name="rememberMe"
-                        id="rememberMe"
-                        color="primary"
-                      />
-                    }
-                    label="Remember Me"
-                  />
+                  {currentPath === `/admin/login` ? null : (
+                    <FormControlLabel
+                      control={
+                        <Field
+                          as={Checkbox}
+                          name="rememberMe"
+                          id="rememberMe"
+                          color="primary"
+                        />
+                      }
+                      label="Remember Me"
+                    />
+                  )}
                   <Button
                     type="submit"
                     fullWidth
@@ -259,18 +270,21 @@ export default function SignInSide() {
                 </Form>
               )}
             </Formik>
-            <Grid container>
-              <Grid item xs>
-                <NavLink to="/forgetpassword" variant="body2">
-                  Forgot password?
-                </NavLink>
+
+            {currentPath === `/admin/login` ? null : (
+              <Grid container>
+                <Grid item xs>
+                  <NavLink to="/forgetpassword" variant="body2">
+                    Forgot password?
+                  </NavLink>
+                </Grid>
+                <Grid item>
+                  Don't have an account? &nbsp;
+                  <Button onClick={() => handleSubmit()}>Sign Up</Button>
+                  {/* <NavLink to="/register" >{"Sign Up"}</NavLink> */}
+                </Grid>
               </Grid>
-              <Grid item>
-                Don't have an account? &nbsp;
-                <Button onClick={() => handleSubmit()}>Sign Up</Button>
-                {/* <NavLink to="/register" >{"Sign Up"}</NavLink> */}
-              </Grid>
-            </Grid>
+            )}
             <Copyright sx={{ mt: 5 }} />
           </Box>
         </Grid>

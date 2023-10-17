@@ -103,6 +103,7 @@ const authInitialState = {
   cityList: null,
   provinceList: null,
   isEmailConfirmed: null,
+  userId:''
 };
 
 export const authReducer = (state = authInitialState, action) => {

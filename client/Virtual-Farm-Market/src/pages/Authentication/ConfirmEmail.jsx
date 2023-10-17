@@ -23,11 +23,10 @@ function ConfirmEmail() {
 
   const searchParams = new URLSearchParams(location.search);
   const token = searchParams.get("token");
-  console.log(token)
+
   const tokenObj = {
     token: token,
   };
-  
 
   const handleConfirm = () => {
     dispatch({ type: GET_CONFIRM_EMAIL_FOR_USER, payload: tokenObj });
@@ -39,17 +38,23 @@ function ConfirmEmail() {
   };
 
   useEffect(() => {
-    if (auth.message === `Email confirmed successfully.`) setConfirmed(true);
+    dispatch({ type: CLEAR_MESSAGE_ERROR, payload: "message" });
+    dispatch({ type: CLEAR_MESSAGE_ERROR, payload: "error" });
+  }, []);
+
+  useEffect(() => {
+    if (
+      auth.message === `Email confirmed successfully.`
+    ) {
+      setConfirmed(true);
+    }
   }, [auth.message]);
 
   useEffect(() => {
-    if (auth.error) setConfirmed(false);
+    if (auth.error) {setConfirmed(false);}
   }, [auth.error]);
 
-  //   const handleUnconfirm = () => {
-  //     setConfirmed(false);
-  //   };
-
+  console.log(confirmed);
   return (
     <div>
       <Container maxWidth="sm" style={{ marginTop: "20px" }}>
@@ -100,13 +105,6 @@ function ConfirmEmail() {
             >
               Confirm Email
             </Button>
-            {/* <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleUnconfirm}
-            >
-              Unconfirm Email
-            </Button> */}
           </div>
         )}
       </Container>

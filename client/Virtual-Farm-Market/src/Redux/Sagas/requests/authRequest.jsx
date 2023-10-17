@@ -23,16 +23,17 @@ export async function requestChangePassword(payload) {
   const response = await Axios.post(`/api/changePassword`, payload);
   return response;
 }
-
-export async function requestGetUserDetails(_id) {
-  const response = await Axios.post(`/api/getUser`, _id);
-  return response;
-}
 export async function requestUpdatedUserDetail(payload) {
   const response = await Axios.post(`/api/updateProfile`, payload);
   return response;
 }
+export async function requestGetUserDetails(_id) {
+  const response = await Axios.post(`/api/getUser`, _id);
+  return response;
+}
+
 export async function requestConfirmEmailUser(payload) {
+ 
   const response = await Axios.post(`/api/confirmEmail`, payload);
   console.log('RESPONCE FOR CONFIREM +>',response)
   return response;
