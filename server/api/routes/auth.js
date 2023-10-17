@@ -18,6 +18,7 @@ router.post("/addCategory", AdCategoryController.addCategory);
 router.post("/editCategory", AdCategoryController.editCategory);
 router.post("/getAllCategory", AdCategoryController.getAllCategory);
 router.post("/getCategory", AdCategoryController.getCategory);
+router.post("/deleteCategory", AdCategoryController.deleteCategory);
 
 router.post("/signUp", UserController.signUp);
 router.post("/login", UserController.login);

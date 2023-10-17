@@ -128,7 +128,41 @@ module.exports = {
         return res.status(200).json({
           status: "success",
           message: "Category",
-          data: getCategory ,
+          data: getCategory,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
+
+  deleteCategory: async (req, res) => {
+    try {
+      const validationRules = [
+        check("_id").notEmpty().withMessage("_id must be provided"),
+      ];
+      await Promise.all(validationRules.map((rule) => rule.run(req)));
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ message: errors.array()[0].msg });
+      }
+
+      const getCategory = await CategoryModel.findOne({ _id: req.body._id });
+
+      if (!getCategory) {
+        return res.status(404).json({
+          status: "error",
+          message: "Category not found",
+        });
+      } else {
+        await CategoryModel.deleteOne({ _id: req.body._id });
+        return res.status(200).json({
+          status: "success",
+          message: "Category deleted successfully",
         });
       }
     } catch (error) {
