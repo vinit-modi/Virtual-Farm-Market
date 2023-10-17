@@ -47,16 +47,16 @@ module.exports = {
   },
 
   getAllUser: async (req, res) => {
-    const page = parseInt(req.body.page) || 1;
-    const limit = parseInt(req.body.limit) || 10;
-    const sortField = req.body.sortField || "name";
-    const sortOrder = req.body.sortOrder || "asc";
+    // const page = parseInt(req.body.page) || 1;
+    // const limit = parseInt(req.body.limit) || 10;
+    // const sortField = req.body.sortField || "name";
+    // const sortOrder = req.body.sortOrder || "asc";
     const search = req.body.search || "";
 
     try {
-      const skip = (page - 1) * limit;
-      const sort = {};
-      sort[sortField] = sortOrder === "desc" ? -1 : 1;
+      // const skip = (page - 1) * limit;
+      // const sort = {};
+      // sort[sortField] = sortOrder === "desc" ? -1 : 1;
 
       const searchFilter = {
         $or: [
@@ -65,10 +65,10 @@ module.exports = {
         ],
       };
 
-      const users = await UserModel.find(searchFilter)
-        .skip(skip)
-        .limit(limit)
-        .sort(sort);
+      const users = await UserModel.find(searchFilter);
+      // .skip(skip)
+      // .limit(limit)
+      // .sort(sort);
 
       res.json({ data: users });
     } catch (error) {
@@ -146,19 +146,30 @@ module.exports = {
 
     let getUser = await AdminModel.findOne({
       _id: req.body._id,
-      password: req.body.currentPassword,
     });
-    if (getUser) {
-      await AdminModel.findByIdAndUpdate({
-        _id: req.body._id,
-      }).set({ password: req.body.newPassword });
+    if (!getUser) {
       res.json({
-        message: "Password changed successfully",
+        message: "User not found",
       });
     } else {
-      res.json({
-        message: "Your current password did not match",
-      });
+      const validPassword = await bcrypt.compare(
+        req.body.currentPassword,
+        getUser.password
+      );
+      if (validPassword) {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(req.body.newPassword, salt);
+        await AdminModel.findByIdAndUpdate({
+          _id: req.body._id,
+        }).set({ password: hashedPassword });
+        res.json({
+          message: "Password changed successfully",
+        });
+      } else {
+        res.json({
+          message: "Your current password did not match",
+        });
+      }
     }
   },
 

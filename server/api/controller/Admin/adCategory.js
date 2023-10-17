@@ -74,11 +74,32 @@ module.exports = {
           );
           return res.status(200).json({
             status: "success",
-            message: "Category created successfully.",
+            message: "Category updated successfully.",
             data: updateCategory,
           });
         }
       }
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
+
+  getAllCategory: async (req, res) => {
+    try {
+      const search = req.body.search || "";
+      const searchFilter = {
+        $or: [{ name: { $regex: search, $options: "i" } }],
+      };
+      let getCategories = await CategoryModel.find(searchFilter);
+      return res.status(200).json({
+        status: "success",
+        message: "All categories.",
+        data: getCategories,
+      });
     } catch (error) {
       console.error(error);
       return res.status(500).json({
