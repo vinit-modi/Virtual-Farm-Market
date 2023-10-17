@@ -132,7 +132,6 @@ module.exports = {
         });
       }
     } catch (error) {
-      console.log(error);
       return res.status(500).json({
         status: "error",
         message: "Internal Server Error",
@@ -166,7 +165,6 @@ module.exports = {
         });
       }
     } catch (error) {
-      console.log(error);
       return res.status(500).json({
         status: "error",
         message: "Internal Server Error",
@@ -199,7 +197,7 @@ module.exports = {
         );
         return res.status(200).json({
           status: "success",
-          message: "Category updated successfully.",
+          message: "Category status updated successfully.",
           data: updateCategory,
         });
       }
