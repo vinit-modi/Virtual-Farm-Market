@@ -19,6 +19,7 @@ router.post("/editCategory", AdCategoryController.editCategory);
 router.post("/getAllCategory", AdCategoryController.getAllCategory);
 router.post("/getCategory", AdCategoryController.getCategory);
 router.post("/deleteCategory", AdCategoryController.deleteCategory);
+router.post("/changeCategoryStatus", AdCategoryController.changeCategoryStatus);
 
 router.post("/signUp", UserController.signUp);
 router.post("/login", UserController.login);
