@@ -3,6 +3,7 @@ const router = express.Router();
 
 const UserController = require("../controller/Website/user");
 const AdUserController = require("../controller/Admin/adUser");
+const AdCategoryController = require("../controller/Admin/adCategory");
 
 router.post("/adLogin", AdUserController.adLogin);
 router.post("/adGetAllUser", AdUserController.getAllUser);
@@ -12,6 +13,8 @@ router.post("/changePassword", AdUserController.changePassword);
 router.post("/getAdminProfile", AdUserController.getAdminProfile);
 router.post("/updateAdminProfile", AdUserController.updateAdminProfile);
 router.post("/updateUserProfile", AdUserController.updateUserProfile);
+
+router.post("/addCategory", AdCategoryController.addCategory);
 
 router.post("/signUp", UserController.signUp);
 router.post("/login", UserController.login);
