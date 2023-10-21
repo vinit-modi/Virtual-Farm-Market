@@ -205,6 +205,13 @@ export const adminReducer = (state = initialState, action) => {
         error: null,
         message: action.payload,
       };
+      case SET_ADMIN_CHANGE_PASSWORD:
+        return {
+          ...state,
+          loading:false,
+          error:null,
+          message:action.payload
+        }
     case SET_ADMINSIDE_USER_LIST:
       return {
         ...state,

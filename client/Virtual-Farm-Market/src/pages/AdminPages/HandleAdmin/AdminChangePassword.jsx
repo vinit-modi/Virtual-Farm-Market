@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useDispatch, useSelector } from "react-redux";
-import { GET_ADMIN_CHANGE_PASSWORD } from "../../../Redux/Reducers/adminReducer";
+import { CLEAR_MESSAGE_ADMIN, GET_ADMIN_CHANGE_PASSWORD } from "../../../Redux/Reducers/adminReducer";
 
 const SignupSchema = Yup.object().shape({
   currentPassword: Yup.string()
@@ -45,7 +45,9 @@ function AdminChangePassword() {
   };
 
   useEffect(() => {
-    if (adminReducer.message === ``) {
+    if (adminReducer.message === `Password changed successfully`) {
+      //Toast 'Password changed successfully'
+      dispatch({type: CLEAR_MESSAGE_ADMIN})
       navigate(`/admin/dashboard`);
     }
   }, [adminReducer.message]);

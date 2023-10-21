@@ -71,7 +71,7 @@ export function* fetchAdminChangePassword({ payload }) {
   try {
     yield put(makeAdminRequest());
     const response = yield call(requestAdminChangePassword, payload);
-    if (response.data.message === ``) {
+    if (response.data.message === `Password changed successfully`) {
       yield put(setAdminChangePassword(response.data.message));
     } else {
       yield put(failAdminRequest(response.data.message));

@@ -15,10 +15,20 @@ import {
   GET_ADMIN_USER_DELETE_REQUEST,
 } from "../../Redux/Reducers/adminReducer";
 import { useEffect } from "react";
-import { Button, ButtonGroup } from "@mui/material";
+import {
+  Button,
+  ButtonGroup,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import WysiwygIcon from "@mui/icons-material/Wysiwyg";
+import { useState } from "react";
+import { persistor } from "../../Redux/store";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 170, align: "center" },
@@ -41,57 +51,45 @@ const columns = [
 ];
 
 function AdminUserList() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const adminReducer = useSelector((state) => state.adminReducer);
+
+  //PAGINATION
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [sort, setSort] = React.useState("name");
   const [order, setOrder] = React.useState("asc");
   const [isCheck, setIsCheck] = React.useState(false);
-  const [payloadObj, setPayloadObj] = React.useState({
-    page: 1,
-    limit: 10,
-    sortField: "name",
-    sortOrder: "asc",
-    search: "",
-  });
+  const [selectRowLimit, setSelectRowLimit] = React.useState(5);
+  const [search, setSearch] = useState({ searchInput: "" });
+  const [userLists, setUserLists] = useState(adminReducer.userList |[]);
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const adminReducer = useSelector((state) => state.adminReducer);
-
-  const prevPayloadObj = React.useRef(payloadObj);
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordPerPage = selectRowLimit;
+  const lastIndex = currentPage * recordPerPage;
+  const firstIndex = lastIndex - recordPerPage;
+  const records = userLists && userLists.slice(firstIndex, lastIndex);
+  const npage = Math.ceil(userLists.length / recordPerPage);
+  const numbers = [];
+  for (let i = 1; i <= npage; i++) {
+    numbers.push(i);
+  }
   React.useEffect(() => {
-    if (payloadObj !== prevPayloadObj.current) {
-      console.log(payloadObj);
-      dispatch({ type: GET_ADMINSIDE_USER_LIST, payload: payloadObj });
-      prevPayloadObj.current = payloadObj;
+    if (!userLists && !adminReducer.userList ) {
+      dispatch({
+        type: GET_ADMINSIDE_USER_LIST,
+      });
     }
-  }, [payloadObj]);
-
-  const handleChangePage = (event, newPage) => {
-    console.log(newPage + 1);
-    setPage(newPage);
-    setPayloadObj((prevPayloadObj) => ({
-      ...prevPayloadObj,
-      page: newPage + 1,
-    }));
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-    console.log(+event.target.value);
-    setPayloadObj((prevPayloadObj) => ({
-      ...prevPayloadObj,
-      page: 1,
-      limit: +event.target.value,
-    }));
-  };
-
-  React.useEffect(() => {
-    if (!adminReducer.userList)
-      dispatch({ type: GET_ADMINSIDE_USER_LIST, payload: payloadObj });
   }, []);
+
+  useEffect(() => {
+    const filteredUserList = adminReducer.userList && adminReducer.userList.filter((item) =>
+      item.name.toLowerCase().includes(search.searchInput.toLowerCase())
+    );
+    setUserLists(filteredUserList);
+  }, [search]);
 
   const handleEditClick = (userId) => {
     console.log(userId);
@@ -101,12 +99,17 @@ function AdminUserList() {
   const handleDeleteClick = (userId) => {
     console.log(userId);
     dispatch({ type: GET_ADMIN_USER_DELETE_REQUEST, payload: { _id: userId } });
-    // navigate(`/admin/action/delete/${userId}`);
   };
 
   const handleViewClick = (userId) => {
     console.log(userId);
     navigate(`/admin/action/view/${userId}`);
+  };
+
+  const handleSearchField = (e) => {
+    setSearch({
+      searchInput: e.target.value,
+    });
   };
 
   useEffect(() => {
@@ -124,10 +127,34 @@ function AdminUserList() {
     }
   }, [adminReducer.message]);
 
+  function prePage() {
+    if (currentPage !== 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  }
+  function changeCPage(id) {
+    setCurrentPage(id);
+  }
+  function nextPage() {
+    if (currentPage !== npage) {
+      setCurrentPage(currentPage + 1);
+    }
+  }
+
   return (
     <div>
       <h1>Active User List</h1>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <TextField
+          autoComplete="off"
+          className="d-flex justify-context-right"
+          label="Search by Name..."
+          variant="filled"
+          type="text"
+          name="searchInput"
+          onChange={(e) => handleSearchField(e)}
+          value={search.searchInput}
+        />
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -147,8 +174,8 @@ function AdminUserList() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {adminReducer.userList &&
-                adminReducer.userList
+              {records &&
+                records
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
                     return (
@@ -203,15 +230,67 @@ function AdminUserList() {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 15]}
-          component="div"
-          count={adminReducer.userList ? adminReducer.userList.length : 0}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
+        <Stack
+          direction="row"
+          spacing={2}
+          display={"flex"}
+          justifyContent={"center"}
+          className="m-3"
+        >
+          <Stack direction="row">
+            <InputLabel id="selectRow" className="d-flex align-items-center">
+              Select Row limit: &nbsp;
+            </InputLabel>
+            <Select
+              sx={{ minWidth: 70, maxWidth: 80, maxHeight: 40 }}
+              size="small"
+              labelId="selectRow"
+              value={selectRowLimit}
+              onChange={(e)=>setSelectRowLimit(e.target.value)}
+            >
+              <MenuItem value={5}>5</MenuItem>
+
+              <MenuItem value={10}>10</MenuItem>
+              <MenuItem value={15}>15</MenuItem>
+            </Select>
+          </Stack>
+          <Stack>
+            <nav aria-label="Page navigation example">
+              <ul className="pagination justify-content-center">
+                <li className="page-item">
+                  <a
+                    className="page-link"
+                    href="#"
+                    tabindex="-1"
+                    onClick={prePage}
+                  >
+                    Previous
+                  </a>
+                </li>
+
+                {numbers.map((n, i) => (
+                  <li
+                    className={`page-item ${currentPage === n ? `active` : ``}`}
+                    key={i}
+                  >
+                    <a
+                      onClick={() => changeCPage(n)}
+                      className="page-link"
+                      href="#"
+                    >
+                      {n}
+                    </a>
+                  </li>
+                ))}
+                <li className="page-item">
+                  <a className="page-link" href="#" onClick={nextPage}>
+                    Next
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </Stack>
+        </Stack>
       </Paper>
     </div>
   );
