@@ -20,8 +20,28 @@ import {
   fetchGetUser,
   fetchUpdatedUserDetail,
 } from "./handlers/userDetailsHandler";
-import { GET_ADMINSIDE_USER_LIST, GET_ADMIN_CHANGE_PASSWORD, GET_ADMIN_EDIT_PROFILE, GET_ADMIN_LOGIN, GET_ADMIN_PROFILE_DATA, GET_ADMIN_UPDATE_USER_PROFILE, GET_ADMIN_USER_DELETE_REQUEST, GET_ADMIN_USER_EDIT_OBJECT } from "../Reducers/adminReducer";
-import { fetchAdminChangePassword, fetchAdminEditProfile, fetchAdminLogin, fetchAdminProfileData, fetchAdminSideUserList, fetchAdminUpdateUserProfile, fetchAdminUserDeleteRequest, fetchAdminUserEditObj } from "./handlers/adminHandler";
+import {
+  GET_ADMINSIDE_USER_LIST,
+  GET_ADMIN_CHANGE_PASSWORD,
+  GET_ADMIN_EDIT_PROFILE,
+  GET_ADMIN_LOGIN,
+  GET_ADMIN_PROFILE_DATA,
+  GET_ADMIN_UPDATE_USER_PROFILE,
+  GET_ADMIN_USER_DELETE_REQUEST,
+  GET_ADMIN_USER_EDIT_OBJECT,
+} from "../Reducers/adminReducer";
+import {
+  fetchAdminChangePassword,
+  fetchAdminEditProfile,
+  fetchAdminLogin,
+  fetchAdminProfileData,
+  fetchAdminSideUserList,
+  fetchAdminUpdateUserProfile,
+  fetchAdminUserDeleteRequest,
+  fetchAdminUserEditObj,
+} from "./handlers/adminHandler";
+import { GET_ALL_CATEGORIES, GET_EDIT_CATEGORIES, GET_EDIT_STATUS_CATEGORIES } from "../Reducers/adminCategoriesReducer";
+import { fetchAllCategories, fetchEditCategories, fetchEditStatusCategories } from "./handlers/adminCategoriesHandler";
 
 function* authStuff() {
   yield takeLatest(POST_SIGNUP_USER, fetchPostSignUpUser);
@@ -41,20 +61,27 @@ function* userDetails() {
 }
 
 function* adminHandles() {
-  yield takeLatest(GET_ADMIN_LOGIN,fetchAdminLogin)
-  yield takeLatest(GET_ADMIN_PROFILE_DATA,fetchAdminProfileData)
-  yield takeLatest(GET_ADMIN_EDIT_PROFILE,fetchAdminEditProfile)
-  yield takeLatest(GET_ADMIN_CHANGE_PASSWORD,fetchAdminChangePassword)
-  yield takeLatest(GET_ADMINSIDE_USER_LIST,fetchAdminSideUserList)
-  yield takeLatest(GET_ADMIN_USER_DELETE_REQUEST,fetchAdminUserDeleteRequest)
-  yield takeLatest(GET_ADMIN_USER_EDIT_OBJECT,fetchAdminUserEditObj)
-  yield takeLatest(GET_ADMIN_UPDATE_USER_PROFILE,fetchAdminUpdateUserProfile)
+  yield takeLatest(GET_ADMIN_LOGIN, fetchAdminLogin);
+  yield takeLatest(GET_ADMIN_PROFILE_DATA, fetchAdminProfileData);
+  yield takeLatest(GET_ADMIN_EDIT_PROFILE, fetchAdminEditProfile);
+  yield takeLatest(GET_ADMIN_CHANGE_PASSWORD, fetchAdminChangePassword);
+  yield takeLatest(GET_ADMINSIDE_USER_LIST, fetchAdminSideUserList);
+  yield takeLatest(GET_ADMIN_USER_DELETE_REQUEST, fetchAdminUserDeleteRequest);
+  yield takeLatest(GET_ADMIN_USER_EDIT_OBJECT, fetchAdminUserEditObj);
+  yield takeLatest(GET_ADMIN_UPDATE_USER_PROFILE, fetchAdminUpdateUserProfile);
+}
+
+function* adminCategories() {
+  yield takeLatest(GET_ALL_CATEGORIES,fetchAllCategories)
+  yield takeLatest(GET_EDIT_CATEGORIES,fetchEditCategories)
+  yield takeLatest(GET_EDIT_STATUS_CATEGORIES,fetchEditStatusCategories)
 }
 
 const authSaga = [fork(authStuff)];
 const changePasswordSaga = [fork(changePassword)];
 const userDetailsSaga = [fork(userDetails)];
 const adminHandlesSaga = [fork(adminHandles)];
+const adminCategoriesSaga = [fork(adminCategories)];
 
 export default function* waterSaga() {
   yield all([
@@ -62,5 +89,6 @@ export default function* waterSaga() {
     ...changePasswordSaga,
     ...userDetailsSaga,
     ...adminHandlesSaga,
+    ...adminCategoriesSaga,
   ]);
 }
