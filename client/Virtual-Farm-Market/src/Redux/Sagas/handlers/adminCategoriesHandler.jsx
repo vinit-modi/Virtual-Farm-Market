@@ -2,11 +2,13 @@ import { call, put } from "redux-saga/effects";
 import {
   categoriesFailRequest,
   categoriesMakeRequest,
+  setAddCategories,
   setAllCategories,
+  setDeleteCategories,
   setEditCategories,
   setEditStatusCategories,
 } from "../../Reducers/adminCategoriesReducer";
-import { requestAllCategories, requestEditCategories, requestEditStatusCategories } from "../requests/adminCategoriesRequest";
+import { requestAddCategories, requestAllCategories, requestDeleteCategories, requestEditCategories, requestEditStatusCategories } from "../requests/adminCategoriesRequest";
 
 export function* fetchAllCategories({ payload }) {
   try {
@@ -56,6 +58,42 @@ export function* fetchEditStatusCategories({ payload }) {
       yield put(categoriesFailRequest(response.error.message));
     }
   } catch (error) {
+    yield put(categoriesFailRequest(error.message));
+  }
+}
+export function* fetchDeleteCategories({ payload }) {
+  try {
+    yield put(categoriesMakeRequest());
+    const response = yield call(requestDeleteCategories, payload);
+    if (response.status === 200) {
+        const valueObj = {
+            message:response.data.message
+        }
+      yield put(setDeleteCategories(valueObj));
+    } 
+    else {
+      yield put(categoriesFailRequest(response.error.message));
+    }
+  } catch (error) {
+    yield put(categoriesFailRequest(error.message));
+  }
+}
+export function* fetchAddCategories({ payload }) {
+  try {
+    yield put(categoriesMakeRequest());
+    const response = yield call(requestAddCategories, payload);
+    if (response.status === 200) {
+        const valueObj = {
+            message:response.data.message
+        }
+      yield put(setAddCategories(valueObj));
+    } 
+    else {
+        console.log('object0>',response.error.message)
+      yield put(categoriesFailRequest(response.error.message));
+    }
+  } catch (error) {
+    console.log('ERROR0>',error)
     yield put(categoriesFailRequest(error.message));
   }
 }

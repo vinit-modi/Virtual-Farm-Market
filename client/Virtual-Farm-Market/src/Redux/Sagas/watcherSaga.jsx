@@ -40,8 +40,8 @@ import {
   fetchAdminUserDeleteRequest,
   fetchAdminUserEditObj,
 } from "./handlers/adminHandler";
-import { GET_ALL_CATEGORIES, GET_EDIT_CATEGORIES, GET_EDIT_STATUS_CATEGORIES } from "../Reducers/adminCategoriesReducer";
-import { fetchAllCategories, fetchEditCategories, fetchEditStatusCategories } from "./handlers/adminCategoriesHandler";
+import { GET_ADD_CATEGORIES, GET_ALL_CATEGORIES, GET_DELETE_CATEGORIES, GET_EDIT_CATEGORIES, GET_EDIT_STATUS_CATEGORIES } from "../Reducers/adminCategoriesReducer";
+import { fetchAddCategories, fetchAllCategories, fetchDeleteCategories, fetchEditCategories, fetchEditStatusCategories } from "./handlers/adminCategoriesHandler";
 
 function* authStuff() {
   yield takeLatest(POST_SIGNUP_USER, fetchPostSignUpUser);
@@ -75,6 +75,8 @@ function* adminCategories() {
   yield takeLatest(GET_ALL_CATEGORIES,fetchAllCategories)
   yield takeLatest(GET_EDIT_CATEGORIES,fetchEditCategories)
   yield takeLatest(GET_EDIT_STATUS_CATEGORIES,fetchEditStatusCategories)
+  yield takeLatest(GET_DELETE_CATEGORIES,fetchDeleteCategories)
+  yield takeLatest(GET_ADD_CATEGORIES,fetchAddCategories)
 }
 
 const authSaga = [fork(authStuff)];

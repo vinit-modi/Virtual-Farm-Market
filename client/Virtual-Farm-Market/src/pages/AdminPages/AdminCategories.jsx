@@ -2,24 +2,56 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  CATEGORIES_CLEARE_ERROR,
   CATEGORIES_CLEARE_MESSAGE,
+  GET_ADD_CATEGORIES,
   GET_ALL_CATEGORIES,
+  GET_DELETE_CATEGORIES,
   GET_EDIT_STATUS_CATEGORIES,
 } from "../../Redux/Reducers/adminCategoriesReducer";
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, Paper, Typography, gridClasses } from "@mui/material";
+import {
+  Box,
+  Fab,
+  Button,
+  Paper,
+  TextField,
+  Typography,
+  gridClasses,
+} from "@mui/material";
 import moment from "moment";
-import { grey } from "@mui/material/colors";
+import { blue, green, grey, red } from "@mui/material/colors";
 import UserActions from "../../components/DataGridEditButton/UserActions";
 import { toast } from "react-toastify";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import AddIcon from "@mui/icons-material/Add";
+import { useNavigate } from "react-router-dom";
+import RemoveIcon from "@mui/icons-material/Remove";
+// import { Button } from "react-bootstrap";
 
 function AdminCategories() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const adminCategories = useSelector((state) => state.adminCategoriesReducer);
   const [rows, setRows] = useState([]);
   const [pageSize, setPageSize] = useState(5);
   const [rowId, setRowId] = useState(null);
   const [paramFormattedValue, setParamFormattedValue] = useState();
+  const [showAddCategory, setShowAddCategory] = useState(false);
+  const [addCategoryInput, setAddCategoryInput] = useState();
+
+  const handleAddCategoryInput = (e) => {
+    setAddCategoryInput(e.target.value);
+  };
+  const handleAddCategories = () => {
+    setShowAddCategory(!showAddCategory);
+  };
+  const submitAddCategory = (e) => {
+    e.preventDefault();
+    dispatch({ type: GET_ADD_CATEGORIES, payload: { name: addCategoryInput } });
+    setAddCategoryInput("");
+    setShowAddCategory(false);
+  };
 
   useEffect(() => {
     dispatch({ type: GET_ALL_CATEGORIES });
@@ -30,6 +62,13 @@ function AdminCategories() {
       setRows(adminCategories.allCategories);
     }
   }, [adminCategories.allCategories]);
+
+  useEffect(() => {
+    if (adminCategories.error) {
+      toast.error(adminCategories.error);
+      dispatch({ type: CATEGORIES_CLEARE_ERROR });
+    }
+  }, [adminCategories.error]);
 
   useEffect(() => {
     if (
@@ -44,7 +83,12 @@ function AdminCategories() {
 
   const columns = useMemo(
     () => [
-      { field: "_id", headerName: "ID", width: 300 },
+      {
+        field: "_id",
+        headerName: "ID",
+        sortable: false,
+        width: 300,
+      },
       { field: "name", headerName: "Item Name", width: 200, editable: true },
       {
         field: "isActive",
@@ -52,6 +96,7 @@ function AdminCategories() {
         width: 100,
         type: "boolean",
         editable: true,
+
         renderCell: (param) => {
           if (rowId === param.id) {
             if (
@@ -71,15 +116,17 @@ function AdminCategories() {
       {
         field: "createdAt",
         headerName: "Created At",
-        width: 300,
+        width: 200,
         renderCell: (param) =>
           moment(param.row.createdAt).format("HH:mm:ss || YYYY-MM-DD"),
       },
       {
         field: "actions",
-        headerName: "Actions",
+        headerName: "Edit",
         width: 100,
         type: "actions",
+        sortable: false,
+        filterable: false,
         renderCell: (params) => (
           <>
             <UserActions
@@ -88,19 +135,94 @@ function AdminCategories() {
           </>
         ),
       },
+      {
+        field: "delete",
+        headerName: "Delete",
+        width: 100,
+        type: "delete",
+        sortable: false,
+        filterable: false,
+        renderCell: (params) => (
+          <>
+            <Fab
+              elevation={0}
+              sx={{
+                height: 40,
+                width: 40,
+                "&:hover": { bgcolor: red[700], color: "white" },
+              }}
+            >
+              <DeleteOutlineIcon
+                onClick={() => {
+                  dispatch({
+                    type: GET_DELETE_CATEGORIES,
+                    payload: { _id: params.id },
+                  });
+                }}
+              />
+            </Fab>
+          </>
+        ),
+      },
     ],
-    [rowId]
+    [rowId, paramFormattedValue]
   );
 
   return (
     <div>
-      <Box sx={{ height: 400, width: "100%" }}>
-        <Typography component="h4" variant="h4">
-          Categories
-        </Typography>
-        {adminCategories.loading ? (
-          <Spinner animation="border" variant="primary" />
-        ) : (
+      {adminCategories.loading ? null : (
+        <Box sx={{ width: "100%" }}>
+          <div>
+            <Typography component="h4" variant="h4">
+              Categories
+            </Typography>
+            <Paper
+              elevation={1}
+              className="d-flex justify-content-end mb-3 "
+              sx={{ maxHeight: 100, minHeight: 50 }}
+            >
+              {showAddCategory && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "start",
+                    width: "100%",
+                    m: 1,
+                  }}
+                >
+                  <TextField
+                    variant="outlined"
+                    label="Add New Category"
+                    value={addCategoryInput}
+                    onChange={handleAddCategoryInput}
+                    autoComplete="off"
+                    autoFocus
+                    fullWidth
+                  />
+                  <Button
+                    variant="contained"
+                    className="ms-2"
+                    color="primary"
+                    type="submit"
+                    onClick={submitAddCategory}
+                  >
+                    Add Item
+                  </Button>
+                </Box>
+              )}
+              <Button
+                variant="contained"
+                className="me-3 my-1 btn btn-primary"
+                style={{ width: 200 }}
+                onClick={handleAddCategories}
+                disableElevation
+              >
+                {!showAddCategory ? <AddIcon /> : <RemoveIcon />}
+                Add Category
+              </Button>
+            </Paper>
+          </div>
+
           <DataGrid
             rows={rows}
             columns={columns}
@@ -110,6 +232,7 @@ function AdminCategories() {
               bottom: param.isLastVisible ? 0 : 5,
             })}
             onCellDoubleClick={(params) => {
+              // onCellEditStop=
               if (params.field === `isActive`) {
                 setParamFormattedValue(params.formattedValue);
               }
@@ -121,13 +244,15 @@ function AdminCategories() {
                   theme?.palette?.mode === "light" ? grey[200] : grey[980],
               },
             }}
-
-            // rowsPerPageOptions={[5, 10, 15]}
-            // pageSize={pageSize}
-            // onPageSizeChange={(newSelectedPageSize) => setPageSize(newSelectedPageSize)
+            // loading={adminCategories.loading}
+            rowsPerPageOptions={[5, 10, 15]}
+            pageSize={pageSize}
+            onPageSizeChange={(newSelectedPageSize) =>
+              setPageSize(newSelectedPageSize)
+            }
           />
-        )}
-      </Box>
+        </Box>
+      )}
     </div>
   );
 }

@@ -8,6 +8,8 @@ import {
   GET_ALL_CATEGORIES,
   GET_EDIT_CATEGORIES,
 } from "../../Redux/Reducers/adminCategoriesReducer";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import RunningWithErrorsIcon from "@mui/icons-material/RunningWithErrors";
 
 function UserActions({ paramFormattedValue, params, rowId, setRowId }) {
   const [loading, setLoading] = useState(false);
@@ -33,14 +35,18 @@ function UserActions({ paramFormattedValue, params, rowId, setRowId }) {
     }, 1000);
   };
 
-  useEffect(() => {
-    console.log("PARAMIDDD::", params);
-    //     console.log("ROWID::", rowId);
-    //     console.log("LOADING::", loading);
-  }, [
-    // loading, rowId,
-    params,
-  ]);
+  useEffect(
+    () => {
+      // console.log("PARAMIDDD::", params);
+      //     console.log("ROWID::", rowId);
+      //     console.log("LOADING::", loading);
+    },
+    [
+      // loading,
+      // rowId,
+      // params,
+    ]
+  );
   return (
     <div>
       <Box sx={{ m: 1, position: "relative" }}>
@@ -64,12 +70,11 @@ function UserActions({ paramFormattedValue, params, rowId, setRowId }) {
               height: 40,
             }}
             disabled={
-              paramFormattedValue ? true : params.id !== rowId || loading
+              !paramFormattedValue ? params.id !== rowId || loading : true
             }
             onClick={handleSubmit}
           >
-            {console.log(params.id !== rowId)}
-            <Save />
+            {loading ? <RunningWithErrorsIcon /> : <Save />}
           </Fab>
         )}
         {loading && (

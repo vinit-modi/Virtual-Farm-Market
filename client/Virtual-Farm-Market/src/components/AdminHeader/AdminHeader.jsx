@@ -16,12 +16,8 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-
-// import InboxIcon from '@mui/icons-material/MoveToInbox';
 import RecentActorsIcon from "@mui/icons-material/RecentActors";
-// import MailIcon from '@mui/icons-material/Mail';
 import DashboardIcon from "@mui/icons-material/Dashboard";
-
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LockIcon from "@mui/icons-material/Lock";
 import PolicyIcon from "@mui/icons-material/Policy";
@@ -198,7 +194,12 @@ export default function AdminHeader() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div" style={{float:'left',width:'100%'}}>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            style={{ float: "left", width: "100%" }}
+          >
             Admin Panel
           </Typography>
           <div>
@@ -345,6 +346,7 @@ export default function AdminHeader() {
                 </AdminProtectedRoute>
               }
             />
+
             <Route
               exact
               path="dashboard"
@@ -372,8 +374,8 @@ export default function AdminHeader() {
                 </AdminProtectedRoute>
               }
             />
-{/* CRUD FOR USERLIST */}
-<Route
+            {/* CRUD FOR USERLIST */}
+            <Route
               exact
               path="action/edit/:id"
               element={
@@ -383,7 +385,7 @@ export default function AdminHeader() {
               }
             />
 
-{/* <Route
+            {/* <Route
               exact
               path="action/delete/:id"
               element={
@@ -393,8 +395,7 @@ export default function AdminHeader() {
               }
             /> */}
 
-
-<Route
+            <Route
               exact
               path="action/view/:id"
               element={
