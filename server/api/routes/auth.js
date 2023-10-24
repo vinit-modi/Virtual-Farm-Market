@@ -24,6 +24,7 @@ router.post("/changeCategoryStatus", AdCategoryController.changeCategoryStatus);
 
 router.post("/addFaq", AdFaqController.addFaq);
 router.get("/getAllFaq", AdFaqController.getAllFaq);
+router.post("/getSpecificFaq", AdFaqController.getSpecificFaq);
 
 router.post("/signUp", UserController.signUp);
 router.post("/login", UserController.login);

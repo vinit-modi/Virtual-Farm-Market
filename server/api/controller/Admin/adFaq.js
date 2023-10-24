@@ -47,4 +47,38 @@ module.exports = {
       });
     }
   },
+
+  getSpecificFaq: async (req, res) => {
+    try {
+      const validationRules = [
+        check("_id").notEmpty().withMessage("_id must be provided"),
+      ];
+      await Promise.all(validationRules.map((rule) => rule.run(req)));
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ message: errors.array()[0].msg });
+      }
+
+      let getFaq = await FaqModel.findOne({ _id: req.body._id });
+      if (!getFaq) {
+        return res.status(404).json({
+          status: "error",
+          message: "FAQ not found",
+        });
+      } else {
+        return res.status(200).json({
+          status: "success",
+          message: "FAQ details",
+          data: getFaq,
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
+
+  
 };
