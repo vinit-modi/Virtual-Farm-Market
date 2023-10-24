@@ -1,7 +1,6 @@
 const { validationResult } = require("express-validator");
 const { check } = require("express-validator");
 const CategoryModel = require("../../../db/models/Category");
-const mongoose = require("mongoose");
 
 module.exports = {
   addCategory: async (req, res) => {
