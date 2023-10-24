@@ -5,6 +5,7 @@ const UserController = require("../controller/Website/user");
 const AdUserController = require("../controller/Admin/adUser");
 const AdCategoryController = require("../controller/Admin/adCategory");
 const AdFaqController = require("../controller/Admin/adFaq");
+const AdCmsController = require("../controller/Admin/adCms");
 
 router.post("/adLogin", AdUserController.adLogin);
 router.post("/adGetAllUser", AdUserController.getAllUser);
@@ -27,6 +28,8 @@ router.get("/getAllFaq", AdFaqController.getAllFaq);
 router.post("/getSpecificFaq", AdFaqController.getSpecificFaq);
 router.post("/updateFaq", AdFaqController.updateFaq);
 router.post("/deleteFaq", AdFaqController.deleteFaq);
+
+router.get("/getAllCms", AdCmsController.getAllCms);
 
 router.post("/signUp", UserController.signUp);
 router.post("/login", UserController.login);
