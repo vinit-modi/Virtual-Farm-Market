@@ -30,6 +30,8 @@ router.post("/updateFaq", AdFaqController.updateFaq);
 router.post("/deleteFaq", AdFaqController.deleteFaq);
 
 router.get("/getAllCms", AdCmsController.getAllCms);
+router.post("/getSpecificCms", AdCmsController.getSpecificCms);
+router.post("/updateCms", AdCmsController.updateCms);
 
 router.post("/signUp", UserController.signUp);
 router.post("/login", UserController.login);
