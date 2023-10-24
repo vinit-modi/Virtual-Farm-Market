@@ -4,6 +4,7 @@ const router = express.Router();
 const UserController = require("../controller/Website/user");
 const AdUserController = require("../controller/Admin/adUser");
 const AdCategoryController = require("../controller/Admin/adCategory");
+const AdFaqController = require("../controller/Admin/adFaq");
 
 router.post("/adLogin", AdUserController.adLogin);
 router.post("/adGetAllUser", AdUserController.getAllUser);
@@ -20,6 +21,8 @@ router.post("/getAllCategory", AdCategoryController.getAllCategory);
 router.post("/getCategory", AdCategoryController.getCategory);
 router.post("/deleteCategory", AdCategoryController.deleteCategory);
 router.post("/changeCategoryStatus", AdCategoryController.changeCategoryStatus);
+
+router.post("/addFaq", AdFaqController.addFaq);
 
 router.post("/signUp", UserController.signUp);
 router.post("/login", UserController.login);
