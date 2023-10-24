@@ -31,4 +31,20 @@ module.exports = {
       });
     }
   },
+
+  getAllFaq: async (req, res) => {
+    try {
+      let getAllFaq = await FaqModel.find({});
+      return res.status(200).json({
+        status: "success",
+        message: "List of all FAQs",
+        data: getAllFaq,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
 };
