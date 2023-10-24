@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const UserModel = require("../../../db/models/User");
+const CmsModel = require("../../../db/models/Cms");
 const CityModel = require("../../../services/insertCities");
 const ProvinceModel = require("../../../services/insertProvinces");
 const { validationResult } = require("express-validator");
@@ -7,7 +8,7 @@ const { check } = require("express-validator");
 const config = require("../../../config/index");
 const jwt = require("jsonwebtoken");
 const upload = require("../../../utils/uploadImage");
-const sendConfirmationEmail = require("../../../utils/sendConfirmationEmail");
+const sendEmail = require("../../../utils/sendEmail");
 const path = require("path");
 const crypto = require("crypto");
 const fs = require("fs");
@@ -65,7 +66,7 @@ module.exports = {
         subject: "Confirm Your Email",
         html: emailTemplate.replace("${confirmationToken}", confirmationToken),
       };
-      sendConfirmationEmail(createUser.email, mailOptions);
+      sendEmail(createUser.email, mailOptions);
 
       res.json({
         message:
@@ -286,6 +287,38 @@ module.exports = {
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal server error" });
+    }
+  },
+
+  getCmsForUser: async (req, res) => {
+    try {
+      const validationRules = [
+        check("titleKey").notEmpty().withMessage("titleKey must be provided"),
+      ];
+      await Promise.all(validationRules.map((rule) => rule.run(req)));
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ message: errors.array()[0].msg });
+      }
+
+      let getCms = await CmsModel.findOne({ titleKey: req.body.titleKey });
+      if (!getCms) {
+        return res.status(404).json({
+          status: "error",
+          message: "CMS not found",
+        });
+      } else {
+        return res.status(200).json({
+          status: "success",
+          message: "CMS details",
+          data: getCms,
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
     }
   },
 };

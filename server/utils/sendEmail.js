@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 const config = require("../config/index");
 
-const sendConfirmationEmail = (to, mailOptions) => {
+const sendEmail = (to, mailOptions) => {
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,
@@ -14,4 +14,4 @@ const sendConfirmationEmail = (to, mailOptions) => {
   transporter.sendMail(mailOptions);
 };
 
-module.exports = sendConfirmationEmail;
+module.exports = sendEmail;
