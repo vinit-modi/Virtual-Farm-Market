@@ -26,6 +26,7 @@ router.post("/addFaq", AdFaqController.addFaq);
 router.get("/getAllFaq", AdFaqController.getAllFaq);
 router.post("/getSpecificFaq", AdFaqController.getSpecificFaq);
 router.post("/updateFaq", AdFaqController.updateFaq);
+router.post("/deleteFaq", AdFaqController.deleteFaq);
 
 router.post("/signUp", UserController.signUp);
 router.post("/login", UserController.login);
