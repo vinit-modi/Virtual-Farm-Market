@@ -19,6 +19,7 @@ import AdminTermsAndCondition from "../pages/AdminPages/AdminTermsAndCondition";
 import AdminPublicRoute from "../auth/authAdmin/AdminPublicRoute";
 import AdminProtectedRoute from "../auth/authAdmin/AdminProtectedRoute";
 import AdminHeader from "../components/AdminHeader/AdminHeader";
+import FaqsUser from "../pages/Faqs/FaqsUser";
 
 function IndexForRoutes() {
   return (
@@ -117,6 +118,15 @@ function IndexForRoutes() {
           element={
             <ProtectedRoute>
               <UpdateUserProfile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="/faqs"
+          element={
+            <ProtectedRoute>
+              <FaqsUser />
             </ProtectedRoute>
           }
         />

@@ -43,9 +43,11 @@ function AdminCategories() {
   const handleAddCategoryInput = (e) => {
     setAddCategoryInput(e.target.value);
   };
+
   const handleAddCategories = () => {
     setShowAddCategory(!showAddCategory);
   };
+
   const submitAddCategory = (e) => {
     e.preventDefault();
     dispatch({ type: GET_ADD_CATEGORIES, payload: { name: addCategoryInput } });
@@ -54,7 +56,10 @@ function AdminCategories() {
   };
 
   useEffect(() => {
-    dispatch({ type: GET_ALL_CATEGORIES });
+    if(!adminCategories.allCategories){
+
+      dispatch({ type: GET_ALL_CATEGORIES });
+    }
   }, [!adminCategories.allCategories]);
 
   useEffect(() => {
@@ -250,7 +255,9 @@ function AdminCategories() {
             onPageSizeChange={(newSelectedPageSize) =>
               setPageSize(newSelectedPageSize)
             }
+            
           />
+          
         </Box>
       )}
     </div>
