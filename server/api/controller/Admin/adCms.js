@@ -22,7 +22,7 @@ module.exports = {
   getSpecificCms: async (req, res) => {
     try {
       const validationRules = [
-        check("_id").notEmpty().withMessage("_id must be provided"),
+        check("titleKey").notEmpty().withMessage("Title Key must be provided"),
       ];
       await Promise.all(validationRules.map((rule) => rule.run(req)));
       const errors = validationResult(req);
@@ -30,7 +30,7 @@ module.exports = {
         return res.status(422).json({ message: errors.array()[0].msg });
       }
 
-      let getCms = await CmsModel.findOne({ _id: req.body._id });
+      let getCms = await CmsModel.findOne({ titleKey: req.body.titleKey });
       if (!getCms) {
         return res.status(404).json({
           status: "error",
