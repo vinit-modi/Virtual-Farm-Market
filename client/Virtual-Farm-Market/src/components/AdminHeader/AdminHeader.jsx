@@ -42,13 +42,20 @@ import AdminChangePassword from "../../pages/AdminPages/HandleAdmin/AdminChangeP
 import { useEffect } from "react";
 import AdminEditUser from "../../pages/AdminPages/AdminActions/AdminEditUser";
 import AdminViewUser from "../../pages/AdminPages/AdminActions/AdminViewUser";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import StarBorder from "@mui/icons-material/StarBorder";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import Collapse from "@mui/material/Collapse";
+import QuizIcon from "@mui/icons-material/Quiz";
+import AdminFaqs from "../../pages/AdminPages/AdminFaqs";
 
 const icons = [
   <RecentActorsIcon />,
   <DashboardIcon />,
   <AccountCircleIcon />,
-  <LockIcon />,
-  <PolicyIcon />,
+  <QuizIcon />,
+  // <PolicyIcon />,
 ];
 
 const drawerWidth = 240;
@@ -121,6 +128,11 @@ const Drawer = styled(MuiDrawer, {
 export default function AdminHeader() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [openDD, setOpenDD] = React.useState(false);
+
+  const handleClick = () => {
+    setOpenDD(!openDD);
+  };
 
   const dispatch = useDispatch();
   const adminReducer = useSelector((state) => state.adminReducer);
@@ -134,6 +146,7 @@ export default function AdminHeader() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+    setOpenDD(false);
   };
 
   const handleMenu = (event) => {
@@ -257,50 +270,96 @@ export default function AdminHeader() {
         </DrawerHeader>
         <Divider />
         <List>
-          {[
-            "User list",
-            "Dashboard",
-            "Categories",
-            "Privacy Policy",
-            "Terms and Conditions",
-          ].map((text, index) => {
-            let urlPath;
-            if (text === `User list`) urlPath = `user`;
-            else if (text === `Dashboard`) urlPath = `dashboard`;
-            else if (text === `Categories`) urlPath = `categories`;
-            else if (text === `Privacy Policy`) urlPath = `privacypolicy`;
-            else if (text === `Terms and Conditions`)
-              urlPath = `termsandcondition`;
-            return (
-              <ListItem
-                key={text}
-                onClick={() => navigate(`/admin/${urlPath}`)}
-                disablePadding
-                sx={{ display: "block" }}
-              >
-                <ListItemButton
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
+          {["Dashboard", "User list", "Categories", "FAQs"].map(
+            (text, index) => {
+              let urlPath;
+              if (text === `Dashboard`) urlPath = `dashboard`;
+              else if (text === `User list`) urlPath = `user`;
+              else if (text === `Categories`) urlPath = `categories`;
+              else if (text === `FAQs`) urlPath = `faqs`;
+              return (
+                <ListItem
+                  key={text}
+                  onClick={() => navigate(`/admin/${urlPath}`)}
+                  disablePadding
+                  sx={{ display: "block" }}
                 >
-                  <ListItemIcon
+                  <ListItemButton
                     sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
                     }}
                   >
-                    {icons[index]}
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {icons[index]}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={text}
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              );
+            }
+          )}
+
+          <ListItem disablePadding sx={{ display: "block" }}>
+            <ListItemButton
+              onClick={handleClick}
+              sx={{
+                minHeight: 48,
+                justifyContent: openDD ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              >
+                <InboxIcon />
+              </ListItemIcon>
+              {open && (
+                <>
+                  <ListItemText primary="CMS" />
+                  {openDD ? <ExpandLess /> : <ExpandMore />}
+                </>
+              )}
+            </ListItemButton>
+            <Collapse in={openDD} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItemButton
+                  sx={{ pl: 4 }}
+                  onClick={() => navigate(`/admin/privacypolicy`)}
+                >
+                  <ListItemIcon>
+                    <PolicyIcon />
                   </ListItemIcon>
-                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                  <ListItemText primary="Privacy Policy" />
                 </ListItemButton>
-              </ListItem>
-            );
-          })}
+                <ListItemButton
+                  sx={{ pl: 4 }}
+                  onClick={() => navigate(`/admin/termsandcondition`)}
+                >
+                  <ListItemIcon>
+                    <LockIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Terms & Conditions" />
+                </ListItemButton>
+              </List>
+            </Collapse>
+          </ListItem>
         </List>
-        <Divider />
+        {/* <Divider /> */}
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
@@ -374,6 +433,16 @@ export default function AdminHeader() {
                 </AdminProtectedRoute>
               }
             />
+            <Route
+              exact
+              path="faqs"
+              element={
+                <AdminProtectedRoute>
+                  <AdminFaqs />
+                </AdminProtectedRoute>
+              }
+            />
+
             {/* CRUD FOR USERLIST */}
             <Route
               exact
@@ -384,16 +453,6 @@ export default function AdminHeader() {
                 </AdminProtectedRoute>
               }
             />
-
-            {/* <Route
-              exact
-              path="action/delete/:id"
-              element={
-                <AdminProtectedRoute>
-                  <AdminDeleteUser />
-                </AdminProtectedRoute>
-              }
-            /> */}
 
             <Route
               exact
