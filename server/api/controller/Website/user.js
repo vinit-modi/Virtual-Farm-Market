@@ -3,6 +3,7 @@ const UserModel = require("../../../db/models/User");
 const CmsModel = require("../../../db/models/Cms");
 const CityModel = require("../../../services/insertCities");
 const ProvinceModel = require("../../../services/insertProvinces");
+const FaqModel = require("../../../db/models/Faq");
 const { validationResult } = require("express-validator");
 const { check } = require("express-validator");
 const config = require("../../../config/index");
@@ -314,6 +315,22 @@ module.exports = {
           data: getCms,
         });
       }
+    } catch (error) {
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
+
+  getAllFaqForUser: async (req, res) => {
+    try {
+      let getAllFaq = await FaqModel.find({});
+      return res.status(200).json({
+        status: "success",
+        message: "List of all FAQs",
+        data: getAllFaq,
+      });
     } catch (error) {
       return res.status(500).json({
         status: "error",

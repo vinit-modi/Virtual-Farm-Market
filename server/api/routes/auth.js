@@ -43,5 +43,6 @@ router.post("/changePassword", UserController.changePassword);
 router.post("/updateProfile", UserController.updateProfile);
 router.post("/confirmEmail", UserController.confirmEmail);
 router.post("/getCmsForUser", UserController.getCmsForUser);
+router.get("/getAllFaqForUser", UserController.getAllFaqForUser);
 
 module.exports = router;
