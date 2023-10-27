@@ -20,6 +20,8 @@ import AdminPublicRoute from "../auth/authAdmin/AdminPublicRoute";
 import AdminProtectedRoute from "../auth/authAdmin/AdminProtectedRoute";
 import AdminHeader from "../components/AdminHeader/AdminHeader";
 import FaqsUser from "../pages/Faqs/FaqsUser";
+import TermsAndConditions from "../pages/Cms/TermsAndConditions/TermsAndConditions";
+import PrivacyPolicy from "../pages/Cms/PrivacyPolicy/PrivacyPolicy";
 
 function IndexForRoutes() {
   return (
@@ -127,6 +129,24 @@ function IndexForRoutes() {
           element={
             <ProtectedRoute>
               <FaqsUser />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="/termsandconditions"
+          element={
+            <ProtectedRoute>
+              <TermsAndConditions />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="/privacypolicy"
+          element={
+            <ProtectedRoute>
+              <PrivacyPolicy />
             </ProtectedRoute>
           }
         />
