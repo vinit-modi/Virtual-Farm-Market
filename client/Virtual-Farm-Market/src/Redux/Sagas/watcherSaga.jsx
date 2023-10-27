@@ -70,6 +70,8 @@ import {
   GET_OBJECT_OF_ADMIN_FAQS,
   GET_UPDATE_FAQS_ADMIN,
 } from "../Reducers/faqsReducer";
+import { GET_CMS_FOR_USER, GET_CMS_OBJECT_ADMIN, GET_CMS_UPDATE_ADMIN } from "../Reducers/cmsReducer";
+import { fetchCmsForUser, fetchCmsObjectForAdmin, fetchCmsUpdateForAdmin } from "./handlers/cmsHandler";
 
 function* authStuff() {
   yield takeLatest(POST_SIGNUP_USER, fetchPostSignUpUser);
@@ -116,12 +118,19 @@ function* faqs() {
   yield takeLatest(GET_DELETE_ADMIN_FAQS, fetchDeleteAdminFaqs);
 }
 
+function* cms() {
+  yield takeLatest(GET_CMS_FOR_USER, fetchCmsForUser);
+  yield takeLatest(GET_CMS_OBJECT_ADMIN, fetchCmsObjectForAdmin);
+  yield takeLatest(GET_CMS_UPDATE_ADMIN, fetchCmsUpdateForAdmin);
+}
+
 const authSaga = [fork(authStuff)];
 const changePasswordSaga = [fork(changePassword)];
 const userDetailsSaga = [fork(userDetails)];
 const adminHandlesSaga = [fork(adminHandles)];
 const adminCategoriesSaga = [fork(adminCategories)];
 const faqsSaga = [fork(faqs)];
+const cmsSage = [fork(cms)];
 
 export default function* waterSaga() {
   yield all([
@@ -131,5 +140,6 @@ export default function* waterSaga() {
     ...adminHandlesSaga,
     ...adminCategoriesSaga,
     ...faqsSaga,
+    ...cmsSage,
   ]);
 }

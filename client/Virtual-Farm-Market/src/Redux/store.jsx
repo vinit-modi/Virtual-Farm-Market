@@ -22,6 +22,7 @@ import { userReducer } from "./Reducers/userReducer";
 import { adminReducer } from "./Reducers/adminReducer";
 import { adminCategoriesReducer } from "./Reducers/adminCategoriesReducer";
 import { faqsReducer } from "./Reducers/faqsReducer";
+import { cmsReducer } from "./Reducers/cmsReducer";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -37,6 +38,7 @@ const rootReducer = combineReducers({
   adminReducer: adminReducer,
   adminCategoriesReducer: adminCategoriesReducer,
   faqs: faqsReducer,
+  cms: cmsReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

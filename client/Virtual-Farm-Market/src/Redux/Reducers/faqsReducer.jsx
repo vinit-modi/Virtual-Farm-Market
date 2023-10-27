@@ -32,6 +32,7 @@ export const setAllUserFaqs = (payload) => ({
   payload,
 });
 
+
 //ADMIN:-
 export const setAllAdminFaqs = (payload) => ({
   type: SET_ALL_ADMIN_FAQS,
