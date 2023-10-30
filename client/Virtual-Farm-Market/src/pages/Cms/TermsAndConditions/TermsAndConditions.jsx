@@ -13,8 +13,6 @@ function TermsAndConditions() {
   const cms = useSelector((state) => state.cms);
 
   useEffect(() => {
-
-    console.log('????');
     dispatch({ type: GET_CMS_FOR_USER, payload: { titleKey: PAGE_KEY } });
   }, [!cms.cmsDetails]);
 

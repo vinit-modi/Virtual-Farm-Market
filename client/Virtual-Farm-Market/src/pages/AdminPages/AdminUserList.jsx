@@ -29,6 +29,7 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import WysiwygIcon from "@mui/icons-material/Wysiwyg";
 import { useState } from "react";
 import { persistor } from "../../Redux/store";
+import { toast } from "react-toastify";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 170, align: "center" },
@@ -64,20 +65,25 @@ function AdminUserList() {
   const [isCheck, setIsCheck] = React.useState(false);
   const [selectRowLimit, setSelectRowLimit] = React.useState(5);
   const [search, setSearch] = useState({ searchInput: "" });
-  const [userLists, setUserLists] = useState(adminReducer.userList |[]);
+  const [userLists, setUserLists] = useState(adminReducer.userList | []);
 
   const [currentPage, setCurrentPage] = useState(1);
   const recordPerPage = selectRowLimit;
   const lastIndex = currentPage * recordPerPage;
   const firstIndex = lastIndex - recordPerPage;
-  const records = userLists && userLists.slice(firstIndex, lastIndex);
-  const npage = Math.ceil(userLists.length / recordPerPage);
+  const records = adminReducer.userList && adminReducer?.userList.slice(firstIndex, lastIndex);
+  const npage = Math.ceil(adminReducer?.userList?.length / recordPerPage);
   const numbers = [];
   for (let i = 1; i <= npage; i++) {
     numbers.push(i);
   }
+
+  console.log(records,'1111')
+  console.log(npage,'2222')
+
   React.useEffect(() => {
-    if (!userLists && !adminReducer.userList ) {
+    if (!userLists && !adminReducer.userList) {
+      console.log('RUNNS')
       dispatch({
         type: GET_ADMINSIDE_USER_LIST,
       });
@@ -85,11 +91,24 @@ function AdminUserList() {
   }, []);
 
   useEffect(() => {
-    const filteredUserList = adminReducer.userList && adminReducer.userList.filter((item) =>
-      item.name.toLowerCase().includes(search.searchInput.toLowerCase())
-    );
+    const filteredUserList =
+      adminReducer.userList &&
+      adminReducer.userList.filter((item) =>
+        item.name.toLowerCase().includes(search.searchInput.toLowerCase())
+      );
     setUserLists(filteredUserList);
   }, [search]);
+
+  useEffect(() => {
+    if (adminReducer.message) {
+      toast.success(adminReducer.message);
+      dispatch({
+        type: GET_ADMINSIDE_USER_LIST,
+      });
+      setUserLists(adminReducer.userList | [])
+      dispatch({ type: CLEAR_MESSAGE_ADMIN });
+    }
+  }, [adminReducer.message]);
 
   const handleEditClick = (userId) => {
     console.log(userId);
@@ -155,7 +174,7 @@ function AdminUserList() {
           onChange={(e) => handleSearchField(e)}
           value={search.searchInput}
         />
-        <TableContainer sx={{ maxHeight: 440 }}>
+        <TableContainer sx={{ minHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -174,7 +193,8 @@ function AdminUserList() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {records &&
+              {records && 
+              // adminReducer.userList && 
                 records
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
@@ -246,7 +266,7 @@ function AdminUserList() {
               size="small"
               labelId="selectRow"
               value={selectRowLimit}
-              onChange={(e)=>setSelectRowLimit(e.target.value)}
+              onChange={(e) => setSelectRowLimit(e.target.value)}
             >
               <MenuItem value={5}>5</MenuItem>
 

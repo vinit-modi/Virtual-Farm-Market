@@ -12,7 +12,6 @@ function PrivacyPolicy() {
   const cms = useSelector((state) => state.cms);
 
   useEffect(() => {
-    console.log('??????????d')
     dispatch({ type: GET_CMS_FOR_USER, payload: { titleKey: PAGE_KEY } });
   }, [!cms.cmsDetails]);
 

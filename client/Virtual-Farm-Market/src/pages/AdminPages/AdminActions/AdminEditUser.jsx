@@ -87,10 +87,16 @@ function AdminEditUser() {
   }, []);
 
   useEffect(() => {
-    if (adminReducer.message === `Profile updated successfully`) {
+    if (adminReducer.message) {
       navigate("/admin/user");
     }
   }, [adminReducer.message]);
+
+  // useEffect(() => {
+  //   if (adminReducer.message === `Profile updated successfully`) {
+  //     navigate("/admin/user");
+  //   }
+  // }, [adminReducer.message]);
 
   return (
     <div>
