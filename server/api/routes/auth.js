@@ -6,6 +6,7 @@ const AdUserController = require("../controller/Admin/adUser");
 const AdCategoryController = require("../controller/Admin/adCategory");
 const AdFaqController = require("../controller/Admin/adFaq");
 const AdCmsController = require("../controller/Admin/adCms");
+const PaymentController = require("../controller/Website/payment");
 
 router.post("/adLogin", AdUserController.adLogin);
 router.post("/adGetAllUser", AdUserController.getAllUser);
@@ -44,5 +45,8 @@ router.post("/updateProfile", UserController.updateProfile);
 router.post("/confirmEmail", UserController.confirmEmail);
 router.post("/getCmsForUser", UserController.getCmsForUser);
 router.get("/getAllFaqForUser", UserController.getAllFaqForUser);
+
+router.post("/addNewCard", PaymentController.addNewCard);
+router.get("/getAllSavedCards", PaymentController.getAllSavedCards);
 
 module.exports = router;
