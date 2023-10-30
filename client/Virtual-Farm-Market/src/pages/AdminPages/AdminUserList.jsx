@@ -71,21 +71,14 @@ function AdminUserList() {
   const recordPerPage = selectRowLimit;
   const lastIndex = currentPage * recordPerPage;
   const firstIndex = lastIndex - recordPerPage;
-  const records =
-    adminReducer.userList &&
-    adminReducer?.userList.slice(firstIndex, lastIndex);
-  const npage = Math.ceil(adminReducer?.userList?.length / recordPerPage);
+  const records = userLists && userLists.slice(firstIndex, lastIndex);
+  const npage = Math.ceil(userLists?.length / recordPerPage);
   const numbers = [];
   for (let i = 1; i <= npage; i++) {
     numbers.push(i);
   }
-
-  console.log(records, "1111");
-  console.log(npage, "2222");
-
   React.useEffect(() => {
     if (!userLists && !adminReducer.userList) {
-      console.log("RUNNS");
       dispatch({
         type: GET_ADMINSIDE_USER_LIST,
       });
@@ -104,11 +97,10 @@ function AdminUserList() {
   useEffect(() => {
     if (adminReducer.message) {
       toast.success(adminReducer.message);
+      dispatch({ type: CLEAR_MESSAGE_ADMIN });
       dispatch({
         type: GET_ADMINSIDE_USER_LIST,
       });
-      setUserLists(adminReducer.userList | []);
-      dispatch({ type: CLEAR_MESSAGE_ADMIN });
     }
   }, [adminReducer.message]);
 
@@ -161,7 +153,7 @@ function AdminUserList() {
           onChange={(e) => handleSearchField(e)}
           value={search.searchInput}
         />
-        <TableContainer sx={{ minHeight: 440 }}>
+        <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -181,7 +173,6 @@ function AdminUserList() {
             </TableHead>
             <TableBody>
               {records &&
-                // adminReducer.userList &&
                 records
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
