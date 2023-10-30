@@ -48,5 +48,6 @@ router.get("/getAllFaqForUser", UserController.getAllFaqForUser);
 
 router.post("/addNewCard", PaymentController.addNewCard);
 router.get("/getAllSavedCards", PaymentController.getAllSavedCards);
+router.post("/deleteCard", PaymentController.deleteCard);
 
 module.exports = router;
