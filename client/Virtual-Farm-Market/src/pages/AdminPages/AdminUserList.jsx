@@ -71,19 +71,21 @@ function AdminUserList() {
   const recordPerPage = selectRowLimit;
   const lastIndex = currentPage * recordPerPage;
   const firstIndex = lastIndex - recordPerPage;
-  const records = adminReducer.userList && adminReducer?.userList.slice(firstIndex, lastIndex);
+  const records =
+    adminReducer.userList &&
+    adminReducer?.userList.slice(firstIndex, lastIndex);
   const npage = Math.ceil(adminReducer?.userList?.length / recordPerPage);
   const numbers = [];
   for (let i = 1; i <= npage; i++) {
     numbers.push(i);
   }
 
-  console.log(records,'1111')
-  console.log(npage,'2222')
+  console.log(records, "1111");
+  console.log(npage, "2222");
 
   React.useEffect(() => {
     if (!userLists && !adminReducer.userList) {
-      console.log('RUNNS')
+      console.log("RUNNS");
       dispatch({
         type: GET_ADMINSIDE_USER_LIST,
       });
@@ -105,7 +107,7 @@ function AdminUserList() {
       dispatch({
         type: GET_ADMINSIDE_USER_LIST,
       });
-      setUserLists(adminReducer.userList | [])
+      setUserLists(adminReducer.userList | []);
       dispatch({ type: CLEAR_MESSAGE_ADMIN });
     }
   }, [adminReducer.message]);
@@ -130,21 +132,6 @@ function AdminUserList() {
       searchInput: e.target.value,
     });
   };
-
-  useEffect(() => {
-    if (
-      adminReducer.message === `User deleted successfully.` ||
-      adminReducer.message === `Profile updated successfully`
-    ) {
-      if (adminReducer.message === `User deleted successfully.`) {
-        //Toast for User deleted successfully.
-      }
-      if (adminReducer.message === `Profile updated successfully`) {
-        //Toast for Profile updated successfully.
-      }
-      dispatch({ type: CLEAR_MESSAGE_ADMIN });
-    }
-  }, [adminReducer.message]);
 
   function prePage() {
     if (currentPage !== 1) {
@@ -193,8 +180,8 @@ function AdminUserList() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {records && 
-              // adminReducer.userList && 
+              {records &&
+                // adminReducer.userList &&
                 records
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {

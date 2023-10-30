@@ -92,12 +92,6 @@ function AdminEditUser() {
     }
   }, [adminReducer.message]);
 
-  // useEffect(() => {
-  //   if (adminReducer.message === `Profile updated successfully`) {
-  //     navigate("/admin/user");
-  //   }
-  // }, [adminReducer.message]);
-
   return (
     <div>
       <Formik
