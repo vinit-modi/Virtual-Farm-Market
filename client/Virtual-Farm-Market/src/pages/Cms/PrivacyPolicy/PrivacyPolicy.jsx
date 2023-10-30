@@ -12,20 +12,22 @@ function PrivacyPolicy() {
   const cms = useSelector((state) => state.cms);
 
   useEffect(() => {
+    console.log('??????????d')
     dispatch({ type: GET_CMS_FOR_USER, payload: { titleKey: PAGE_KEY } });
   }, [!cms.cmsDetails]);
 
   return (
     <>
-      {cms.loading && cms.cmsDetails ? null : (
+      {cms.loading && !cms.cmsDetails ? null : (
+
         <div className="main">
           <div className="container">
             <div className="title">
-              <Typography variant="h2">{cms.cmsDetails.titleValue}</Typography>
+              <Typography variant="h2">{cms.cmsDetails?.titleValue}</Typography>
             </div>
             <div className="section">
               <Typography variant="subtitle1">
-                {cms.cmsDetails.content}
+                {cms.cmsDetails?.content}
               </Typography>
             </div>
           </div>

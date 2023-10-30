@@ -348,7 +348,7 @@ export default function AdminHeader() {
                 </ListItemButton>
                 <ListItemButton
                   sx={{ pl: 4 }}
-                  onClick={() => navigate(`/admin/termsandcondition`)}
+                  onClick={() => navigate(`/admin/termsandconditions`)}
                 >
                   <ListItemIcon>
                     <LockIcon />
@@ -426,7 +426,7 @@ export default function AdminHeader() {
             />
             <Route
               exact
-              path="termsandcondition"
+              path="termsandconditions"
               element={
                 <AdminProtectedRoute>
                   <AdminTermsAndCondition />
