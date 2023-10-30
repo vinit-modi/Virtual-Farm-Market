@@ -53,7 +53,30 @@ module.exports = {
         });
       }
     } catch (error) {
-      console.log(error);
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
+
+  getAllSavedCards: async (req, res) => {
+    try {
+      let getAllCards = await CardModel.find({ userId: req.userInfo._id });
+
+      getAllCards = getAllCards.map((card) => {
+        const decryptedCardNumber = encDec.decrypt(card.cardNumber);
+        return {
+          ...card.toObject(),
+          cardNumber: decryptedCardNumber,
+        };
+      });
+      return res.status(200).json({
+        status: "success",
+        message: "All Cards.",
+        data: getAllCards,
+      });
+    } catch (error) {
       return res.status(500).json({
         status: "error",
         message: "Internal Server Error",

@@ -47,5 +47,6 @@ router.post("/getCmsForUser", UserController.getCmsForUser);
 router.get("/getAllFaqForUser", UserController.getAllFaqForUser);
 
 router.post("/addNewCard", PaymentController.addNewCard);
+router.get("/getAllSavedCards", PaymentController.getAllSavedCards);
 
 module.exports = router;
