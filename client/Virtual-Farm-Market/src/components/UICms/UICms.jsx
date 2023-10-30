@@ -30,7 +30,7 @@ import { toast } from "react-toastify";
 function UICms({ PAGE_KEY, PageTitle }) {
   const dispatch = useDispatch();
   const cms = useSelector((state) => state.cms);
-  const [_id, set_Id] = useState();
+  // const [_id, set_Id] = useState();
 
   const [italic, setItalic] = React.useState(false);
   const [fontWeight, setFontWeight] = React.useState("normal");
@@ -41,10 +41,10 @@ function UICms({ PAGE_KEY, PageTitle }) {
     console.log("?????");
   }, []);
 
-  useEffect(() => {
-    console.log("?????");
-    set_Id(cms.cmsDetailsAdmin._id);
-  }, [cms.cmsDetailsAdmin]);
+  // useEffect(() => {
+  //   console.log("?????");
+  //   set_Id(cms.cmsDetailsAdmin._id);
+  // }, [cms.cmsDetailsAdmin]);
 
   useEffect(() => {
     if (cms.message) {
@@ -83,7 +83,7 @@ function UICms({ PAGE_KEY, PageTitle }) {
                   dispatch({
                     type: GET_CMS_UPDATE_ADMIN,
                     payload: {
-                      _id: _id,
+                      _id: cms.cmsDetailsAdmin?._id,
                       titleKey: PAGE_KEY,
                       titleValue: values.titleValue,
                       content: values.content,
