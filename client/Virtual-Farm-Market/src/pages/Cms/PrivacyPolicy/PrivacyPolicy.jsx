@@ -30,6 +30,7 @@ function PrivacyPolicy() {
               </Typography>
             </div>
           </div>
+           
         </div>
       )}
     </>

@@ -56,8 +56,7 @@ function AdminCategories() {
   };
 
   useEffect(() => {
-    if(!adminCategories.allCategories){
-
+    if (!adminCategories.allCategories) {
       dispatch({ type: GET_ALL_CATEGORIES });
     }
   }, [!adminCategories.allCategories]);
@@ -88,12 +87,12 @@ function AdminCategories() {
 
   const columns = useMemo(
     () => [
-      {
-        field: "_id",
-        headerName: "ID",
-        sortable: false,
-        width: 300,
-      },
+      // {
+      //   field: "_id",
+      //   headerName: "ID",
+      //   sortable: false,
+      //   width: 300,
+      // },
       { field: "name", headerName: "Item Name", width: 200, editable: true },
       {
         field: "isActive",
@@ -228,36 +227,39 @@ function AdminCategories() {
             </Paper>
           </div>
 
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            getRowId={(row) => row._id}
-            getRowSpacing={(param) => ({
-              top: param.isFirstVisible ? 0 : 5,
-              bottom: param.isLastVisible ? 0 : 5,
-            })}
-            onCellDoubleClick={(params) => {
-              // onCellEditStop=
-              if (params.field === `isActive`) {
-                setParamFormattedValue(params.formattedValue);
-              }
-              setRowId(params.id);
-            }}
+          <Box
             sx={{
-              [`& .${gridClasses.row}`]: {
-                bgcolor: (theme) =>
-                  theme?.palette?.mode === "light" ? grey[200] : grey[980],
-              },
+              display: "flex",
+              justifyContent: "center",
             }}
-            // loading={adminCategories.loading}
-            rowsPerPageOptions={[5, 10, 15]}
-            pageSize={pageSize}
-            onPageSizeChange={(newSelectedPageSize) =>
-              setPageSize(newSelectedPageSize)
-            }
-            
-          />
-          
+          >
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              getRowId={(row) => row._id}
+              getRowSpacing={(param) => ({
+                top: param.isFirstVisible ? 0 : 5,
+                bottom: param.isLastVisible ? 0 : 5,
+              })}
+              onCellDoubleClick={(params) => {
+                if (params.field === `isActive`) {
+                  setParamFormattedValue(params.formattedValue);
+                }
+                setRowId(params.id);
+              }}
+              sx={{
+                [`& .${gridClasses.row}`]: {
+                  bgcolor: (theme) =>
+                    theme?.palette?.mode === "light" ? grey[200] : grey[980],
+                },
+              }}
+              rowsPerPageOptions={[5, 10, 15]}
+              pageSize={pageSize}
+              onPageSizeChange={(newSelectedPageSize) =>
+                setPageSize(newSelectedPageSize)
+              }
+            />
+          </Box>
         </Box>
       )}
     </div>
