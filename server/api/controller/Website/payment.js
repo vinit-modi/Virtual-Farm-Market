@@ -149,7 +149,10 @@ module.exports = {
       return res.status(200).json({
         status: "success",
         message: "Card marked default successfully",
-        data: makeDefault,
+        data: {
+          ...makeDefault.toObject(),
+          cardNumber: encDec.decrypt(makeDefault.cardNumber),
+        },
       });
     } catch (error) {
       return res.status(500).json({
