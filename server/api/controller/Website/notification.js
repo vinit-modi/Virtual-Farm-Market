@@ -43,10 +43,15 @@ module.exports = {
           message: "Notification not found",
         });
       } else {
+        let updateReadStatus = await NotificationModel.findByIdAndUpdate(
+          getNotification._id,
+          { isRead: true },
+          { new: true }
+        );
         return res.status(200).json({
           status: "success",
           message: "Notification details",
-          data: getNotification,
+          data: updateReadStatus,
         });
       }
     } catch (error) {
