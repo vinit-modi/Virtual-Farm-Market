@@ -7,6 +7,7 @@ const AdCategoryController = require("../controller/Admin/adCategory");
 const AdFaqController = require("../controller/Admin/adFaq");
 const AdCmsController = require("../controller/Admin/adCms");
 const PaymentController = require("../controller/Website/payment");
+const NotificationController = require("../controller/Website/notification");
 
 router.post("/adLogin", AdUserController.adLogin);
 router.post("/adGetAllUser", AdUserController.getAllUser);
@@ -50,5 +51,7 @@ router.post("/addNewCard", PaymentController.addNewCard);
 router.get("/getAllSavedCards", PaymentController.getAllSavedCards);
 router.post("/deleteCard", PaymentController.deleteCard);
 router.post("/makeDefaultCard", PaymentController.makeDefaultCard);
+
+router.get("/getAllNotification", NotificationController.getAllNotification);
 
 module.exports = router;

@@ -3,6 +3,7 @@ const UserModel = require("../../../db/models/User");
 const CmsModel = require("../../../db/models/Cms");
 const CityModel = require("../../../services/insertCities");
 const ProvinceModel = require("../../../services/insertProvinces");
+const NotificationModel = require("../../../db/models/Notification");
 const FaqModel = require("../../../db/models/Faq");
 const { validationResult } = require("express-validator");
 const { check } = require("express-validator");
@@ -18,6 +19,7 @@ const emailTemplatePath = path.join(
   "../../../utils/emailTemplate.html"
 );
 const emailTemplate = fs.readFileSync(emailTemplatePath, "utf8");
+const notificationContent = require("../../../utils/notificationContent")
 
 module.exports = {
   signUp: async (req, res) => {
@@ -68,6 +70,12 @@ module.exports = {
         html: emailTemplate.replace("${confirmationToken}", confirmationToken),
       };
       sendEmail(createUser.email, mailOptions);
+
+      await NotificationModel.create({
+        userId: createUser._id,
+        title: notificationContent.WelcomeTitle,
+        content: notificationContent.WelcomeContent
+      });
 
       res.json({
         message:
