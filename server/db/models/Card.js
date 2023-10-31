@@ -8,6 +8,7 @@ const CreditCardSchema = new mongoose.Schema({
   cardExpiration: String,
   cardholderName: String,
   cvv: String,
+  isCardDefault: { type: Boolean, default: false },
   createdAt: { type: String, default: "" },
   updatedAt: { type: String, default: "" },
 });
