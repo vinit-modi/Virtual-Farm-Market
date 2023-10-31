@@ -119,4 +119,46 @@ module.exports = {
       });
     }
   },
+
+  makeDefaultCard: async (req, res) => {
+    try {
+      const validationRules = [
+        check("_id").notEmpty().withMessage("_id must be provided"),
+      ];
+      await Promise.all(validationRules.map((rule) => rule.run(req)));
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ message: errors.array()[0].msg });
+      }
+
+      const currentDefaultCard = await CardModel.findOne({
+        isCardDefault: true,
+        userId: req.userInfo._id,
+      });
+
+      if (currentDefaultCard) {
+        await CardModel.findByIdAndUpdate(currentDefaultCard._id, {
+          isCardDefault: false,
+        });
+      }
+      const makeDefault = await CardModel.findByIdAndUpdate(
+        req.body._id,
+        { isCardDefault: true },
+        { new: true }
+      );
+      return res.status(200).json({
+        status: "success",
+        message: "Card marked default successfully",
+        data: {
+          ...makeDefault.toObject(),
+          cardNumber: encDec.decrypt(makeDefault.cardNumber),
+        },
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
 };
