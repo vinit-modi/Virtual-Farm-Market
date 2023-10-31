@@ -53,5 +53,6 @@ router.post("/deleteCard", PaymentController.deleteCard);
 router.post("/makeDefaultCard", PaymentController.makeDefaultCard);
 
 router.get("/getAllNotification", NotificationController.getAllNotification);
+router.post("/getNotification", NotificationController.getNotification);
 
 module.exports = router;
