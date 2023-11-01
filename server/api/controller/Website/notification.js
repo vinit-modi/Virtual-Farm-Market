@@ -96,4 +96,19 @@ module.exports = {
       });
     }
   },
+
+  clearAll: async (req, res) => {
+    try {
+      await NotificationModel.deleteMany({ userId: req.userInfo._id });
+      return res.status(200).json({
+        status: "success",
+        message: "Notification deleted successfully",
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
 };
