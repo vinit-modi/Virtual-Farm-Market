@@ -116,6 +116,7 @@ module.exports = {
     try {
       let getCount = await NotificationModel.find({
         userId: req.userInfo._id,
+        isRead: false,
       }).count();
       return res.status(200).json({
         status: "success",
