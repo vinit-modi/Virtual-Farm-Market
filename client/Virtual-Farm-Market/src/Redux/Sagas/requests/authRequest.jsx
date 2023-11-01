@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import Axios from "../../../Utils/Axios";
 
 export async function requestPostSignUpUser(payload) {

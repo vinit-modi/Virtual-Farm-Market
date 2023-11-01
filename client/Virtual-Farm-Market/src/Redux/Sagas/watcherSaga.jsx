@@ -72,6 +72,8 @@ import {
 } from "../Reducers/faqsReducer";
 import { GET_CMS_FOR_USER, GET_CMS_OBJECT_ADMIN, GET_CMS_UPDATE_ADMIN } from "../Reducers/cmsReducer";
 import { fetchCmsForUser, fetchCmsObjectForAdmin, fetchCmsUpdateForAdmin } from "./handlers/cmsHandler";
+import { GET_ADD_NEW_CARD_PAYMENT } from "../Reducers/paymentReducer";
+import { fetchAddNewCardPayment } from "./handlers/paymentHandler";
 
 function* authStuff() {
   yield takeLatest(POST_SIGNUP_USER, fetchPostSignUpUser);
@@ -124,6 +126,10 @@ function* cms() {
   yield takeLatest(GET_CMS_UPDATE_ADMIN, fetchCmsUpdateForAdmin);
 }
 
+function* payment(){
+  yield takeLatest(GET_ADD_NEW_CARD_PAYMENT,fetchAddNewCardPayment)
+}
+
 const authSaga = [fork(authStuff)];
 const changePasswordSaga = [fork(changePassword)];
 const userDetailsSaga = [fork(userDetails)];
@@ -131,6 +137,7 @@ const adminHandlesSaga = [fork(adminHandles)];
 const adminCategoriesSaga = [fork(adminCategories)];
 const faqsSaga = [fork(faqs)];
 const cmsSage = [fork(cms)];
+const paymentSaga = [fork(payment)]
 
 export default function* waterSaga() {
   yield all([
@@ -141,5 +148,6 @@ export default function* waterSaga() {
     ...adminCategoriesSaga,
     ...faqsSaga,
     ...cmsSage,
+    ...paymentSaga
   ]);
 }

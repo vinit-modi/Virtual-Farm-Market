@@ -114,6 +114,8 @@ export const authReducer = (state = authInitialState, action) => {
         ...state,
         loading: true,
         error: null,
+        message: null,
+        // provinceList:null
       };
     case FAIL_MESSAGE:
       return {

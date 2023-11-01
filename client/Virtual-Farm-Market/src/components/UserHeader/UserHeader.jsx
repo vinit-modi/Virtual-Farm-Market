@@ -19,7 +19,7 @@ import FaqsUser from "../../pages/Faqs/FaqsUser";
 import TermsAndConditions from "../../pages/Cms/TermsAndConditions/TermsAndConditions";
 import PrivacyPolicy from "../../pages/Cms/PrivacyPolicy/PrivacyPolicy";
 import ProtectedRoute from "../../auth/ProtectedRoute";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { GET_AUTH_LOGOUT } from "../../Redux/Reducers/authReducer";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import Badge from "@mui/material/Badge";
@@ -27,18 +27,21 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import EditIcon from "@mui/icons-material/Edit";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { Divider } from "@mui/material";
+import { Divider, LinearProgress } from "@mui/material";
 import Dashboard from "../../pages/Dashboard/Dashboard";
+import { grey, red } from "@mui/material/colors";
+import Payment from "../../pages/Payment/Payment";
 
-const pages = ["Products", "Payment", "Blogs"];
 const settings = ["Update Profile", "Change Password", `Logout`];
 const settingsIcons = [<EditIcon />, <ManageAccountsIcon />, <LogoutIcon />];
+const pages = ["Products", "Payment", "Blogs", 'Terms & Conditions','Privacy Policy'];
 
 function UserHeader() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -52,8 +55,15 @@ function UserHeader() {
       navigate("/user/dashboard");
     } else if (page === "Payment") {
       navigate("/user/payment");
-    } else if (page === "Blogs") {
+    } 
+    else if (page === "Blogs") {
       navigate("/user/blogs");
+    }
+    else if (page === 'Terms & Conditions') {
+      navigate("/user/termsandconditions");
+    }
+    else if (page === 'Privacy Policy') {
+      navigate("/user/privacypolicy");
     }
 
     setAnchorElNav(null);
@@ -217,6 +227,15 @@ function UserHeader() {
                         <MenuItem
                           key={setting}
                           onClick={() => handleCloseUserMenu(setting)}
+                          sx={{
+                            bgcolor: grey[200],
+                            "&:hover": {
+                              bgcolor: red[500],
+                              borderRadius: 1,
+                              m: 0.5,
+                              color: "white",
+                            },
+                          }}
                         >
                           <IconButton>{settingsIcons[index]}</IconButton>
                           <Typography textAlign="center">{setting}</Typography>
@@ -238,62 +257,81 @@ function UserHeader() {
           </Toolbar>
         </Container>
       </AppBar>
-      <Routes>
-        <Route
-          exact
-          path="changepassword"
-          element={
-            <ProtectedRoute>
-              <ChangePassword />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          exact
-          path="dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          exact
-          path="updateuserprofile"
-          element={
-            <ProtectedRoute>
-              <UpdateUserProfile />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          exact
-          path="faqs"
-          element={
-            <ProtectedRoute>
-              <FaqsUser />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          exact
-          path="termsandconditions"
-          element={
-            <ProtectedRoute>
-              <TermsAndConditions />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          exact
-          path="privacypolicy"
-          element={
-            <ProtectedRoute>
-              <PrivacyPolicy />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+
+      {/* {auth.loading ? (
+        <Box>
+          <LinearProgress color="success" />
+        </Box>
+      ) : (<Box sx={{
+        m:2
+      }}> */}
+        <Routes>
+          <Route
+            exact
+            path="changepassword"
+            element={
+              <ProtectedRoute>
+                <ChangePassword />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="updateuserprofile"
+            element={
+              <ProtectedRoute>
+                <UpdateUserProfile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="faqs"
+            element={
+              <ProtectedRoute>
+                <FaqsUser />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="payment"
+            element={
+              <ProtectedRoute>
+                <Payment />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="termsandconditions"
+            element={
+              <ProtectedRoute>
+                <TermsAndConditions />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="privacypolicy"
+            element={
+              <ProtectedRoute>
+                <PrivacyPolicy />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+        {/* </Box>
+      )} */}
     </>
   );
 }

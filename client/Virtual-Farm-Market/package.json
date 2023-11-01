@@ -29,6 +29,7 @@
     "chroma-js": "2.4.2",
     "formik": "^2.4.5",
     "gapi-script": "^1.2.0",
+    "mdb-react-ui-kit": "^6.3.0",
     "moment": "^2.29.4",
     "nanoid": "^5.0.1",
     "primereact": "^10.0.2",
