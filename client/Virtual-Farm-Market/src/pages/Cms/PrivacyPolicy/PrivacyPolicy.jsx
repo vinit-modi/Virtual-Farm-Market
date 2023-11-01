@@ -18,7 +18,6 @@ function PrivacyPolicy() {
   return (
     <>
       {cms.loading && !cms.cmsDetails ? null : (
-
         <div className="main">
           <div className="container">
             <div className="title">
@@ -30,7 +29,6 @@ function PrivacyPolicy() {
               </Typography>
             </div>
           </div>
-           
         </div>
       )}
     </>
