@@ -13,8 +13,7 @@ const UserSchema = new mongoose.Schema({
   updatedAt: { type: String, default: "" },
   profilePicture: {
     type: String,
-    default:
-      "/Users/vinitmodi/Documents/capstone/Virtual-Farm-Market/server/uploads/profilePicture/userImage.jpeg",
+    default: "server/uploads/profilePicture/userImage.jpeg",
   },
   isEmailConfirmed: { type: Boolean, default: false },
   emailConfirmationToken: { type: String, default: "" },
