@@ -26,7 +26,7 @@ function Dashboard() {
     }
   }, [userDetails.message]);
 
-  return <div>Dashboard</div>;
+  return <>Dashboard</>;
 }
 
 export default Dashboard;
