@@ -19,7 +19,7 @@ const emailTemplatePath = path.join(
   "../../../utils/emailTemplate.html"
 );
 const emailTemplate = fs.readFileSync(emailTemplatePath, "utf8");
-const notificationContent = require("../../../utils/notificationContent")
+const notificationContent = require("../../../utils/notificationContent");
 
 module.exports = {
   signUp: async (req, res) => {
@@ -74,7 +74,7 @@ module.exports = {
       await NotificationModel.create({
         userId: createUser._id,
         title: notificationContent.WelcomeTitle,
-        content: notificationContent.WelcomeContent
+        content: notificationContent.WelcomeContent,
       });
 
       res.json({
@@ -340,6 +340,25 @@ module.exports = {
         data: getAllFaq,
       });
     } catch (error) {
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
+
+  getUserImage: async (req, res) => {
+    try {
+      let getImage = await UserModel.findOne({
+        _id: req.userInfo._id,
+      });
+      return res.status(200).json({
+        status: "success",
+        message: "User profile image",
+        data: getImage.profilePicture,
+      });
+    } catch (error) {
+      console.log(error);
       return res.status(500).json({
         status: "error",
         message: "Internal Server Error",

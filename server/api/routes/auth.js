@@ -46,6 +46,7 @@ router.post("/updateProfile", UserController.updateProfile);
 router.post("/confirmEmail", UserController.confirmEmail);
 router.post("/getCmsForUser", UserController.getCmsForUser);
 router.get("/getAllFaqForUser", UserController.getAllFaqForUser);
+router.get("/getUserImage", UserController.getUserImage);
 
 router.post("/addNewCard", PaymentController.addNewCard);
 router.get("/getAllSavedCards", PaymentController.getAllSavedCards);
