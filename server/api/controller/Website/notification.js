@@ -61,4 +61,39 @@ module.exports = {
       });
     }
   },
+
+  deleteNotification: async (req, res) => {
+    try {
+      const validationRules = [
+        check("_id").notEmpty().withMessage("_id must be provided"),
+      ];
+      await Promise.all(validationRules.map((rule) => rule.run(req)));
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ message: errors.array()[0].msg });
+      }
+
+      const getNotification = await NotificationModel.findOne({
+        _id: req.body._id,
+      });
+
+      if (!getNotification) {
+        return res.status(404).json({
+          status: "error",
+          message: "Notification not found",
+        });
+      } else {
+        await NotificationModel.deleteOne({ _id: req.body._id });
+        return res.status(200).json({
+          status: "success",
+          message: "Notification deleted successfully",
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
 };

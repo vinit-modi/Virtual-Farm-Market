@@ -54,5 +54,7 @@ router.post("/makeDefaultCard", PaymentController.makeDefaultCard);
 
 router.get("/getAllNotification", NotificationController.getAllNotification);
 router.post("/getNotification", NotificationController.getNotification);
+router.post("/deleteNotification", NotificationController.deleteNotification);
+router.get("/clearAllNotification", NotificationController.clearAll);
 
 module.exports = router;
