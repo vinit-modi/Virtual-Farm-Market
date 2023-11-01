@@ -111,4 +111,23 @@ module.exports = {
       });
     }
   },
+
+  notificationCount: async (req, res) => {
+    try {
+      let getCount = await NotificationModel.find({
+        userId: req.userInfo._id,
+      }).count();
+      return res.status(200).json({
+        status: "success",
+        message: "Total notification count",
+        data: getCount,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
 };

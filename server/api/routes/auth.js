@@ -56,5 +56,6 @@ router.get("/getAllNotification", NotificationController.getAllNotification);
 router.post("/getNotification", NotificationController.getNotification);
 router.post("/deleteNotification", NotificationController.deleteNotification);
 router.get("/clearAllNotification", NotificationController.clearAll);
+router.get("/notificationCount", NotificationController.notificationCount);
 
 module.exports = router;
