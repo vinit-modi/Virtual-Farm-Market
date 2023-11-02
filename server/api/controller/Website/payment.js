@@ -62,7 +62,10 @@ module.exports = {
 
   getAllSavedCards: async (req, res) => {
     try {
-      let getAllCards = await CardModel.find({ userId: req.userInfo._id });
+      let getAllCards = await CardModel.aggregate([
+        { $match: { userId: req.userInfo._id } },
+        { $sort: { isCardDefault: -1 } },
+      ]);
 
       getAllCards = getAllCards.map((card) => {
         const decryptedCardNumber = encDec.decrypt(card.cardNumber);
