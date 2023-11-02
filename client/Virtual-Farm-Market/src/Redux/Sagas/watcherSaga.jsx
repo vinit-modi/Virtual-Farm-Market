@@ -72,8 +72,8 @@ import {
 } from "../Reducers/faqsReducer";
 import { GET_CMS_FOR_USER, GET_CMS_OBJECT_ADMIN, GET_CMS_UPDATE_ADMIN } from "../Reducers/cmsReducer";
 import { fetchCmsForUser, fetchCmsObjectForAdmin, fetchCmsUpdateForAdmin } from "./handlers/cmsHandler";
-import { GET_ADD_NEW_CARD_PAYMENT } from "../Reducers/paymentReducer";
-import { fetchAddNewCardPayment } from "./handlers/paymentHandler";
+import { GET_ADD_NEW_CARD_PAYMENT, GET_ALL_CARD_PAYMENT, GET_DELETE_CARD_PAYMENT, GET_MAKE_DEFAULT_CARD_PAYMENT } from "../Reducers/paymentReducer";
+import { fetchAddNewCardPayment, fetchAllCardPayment, fetchDeleteCardPayment, fetchMakeDefaultCardPayment } from "./handlers/paymentHandler";
 
 function* authStuff() {
   yield takeLatest(POST_SIGNUP_USER, fetchPostSignUpUser);
@@ -128,6 +128,9 @@ function* cms() {
 
 function* payment(){
   yield takeLatest(GET_ADD_NEW_CARD_PAYMENT,fetchAddNewCardPayment)
+  yield takeLatest(GET_ALL_CARD_PAYMENT,fetchAllCardPayment)
+  yield takeLatest(GET_DELETE_CARD_PAYMENT,fetchDeleteCardPayment)
+  yield takeLatest(GET_MAKE_DEFAULT_CARD_PAYMENT,fetchMakeDefaultCardPayment)
 }
 
 const authSaga = [fork(authStuff)];
