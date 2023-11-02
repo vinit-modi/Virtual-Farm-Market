@@ -7,6 +7,7 @@ import {
   setProvinceList,
   setSignInUser,
   setSignUpMessage,
+  setUserProfileImageUser,
 } from "../../Reducers/authReducer";
 import {
   requestCityList,
@@ -15,6 +16,7 @@ import {
   requestPostSignUpUser,
   requestProvinceList,
   requestSignInUser,
+  requestUserProfileImageUser,
 } from "../requests/authRequest";
 import { store } from "../../store";
 
@@ -78,28 +80,26 @@ export function* fetchConfirmEmailUser({ payload }) {
     yield put(makeRequest());
     const response = yield call(requestConfirmEmailUser, payload);
     if (response.data.message === `Email confirmed successfully.`) {
-      // const id = store.getState();
-      // console.log('111111111',id)
-
-      // const responseForGetUserAPI = yield call(
-      //   requestGetUserById,
-      //   id?.auth?.userId
-      // );
-      // console.log(
-      //   "responseForGetUserAPI =>>",
-      //   responseForGetUserAPI.data.data
-      // );
-      // const dataObj = {
-      //   message: response.data.message,
-      //   isEmailConfirmed: responseForGetUserAPI.data.data.isEmailConfirmed,
-      // };
-      // yield put(setConfirmEmailUser(dataObj));
       yield put(
         setConfirmEmailUser({
           message: "Email confirmed successfully.",
           isEmailConfirmed: true,
-          // isEmailConfirmed: responseForGetUserAPI.data.data.isEmailConfirmed,
         })
+      );
+    } else {
+      yield put(failRequest(response.data.message));
+    }
+  } catch (error) {
+    yield put(failRequest(error.message));
+  }
+}
+export function* fetchUserProfileImageUser() {
+  try {
+    yield put(makeRequest());
+    const response = yield call(requestUserProfileImageUser);
+    if (response.status === 200) {
+      yield put(
+        setUserProfileImageUser(response.data.data)
       );
     } else {
       yield put(failRequest(response.data.message));

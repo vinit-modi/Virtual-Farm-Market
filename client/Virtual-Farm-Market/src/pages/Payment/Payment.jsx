@@ -17,13 +17,7 @@ import {
   GET_DELETE_CARD_PAYMENT,
   GET_MAKE_DEFAULT_CARD_PAYMENT,
 } from "../../Redux/Reducers/paymentReducer";
-import {
-  Alert,
-  AlertTitle,
-  Box,
-  Button,
-  Tooltip,
-} from "@mui/material";
+import { Alert, AlertTitle, Box, Button, Tooltip } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { Spinner } from "react-bootstrap";
 import { toast } from "react-toastify";
@@ -145,6 +139,7 @@ function Payment() {
                               borderRadius: 2,
                               p: 2,
                               mb: 2,
+                              boxShadow: 10
                             }}
                           >
                             <Form onSubmit={handleSubmit}>
@@ -277,7 +272,9 @@ function Payment() {
                                   borderColor: blue[200],
                                   display: "flex",
                                   flexDirection: "column",
+                                   boxShadow: 4 
                                 }}
+                                key={card._id}
                               >
                                 <Box
                                   sx={{
@@ -324,45 +321,49 @@ function Payment() {
                                         value={`**** **** **** ${card.lastFourDigits}`}
                                       />
                                     </div>
-                                    <Tooltip title="Default Card For Payment">
-                                      <Button
-                                        disableElevation
-                                        variant="contained"
-                                        onClick={() =>
-                                          dispatch({
-                                            type: GET_MAKE_DEFAULT_CARD_PAYMENT,
-                                            payload: { _id: card._id },
-                                          })
-                                        }
-                                        sx={{
-                                          "&:hover": {
-                                            bgcolor: green[500],
-                                            color: "white",
-                                          },
-                                        }}
-                                      >
-                                        Make Default&nbsp;
-                                        <BookmarkAddIcon />
-                                      </Button>
-                                    </Tooltip>
-                                    <Tooltip title="Delete A Card">
-                                      <Button
-                                        variant="outlined"
-                                        onClick={() =>
-                                          handleDeleteCard(card._id)
-                                        }
-                                        sx={{
-                                          ml: 0.5,
-                                          "&:hover": {
-                                            bgcolor: red[400],
-                                            color: "white",
-                                            borderColor: "white",
-                                          },
-                                        }}
-                                      >
-                                        <DeleteOutlineIcon />
-                                      </Button>
-                                    </Tooltip>
+                                    <div className="d-flex justify-content-end">
+                                      {card.isCardDefault ? null : (
+                                        <Tooltip title="Default Card For Payment">
+                                          <Button
+                                            disableElevation
+                                            variant="contained"
+                                            onClick={() =>
+                                              dispatch({
+                                                type: GET_MAKE_DEFAULT_CARD_PAYMENT,
+                                                payload: { _id: card._id },
+                                              })
+                                            }
+                                            sx={{
+                                              "&:hover": {
+                                                bgcolor: green[500],
+                                                color: "white",
+                                              },
+                                            }}
+                                          >
+                                            Make Default&nbsp;
+                                            <BookmarkAddIcon />
+                                          </Button>
+                                        </Tooltip>
+                                      )}
+                                      <Tooltip title="Delete A Card">
+                                        <Button
+                                          variant="outlined"
+                                          onClick={() =>
+                                            handleDeleteCard(card._id)
+                                          }
+                                          sx={{
+                                            ml: 0.5,
+                                            "&:hover": {
+                                              bgcolor: red[400],
+                                              color: "white",
+                                              borderColor: "white",
+                                            },
+                                          }}
+                                        >
+                                          <DeleteOutlineIcon />
+                                        </Button>
+                                      </Tooltip>
+                                    </div>
                                   </div>
                                 </div>
                               </Box>

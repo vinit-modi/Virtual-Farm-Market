@@ -14,6 +14,8 @@ export const SET_CONFIRM_EMAIL_FOR_USER = "SET_CONFIRM_EMAIL_FOR_USER";
 export const GET_ALL_USERS = "GET_ALL_USERS";
 export const SET_ALL_USERS = "SET_ALL_USERS";
 export const SET_ONE_USERS = "SET_ONE_USERS";
+export const GET_USER_PROFILE_IMAGE = "GET_USER_PROFILE_IMAGE";
+export const SET_USER_PROFILE_IMAGE = "SET_USER_PROFILE_IMAGE";
 export const GET_AUTH_LOGOUT = "GET_AUTH_LOGOUT";
 
 export const makeRequest = () => {
@@ -95,6 +97,12 @@ export const setConfirmEmailUser = (value) => {
     payload: value,
   };
 };
+export const setUserProfileImageUser = (value) => {
+  return {
+    type: SET_USER_PROFILE_IMAGE,
+    payload: value,
+  };
+};
 
 const authInitialState = {
   loading: false,
@@ -105,6 +113,7 @@ const authInitialState = {
   provinceList: null,
   isEmailConfirmed: null,
   userId: "",
+  userProfileImage:null
 };
 
 export const authReducer = (state = authInitialState, action) => {
@@ -176,6 +185,13 @@ export const authReducer = (state = authInitialState, action) => {
         error: null,
         message: action.payload.message,
         isEmailConfirmed: action.payload.isEmailConfirmed,
+      };
+    case SET_USER_PROFILE_IMAGE:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        userProfileImage:action.payload
       };
 
     case GET_AUTH_LOGOUT:

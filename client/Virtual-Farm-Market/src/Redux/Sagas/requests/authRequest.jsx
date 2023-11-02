@@ -33,7 +33,7 @@ export async function requestGetUserDetails(_id) {
 }
 
 export async function requestConfirmEmailUser(payload) {
- 
+  
   const response = await Axios.post(`/api/confirmEmail`, payload);
   console.log('RESPONCE FOR CONFIREM +>',response)
   return response;
@@ -45,5 +45,10 @@ export async function requestGetUserById(payload) {
     _id: payload,
   };
   const response = await Axios.post(`/api/getUser`, idObj);
+  return response;
+}
+
+export async function requestUserProfileImageUser() {
+  const response = await Axios.get(`/api/getUserImage`);
   return response;
 }
