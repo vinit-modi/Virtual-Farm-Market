@@ -3,6 +3,7 @@ import {
   GET_CITY_LIST,
   GET_CONFIRM_EMAIL_FOR_USER,
   GET_PROVINCE_LIST,
+  GET_USER_PROFILE_IMAGE,
   POST_SIGNIN_USER,
   POST_SIGNUP_USER,
 } from "../Reducers/authReducer";
@@ -12,6 +13,7 @@ import {
   fetchPostSignInUser,
   fetchPostSignUpUser,
   fetchProvinceList,
+  fetchUserProfileImageUser,
 } from "./handlers/authHandler";
 import { GET_CHANGE_PASSWORD } from "../Reducers/handlePasswordReducer";
 import { fetchChangePassword } from "./handlers/handlePasswordHandler";
@@ -70,10 +72,30 @@ import {
   GET_OBJECT_OF_ADMIN_FAQS,
   GET_UPDATE_FAQS_ADMIN,
 } from "../Reducers/faqsReducer";
-import { GET_CMS_FOR_USER, GET_CMS_OBJECT_ADMIN, GET_CMS_UPDATE_ADMIN } from "../Reducers/cmsReducer";
-import { fetchCmsForUser, fetchCmsObjectForAdmin, fetchCmsUpdateForAdmin } from "./handlers/cmsHandler";
-import { GET_ADD_NEW_CARD_PAYMENT, GET_ALL_CARD_PAYMENT, GET_DELETE_CARD_PAYMENT, GET_MAKE_DEFAULT_CARD_PAYMENT } from "../Reducers/paymentReducer";
-import { fetchAddNewCardPayment, fetchAllCardPayment, fetchDeleteCardPayment, fetchMakeDefaultCardPayment } from "./handlers/paymentHandler";
+import {
+  GET_CMS_FOR_USER,
+  GET_CMS_OBJECT_ADMIN,
+  GET_CMS_UPDATE_ADMIN,
+} from "../Reducers/cmsReducer";
+import {
+  fetchCmsForUser,
+  fetchCmsObjectForAdmin,
+  fetchCmsUpdateForAdmin,
+} from "./handlers/cmsHandler";
+import {
+  GET_ADD_NEW_CARD_PAYMENT,
+  GET_ALL_CARD_PAYMENT,
+  GET_DELETE_CARD_PAYMENT,
+  GET_MAKE_DEFAULT_CARD_PAYMENT,
+} from "../Reducers/paymentReducer";
+import {
+  fetchAddNewCardPayment,
+  fetchAllCardPayment,
+  fetchDeleteCardPayment,
+  fetchMakeDefaultCardPayment,
+} from "./handlers/paymentHandler";
+import { GET_ALL_DELETE_NOTI, GET_ALL_NOTI, GET_COUNT_OF_NOTI, GET_DELETE_NOTI, GET_OBJ_NOTI } from "../Reducers/userNotificationReducer";
+import { fetchAllDeleteNofi, fetchAllNofi, fetchCountNofi, fetchDeleteNofi, fetchObjNofi } from "./handlers/userNotificationHandler";
 
 function* authStuff() {
   yield takeLatest(POST_SIGNUP_USER, fetchPostSignUpUser);
@@ -81,6 +103,7 @@ function* authStuff() {
   yield takeLatest(GET_CITY_LIST, fetchCityList);
   yield takeLatest(GET_PROVINCE_LIST, fetchProvinceList);
   yield takeLatest(GET_CONFIRM_EMAIL_FOR_USER, fetchConfirmEmailUser);
+  yield takeLatest(GET_USER_PROFILE_IMAGE, fetchUserProfileImageUser);
 }
 
 function* changePassword() {
@@ -126,11 +149,19 @@ function* cms() {
   yield takeLatest(GET_CMS_UPDATE_ADMIN, fetchCmsUpdateForAdmin);
 }
 
-function* payment(){
-  yield takeLatest(GET_ADD_NEW_CARD_PAYMENT,fetchAddNewCardPayment)
-  yield takeLatest(GET_ALL_CARD_PAYMENT,fetchAllCardPayment)
-  yield takeLatest(GET_DELETE_CARD_PAYMENT,fetchDeleteCardPayment)
-  yield takeLatest(GET_MAKE_DEFAULT_CARD_PAYMENT,fetchMakeDefaultCardPayment)
+function* payment() {
+  yield takeLatest(GET_ADD_NEW_CARD_PAYMENT, fetchAddNewCardPayment);
+  yield takeLatest(GET_ALL_CARD_PAYMENT, fetchAllCardPayment);
+  yield takeLatest(GET_DELETE_CARD_PAYMENT, fetchDeleteCardPayment);
+  yield takeLatest(GET_MAKE_DEFAULT_CARD_PAYMENT, fetchMakeDefaultCardPayment);
+}
+
+function* notification() {
+  yield takeLatest(GET_COUNT_OF_NOTI, fetchCountNofi);
+  yield takeLatest(GET_ALL_NOTI, fetchAllNofi);
+  yield takeLatest(GET_OBJ_NOTI, fetchObjNofi);
+  yield takeLatest(GET_DELETE_NOTI, fetchDeleteNofi);
+  yield takeLatest(GET_ALL_DELETE_NOTI, fetchAllDeleteNofi);
 }
 
 const authSaga = [fork(authStuff)];
@@ -140,7 +171,8 @@ const adminHandlesSaga = [fork(adminHandles)];
 const adminCategoriesSaga = [fork(adminCategories)];
 const faqsSaga = [fork(faqs)];
 const cmsSage = [fork(cms)];
-const paymentSaga = [fork(payment)]
+const paymentSaga = [fork(payment)];
+const notificationSaga = [fork(notification)];
 
 export default function* waterSaga() {
   yield all([
@@ -151,6 +183,7 @@ export default function* waterSaga() {
     ...adminCategoriesSaga,
     ...faqsSaga,
     ...cmsSage,
-    ...paymentSaga
+    ...paymentSaga,
+    ...notificationSaga,
   ]);
 }

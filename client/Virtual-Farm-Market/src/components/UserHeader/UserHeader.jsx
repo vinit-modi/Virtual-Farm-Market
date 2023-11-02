@@ -11,7 +11,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import ChangePassword from "../../pages/Authentication/ChangePassword";
 import UpdateUserProfile from "../../pages/UpdateProfile/UpdateUserProfile";
@@ -20,28 +19,53 @@ import TermsAndConditions from "../../pages/Cms/TermsAndConditions/TermsAndCondi
 import PrivacyPolicy from "../../pages/Cms/PrivacyPolicy/PrivacyPolicy";
 import ProtectedRoute from "../../auth/ProtectedRoute";
 import { useDispatch, useSelector } from "react-redux";
-import { GET_AUTH_LOGOUT } from "../../Redux/Reducers/authReducer";
+import {
+  GET_AUTH_LOGOUT,
+  GET_USER_PROFILE_IMAGE,
+} from "../../Redux/Reducers/authReducer";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import Badge from "@mui/material/Badge";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import EditIcon from "@mui/icons-material/Edit";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { Divider, LinearProgress } from "@mui/material";
+import { Divider, LinearProgress, List, Popover, Stack } from "@mui/material";
 import Dashboard from "../../pages/Dashboard/Dashboard";
-import { grey, red } from "@mui/material/colors";
+import { green, grey, red } from "@mui/material/colors";
 import Payment from "../../pages/Payment/Payment";
+import { useEffect } from "react";
+import {
+  CLEAR_MESSAGE_NOTI,
+  GET_ALL_DELETE_NOTI,
+  GET_ALL_NOTI,
+  GET_COUNT_OF_NOTI,
+  GET_DELETE_NOTI,
+  GET_OBJ_NOTI,
+} from "../../Redux/Reducers/userNotificationReducer";
+import UserNotification from "../UserNotification/UserNotification";
+import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 
 const settings = ["Update Profile", "Change Password", `Logout`];
 const settingsIcons = [<EditIcon />, <ManageAccountsIcon />, <LogoutIcon />];
-const pages = ["Products", "Payment", "Blogs", 'Terms & Conditions','Privacy Policy'];
+const pages = [
+  "Products",
+  "Payment",
+  "Blogs",
+  "Terms & Conditions",
+  "Privacy Policy",
+];
 
 function UserHeader() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [expandContentInNotification, setExpandContentInNotification] =
+    React.useState(null);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
+  const notification = useSelector((state) => state.notification);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -55,17 +79,13 @@ function UserHeader() {
       navigate("/user/dashboard");
     } else if (page === "Payment") {
       navigate("/user/payment");
-    } 
-    else if (page === "Blogs") {
+    } else if (page === "Blogs") {
       navigate("/user/blogs");
-    }
-    else if (page === 'Terms & Conditions') {
+    } else if (page === "Terms & Conditions") {
       navigate("/user/termsandconditions");
-    }
-    else if (page === 'Privacy Policy') {
+    } else if (page === "Privacy Policy") {
       navigate("/user/privacypolicy");
     }
-
     setAnchorElNav(null);
   };
 
@@ -77,8 +97,56 @@ function UserHeader() {
     } else if (setting === "Logout") {
       dispatch({ type: GET_AUTH_LOGOUT });
     }
-
     setAnchorElUser(null);
+  };
+
+  useEffect(() => {
+    if (notification.message) {
+      dispatch({ type: GET_COUNT_OF_NOTI });
+      dispatch({ type: GET_ALL_NOTI });
+      dispatch({ type: CLEAR_MESSAGE_NOTI });
+    }
+  }, [notification.message]);
+
+  useEffect(() => {
+    dispatch({ type: GET_USER_PROFILE_IMAGE });
+    dispatch({ type: GET_COUNT_OF_NOTI });
+  }, []);
+
+  useEffect(() => {
+    if (!notification.notiCount) {
+    }
+  }, [!notification.notiCount]);
+
+  useEffect(() => {
+    if (Boolean(anchorEl)) {
+      dispatch({ type: GET_ALL_NOTI });
+    }
+  }, [Boolean(anchorEl)]);
+
+  const handleClickNotificationRead = (id) => {
+    if (id !== null) {
+      dispatch({ type: GET_OBJ_NOTI, payload: { _id: id } });
+      // be sure that I have used 'GET_OBJ_NOTI' for just to set {isRead: true}
+    }
+    setExpandContentInNotification(id);
+  };
+
+  const handleClosePopover = () => {
+    setAnchorEl(null);
+    setExpandContentInNotification(null);
+  };
+
+  const handleDeleteNotification = (_id) => {
+    dispatch({ type: GET_DELETE_NOTI, payload: { _id: _id } });
+  };
+
+  const handleAllDeleteNotifications = () => {
+    dispatch({ type: GET_ALL_DELETE_NOTI });
+
+    // dispatch({ type: GET_COUNT_OF_NOTI });
+    // dispatch({ type: GET_ALL_NOTI });
+    handleClosePopover();
   };
 
   return (
@@ -188,17 +256,132 @@ function UserHeader() {
                     size="large"
                     aria-label="show badged new notifications"
                     color="inherit"
+                    onClick={(e) => setAnchorEl(e.currentTarget)}
                   >
-                    <Badge badgeContent={17} color="error">
+                    {notification.notiCount > 0 ? (
+                      <Badge
+                        badgeContent={notification.notiCount}
+                        color="error"
+                      >
+                        <NotificationsIcon />
+                      </Badge>
+                    ) : (
                       <NotificationsIcon />
-                    </Badge>
+                    )}
                   </IconButton>
-                </Tooltip>
+                </Tooltip>{" "}
+                <Popover
+                  open={Boolean(anchorEl)}
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  onClose={handleClosePopover}
+                >
+                  {Boolean(anchorEl) && (
+                    <Box>
+                      <Stack>
+                        <Typography
+                          variant="h5"
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-around",
+                            alignItems: "center",
+                            fontSize: 28,
+                            color: green["A700"],
+                            mt: 2,
+                            mb: 2,
+                          }}
+                        >
+                          Notifications
+                          <Tooltip title="Delete All Notifications">
+                            <Button
+                              onClick={handleAllDeleteNotifications}
+                              variant="contained"
+                              size="small"
+                              disabled={!(notification.allNoti && ![])} //CHECK WHEN NOTIFICATION COMES
+                              sx={{
+                                bgcolor: red[500],
+                                "&:hover": {
+                                  bgcolor: red["A700"],
+                                },
+                              }}
+                            >
+                              <DeleteSweepIcon />
+                              &nbsp;DELETE ALL
+                            </Button>{" "}
+                          </Tooltip>
+                        </Typography>
+                        <Divider />
+                        <Divider />
+                        <Divider />
+                        <Divider />
+
+                        {notification.loading ? (
+                          <LinearProgress color="success" />
+                        ) : null}
+                      </Stack>
+                      <Stack
+                        sx={{
+                          width: "100%",
+                          minWidth: 360,
+                        }}
+                      >
+                        {notification.loading ? null : notification.allNoti && //CHECK WHEN NOTIFICATION COMES
+                          ![] ? (
+                          <List
+                            sx={{
+                              width: "100%",
+                              maxWidth: 360,
+                              bgcolor: "background.paper",
+                              m: 0.5,
+                            }}
+                          >
+                            {notification.allNoti.map(
+                              (
+                                {
+                                  title,
+                                  content,
+                                  isRead,
+                                  _id,
+                                  ...restNotiData
+                                },
+                                index
+                              ) => (
+                                <UserNotification
+                                  {...{
+                                    title,
+                                    content,
+                                    isRead,
+                                    _id,
+                                    handleClickNotificationRead,
+                                    expandContentInNotification,
+                                    handleDeleteNotification,
+                                  }}
+                                  key={index}
+                                />
+                              )
+                            )}
+                          </List>
+                        ) : (
+                          <Typography variant="body1" sx={{ m: 3 }}>
+                            No Notifications
+                          </Typography>
+                        )}
+                      </Stack>
+                    </Box>
+                  )}
+                </Popover>
               </Box>
 
               <Tooltip title="Open profile">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar src={`${auth.userProfileImage}`} />
                 </IconButton>
               </Tooltip>
 
@@ -220,7 +403,7 @@ function UserHeader() {
               >
                 {/* Manu FOR USER PROFILE PICTURE */}
                 {settings.map((setting, index) => (
-                  <>
+                  <React.Fragment key={index}>
                     {setting === `Logout` ? (
                       <>
                         <Divider />
@@ -250,7 +433,7 @@ function UserHeader() {
                         <Typography textAlign="center">{setting}</Typography>
                       </MenuItem>
                     )}
-                  </>
+                  </React.Fragment>
                 ))}
               </Menu>
             </Box>
@@ -265,72 +448,72 @@ function UserHeader() {
       ) : (<Box sx={{
         m:2
       }}> */}
-        <Routes>
-          <Route
-            exact
-            path="changepassword"
-            element={
-              <ProtectedRoute>
-                <ChangePassword />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            exact
-            path="dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            exact
-            path="updateuserprofile"
-            element={
-              <ProtectedRoute>
-                <UpdateUserProfile />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            exact
-            path="faqs"
-            element={
-              <ProtectedRoute>
-                <FaqsUser />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            exact
-            path="payment"
-            element={
-              <ProtectedRoute>
-                <Payment />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            exact
-            path="termsandconditions"
-            element={
-              <ProtectedRoute>
-                <TermsAndConditions />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            exact
-            path="privacypolicy"
-            element={
-              <ProtectedRoute>
-                <PrivacyPolicy />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-        {/* </Box>
+      <Routes>
+        <Route
+          exact
+          path="changepassword"
+          element={
+            <ProtectedRoute>
+              <ChangePassword />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="updateuserprofile"
+          element={
+            <ProtectedRoute>
+              <UpdateUserProfile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="faqs"
+          element={
+            <ProtectedRoute>
+              <FaqsUser />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="payment"
+          element={
+            <ProtectedRoute>
+              <Payment />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="termsandconditions"
+          element={
+            <ProtectedRoute>
+              <TermsAndConditions />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="privacypolicy"
+          element={
+            <ProtectedRoute>
+              <PrivacyPolicy />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+      {/* </Box>
       )} */}
     </>
   );
