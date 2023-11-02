@@ -70,7 +70,7 @@ module.exports = {
       getAllCards = getAllCards.map((card) => {
         const decryptedCardNumber = encDec.decrypt(card.cardNumber);
         return {
-          ...card.toObject(),
+          ...card,
           cardNumber: decryptedCardNumber,
         };
       });
