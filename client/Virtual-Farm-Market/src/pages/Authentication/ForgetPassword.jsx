@@ -94,7 +94,7 @@ function ForgetPassword() {
                 <Grid item xs>
                   <Link
                     component={RouterLink}
-                    to="/login"
+                    to="/user/login"
                     variant="body2"
                     style={{ marginTop: "1rem" }}
                   >

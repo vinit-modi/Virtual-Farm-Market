@@ -102,7 +102,7 @@ export default function SignInSide() {
 
   const handleSubmit = () => {
     dispatch({ type: CLEAR_MESSAGE_ERROR, payload: "error" });
-    navigate("/register");
+    navigate("/user/register");
   };
 
   React.useEffect(() => {
@@ -274,7 +274,7 @@ export default function SignInSide() {
             {currentPath === `/admin/login` ? null : (
               <Grid container>
                 <Grid item xs>
-                  <NavLink to="/forgetpassword" variant="body2">
+                  <NavLink to="/user/forgetpassword" variant="body2">
                     Forgot password?
                   </NavLink>
                 </Grid>

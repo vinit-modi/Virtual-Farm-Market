@@ -34,7 +34,7 @@ function ConfirmEmail() {
 
   const handleMoveToSignIn = () => {
     dispatch({ type: CLEAR_MESSAGE_ERROR, payload: "message" });
-    navigate(`/login`);
+    navigate(`/user/login`);
   };
 
   useEffect(() => {

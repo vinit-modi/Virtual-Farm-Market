@@ -30,7 +30,6 @@ function IndexForRoutes() {
       <Routes>
         {/* Page-NotFound */}
         <Route path="*" element={<PageNotFound />} />
-
         {/* ADMIN */}
         <Route path="/admin">
           <Route
@@ -46,18 +45,18 @@ function IndexForRoutes() {
           <Route exact path="*" element={<AdminHeader />} />
         </Route>
         {/* Admin-DONE */}
-
+        
         {/* USER */}
+        <Route
+          path="/confirmemail"
+          exact
+          element={
+            <PublicRoute>
+              <ConfirmEmail />
+            </PublicRoute>
+          }
+        />
         <Route path="/user">
-          <Route
-            path="confirmemail"
-            exact
-            element={
-              <PublicRoute>
-                <ConfirmEmail />
-              </PublicRoute>
-            }
-          />
           <Route
             exact
             path="login"
