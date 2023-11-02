@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  MDBBtn,
   MDBCard,
   MDBCardBody,
   MDBCol,
@@ -23,9 +22,7 @@ import {
   AlertTitle,
   Box,
   Button,
-  IconButton,
   Tooltip,
-  colors,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { Spinner } from "react-bootstrap";
@@ -35,7 +32,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
-import BookmarkIcon from '@mui/icons-material/Bookmark';
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 
 const validateYupSchema = Yup.object().shape({
   cardholderName: Yup.string().required("Required"),
@@ -89,7 +86,7 @@ function Payment() {
           <MDBCol md="10" lg="8" xl="5">
             <MDBCard className="rounded-3">
               <MDBCardBody
-                className="p-5"
+                className="p-4"
                 // style={{
                 //   backgroundImage:
                 //     "url(https://mdbcdn.b-cdn.net/img/Photos/Others/background3.webp)",
@@ -105,125 +102,127 @@ function Payment() {
                     m: 1,
                   }}
                 >
-                  <Button
-                    sx={{
-                      bgcolor: green["A700"],
-                    }}
-                    variant="contained"
-                    startIcon={addNewCard ? <RemoveIcon /> : <AddIcon />}
-                    onClick={() => setAddNewCard(!addNewCard)}
-                  >
-                    ADD NEW CARD
-                  </Button>
+                  <Tooltip title="Add New Card">
+                    <Button
+                      sx={{
+                        bgcolor: green["A700"],
+                      }}
+                      variant="contained"
+                      startIcon={addNewCard ? <RemoveIcon /> : <AddIcon />}
+                      onClick={() => setAddNewCard(!addNewCard)}
+                    >
+                      ADD NEW CARD
+                    </Button>
+                  </Tooltip>
                 </Box>
+
                 {addNewCard ? (
                   <>
-                    {
-                     
-                      payment.loading ? null : (
-                        <Formik
-                          initialValues={{
-                            cardNumber: "",
-                            cardExpiration: "",
-                            cardholderName: "",
-                            cvv: "",
-                          }}
-                          validationSchema={validateYupSchema}
-                          onSubmit={(values, { resetForm }) => {
-                            console.log(values);
-                            dispatch({
-                              type: GET_ADD_NEW_CARD_PAYMENT,
-                              payload: values,
-                            });
-                            resetForm();
-                            setAddNewCard(false);
-                          }}
-                        >
-                          {({ handleSubmit }) => (
-                            <Box
-                              sx={{
-                                border: 3,
-                                borderColor: green["A400"],
-                                borderRadius: 2,
-                                p: 2,
-                                mb: 2,
-                              }}
-                            >
-                              <Form onSubmit={handleSubmit}>
-                                <p className="fw-bold mb-4">Add new card:</p>
-                                <Box sx={{ mb: 3 }}>
-                                  {payment.error ? (
-                                    <Alert severity="error">
-                                      <AlertTitle>Error</AlertTitle>
-                                      {payment.error} —{" "}
-                                      <strong>check it out!</strong>
-                                    </Alert>
-                                  ) : null}
-                                </Box>
-                                <Field
-                                  as={MDBInput}
-                                  label="Cardholder's Name"
-                                  size="md"
-                                  name="cardholderName"
-                                  placeholder="Aysole Crisen..."
-                                />
-                                <ErrorMessage
-                                  className="text-danger small mt-2 fw-bold"
-                                  name="cardholderName"
-                                  component="div"
-                                />
-                                <MDBRow className="my-4">
-                                  <MDBCol size="6">
-                                    <Field
-                                      as={MDBInput}
-                                      label="Card Number"
-                                      name="cardNumber"
-                                      size="md"
-                                      placeholder="---/---/----"
-                                    />
-                                    <ErrorMessage
-                                      className="text-danger small mt-2 fw-bold"
-                                      name="cardNumber"
-                                      component="div"
-                                    />
-                                  </MDBCol>
-                                  <MDBCol size="3">
-                                    <Field
-                                      as={MDBInput}
-                                      label="Expire"
-                                      size="md"
-                                      name="cardExpiration"
-                                      placeholder="MM/YY"
-                                    />
-                                    <ErrorMessage
-                                      className="text-danger small mt-2 fw-bold"
-                                      name="cardExpiration"
-                                      component="div"
-                                    />
-                                  </MDBCol>
-                                  <MDBCol size="3">
-                                    <Field
-                                      as={MDBInput}
-                                      label="CVV"
-                                      name="cvv"
-                                      type="password"
-                                      size="md"
-                                      placeholder="CVV"
-                                    />
-                                    <ErrorMessage
-                                      className="text-danger small mt-2 fw-bold"
-                                      name="cvv"
-                                      component="div"
-                                    />
-                                  </MDBCol>
-                                </MDBRow>
-                                <Box
-                                  sx={{
-                                    display: "flex",
-                                    justifyContent: "end",
-                                    mr: 3,
-                                  }}
-                                >
+                    {payment.loading ? null : (
+                      <Formik
+                        initialValues={{
+                          cardNumber: "",
+                          cardExpiration: "",
+                          cardholderName: "",
+                          cvv: "",
+                        }}
+                        validationSchema={validateYupSchema}
+                        onSubmit={(values, { resetForm }) => {
+                          console.log(values);
+                          dispatch({
+                            type: GET_ADD_NEW_CARD_PAYMENT,
+                            payload: values,
+                          });
+                          resetForm();
+                          setAddNewCard(false);
+                        }}
+                      >
+                        {({ handleSubmit }) => (
+                          <Box
+                            sx={{
+                              border: 3,
+                              borderColor: green["A400"],
+                              borderRadius: 2,
+                              p: 2,
+                              mb: 2,
+                            }}
+                          >
+                            <Form onSubmit={handleSubmit}>
+                              <p className="fw-bold mb-4">Add new card:</p>
+                              <Box sx={{ mb: 3 }}>
+                                {payment.error ? (
+                                  <Alert severity="error">
+                                    <AlertTitle>Error</AlertTitle>
+                                    {payment.error} —{" "}
+                                    <strong>check it out!</strong>
+                                  </Alert>
+                                ) : null}
+                              </Box>
+                              <Field
+                                as={MDBInput}
+                                label="Cardholder's Name"
+                                size="md"
+                                name="cardholderName"
+                                placeholder="Aysole Crisen..."
+                              />
+                              <ErrorMessage
+                                className="text-danger small mt-2 fw-bold"
+                                name="cardholderName"
+                                component="div"
+                              />
+                              <MDBRow className="my-4">
+                                <MDBCol size="6">
+                                  <Field
+                                    as={MDBInput}
+                                    label="Card Number"
+                                    name="cardNumber"
+                                    size="md"
+                                    placeholder="---/---/----"
+                                  />
+                                  <ErrorMessage
+                                    className="text-danger small mt-2 fw-bold"
+                                    name="cardNumber"
+                                    component="div"
+                                  />
+                                </MDBCol>
+                                <MDBCol size="3">
+                                  <Field
+                                    as={MDBInput}
+                                    label="Expire"
+                                    size="md"
+                                    name="cardExpiration"
+                                    placeholder="MM/YY"
+                                  />
+                                  <ErrorMessage
+                                    className="text-danger small mt-2 fw-bold"
+                                    name="cardExpiration"
+                                    component="div"
+                                  />
+                                </MDBCol>
+                                <MDBCol size="3">
+                                  <Field
+                                    as={MDBInput}
+                                    label="CVV"
+                                    name="cvv"
+                                    type="password"
+                                    size="md"
+                                    placeholder="CVV"
+                                  />
+                                  <ErrorMessage
+                                    className="text-danger small mt-2 fw-bold"
+                                    name="cvv"
+                                    component="div"
+                                  />
+                                </MDBCol>
+                              </MDBRow>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "end",
+                                  mr: 3,
+                                }}
+                              >
+                                <Tooltip title="Send Card Details">
                                   <Button
                                     variant="contained"
                                     disabled={payment.loading}
@@ -248,14 +247,14 @@ function Payment() {
                                         <SendIcon />
                                       </>
                                     )}
-                                  </Button>
-                                </Box>
-                              </Form>
-                            </Box>
-                          )}
-                        </Formik>
-                      )
-                    }
+                                  </Button>{" "}
+                                </Tooltip>
+                              </Box>
+                            </Form>
+                          </Box>
+                        )}
+                      </Formik>
+                    )}
                   </>
                 ) : null}
 
@@ -273,29 +272,49 @@ function Payment() {
                                   border: 2,
                                   borderRadius: 3,
                                   px: 3,
-                                  pt: 3,
+                                  pt: 2,
                                   mb: 2,
                                   borderColor: blue[200],
-                                  display:"flex",
-                                    flexDirection:'column'
+                                  display: "flex",
+                                  flexDirection: "column",
                                 }}
-                              ><Box sx={{
-                                display:"flex",
-                                justifyContent:"right",
-                                ml:1,
-                                mb:1,
-                              }}>
-                                {
-                                    card.isCardDefault ?  <BookmarkIcon sx={{
-                                    color:green['A400']
-                                }} /> : null}
-                              </Box>
+                              >
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    justifyContent: "right",
+                                    ml: 1,
+                                    mb: 1,
+                                  }}
+                                >
+                                  {card.isCardDefault ? (
+                                    <Tooltip title="Default Card">
+                                      <BookmarkIcon
+                                        sx={{
+                                          color: green["A700"],
+                                          "&:hover": {
+                                            cursor: "pointer",
+                                          },
+                                        }}
+                                      />
+                                    </Tooltip>
+                                  ) : null}
+                                </Box>
                                 <div className="d-flex flex-row align-items-center mb-4 pb-1">
                                   <img
                                     className="img-fluid"
                                     src="https://img.icons8.com/color/48/000000/mastercard-logo.png"
                                   />
                                   <div className="flex-fill mx-3">
+                                    <div className="form-outline">
+                                      <MDBInput
+                                        label="Card Holder Name"
+                                        id="form1"
+                                        type="text"
+                                        size="lg"
+                                        value={`${card.cardholderName}`}
+                                      />
+                                    </div>
                                     <div className="form-outline">
                                       <MDBInput
                                         label="Card Number"
@@ -316,7 +335,6 @@ function Payment() {
                                           })
                                         }
                                         sx={{
-                                  
                                           "&:hover": {
                                             bgcolor: green[500],
                                             color: "white",
@@ -350,7 +368,9 @@ function Payment() {
                               </Box>
                             ))}
                           </>
-                        ) : <>No Card Found. Please add new card.</>}
+                        ) : (
+                          <>No Card Found. Please add new card.</>
+                        )}
                       </>
                     }
                   </Box>
