@@ -110,6 +110,7 @@ function UserHeader() {
 
   useEffect(() => {
     dispatch({ type: GET_USER_PROFILE_IMAGE });
+    dispatch({ type: GET_ALL_NOTI });
     dispatch({ type: GET_COUNT_OF_NOTI });
   }, []);
 
@@ -129,6 +130,7 @@ function UserHeader() {
       dispatch({ type: GET_OBJ_NOTI, payload: { _id: id } });
       // be sure that I have used 'GET_OBJ_NOTI' for just to set {isRead: true}
     }
+    console.log(id);
     setExpandContentInNotification(id);
   };
 
@@ -304,7 +306,7 @@ function UserHeader() {
                               onClick={handleAllDeleteNotifications}
                               variant="contained"
                               size="small"
-                              disabled={!(notification.allNoti && ![])} //CHECK WHEN NOTIFICATION COMES
+                              disabled={!notification.allNoti.length} //CHECK WHEN NOTIFICATION COMES
                               sx={{
                                 bgcolor: red[500],
                                 "&:hover": {
@@ -332,8 +334,8 @@ function UserHeader() {
                           minWidth: 360,
                         }}
                       >
-                        {notification.loading ? null : notification.allNoti && //CHECK WHEN NOTIFICATION COMES
-                          ![] ? (
+                        {notification.loading ? null : notification.allNoti
+                            .length ? (
                           <List
                             sx={{
                               width: "100%",
