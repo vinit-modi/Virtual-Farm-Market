@@ -10,6 +10,7 @@ import {
 } from "../../Redux/Reducers/authReducer";
 import EditIcon from "@mui/icons-material/Edit";
 import {
+  CLEAR_MESSAGE_USERREDUCER,
   GET_UPDATED_USER_DETAIL,
   GET_USER,
 } from "../../Redux/Reducers/userReducer";
@@ -26,7 +27,7 @@ const validationSchema = Yup.object({
   phoneNumber: Yup.string().required("Phone number is required"),
   city: Yup.string().required("City is required"),
   province: Yup.string().required("Province is required"),
-  profilePicture: Yup.string().required("Profile Picture is required"),
+  // profilePicture: Yup.string().required("Profile Picture is required"),
 });
 
 function UpdateUserProfile() {
@@ -35,7 +36,7 @@ function UpdateUserProfile() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const param_id = "651e94a6fb0b84e048c1b1b7";
+  const param_id = auth._idOfLoggedIn;
 
   const [provinceList, setProvinceList] = useState();
   const [cityList, setCityList] = useState();
@@ -59,12 +60,19 @@ function UpdateUserProfile() {
   };
 
   useEffect(() => {
+    if (userDetails.message) {
+      navigate("/user/dashboard");
+    }
+  }, [userDetails.message]);
+
+  useEffect(() => {
     const value = {
       _id: param_id,
     };
     dispatch({ type: GET_PROVINCE_LIST });
     dispatch({ type: GET_CITY_LIST });
     dispatch({ type: GET_USER, payload: value });
+    dispatch({ type: CLEAR_MESSAGE_USERREDUCER });
   }, []);
 
   useEffect(() => {
@@ -112,6 +120,7 @@ function UpdateUserProfile() {
           </div>
 
           <Formik
+            enableReinitialize
             initialValues={
               userDetails?.userDetails
                 ? {
@@ -119,7 +128,7 @@ function UpdateUserProfile() {
                     phoneNumber: userDetails.userDetails?.phoneNumber,
                     city: userDetails.userDetails?.city,
                     province: userDetails.userDetails?.province,
-                    profilePicture: profileEmptyImage,
+                    profilePicture: auth.userProfileImage,
                   }
                 : {
                     name: "",
@@ -140,7 +149,6 @@ function UpdateUserProfile() {
               };
               console.log(value);
               dispatch({ type: GET_UPDATED_USER_DETAIL, payload: value });
-              navigate("/dashboard");
             }}
           >
             {({ handleChange, setFieldValue }) => (
@@ -158,7 +166,9 @@ function UpdateUserProfile() {
                         }}
                         onClick={() => setImageCrop(true)}
                         src={
-                          profileFinal.length ? profileFinal : profileEmptyImage
+                          profileFinal.length
+                            ? profileFinal
+                            : auth.userProfileImage
                         }
                       />
                     </div>

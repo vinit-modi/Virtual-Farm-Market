@@ -16,7 +16,7 @@ export function* fetchGetUser({ payload }) {
     const response = yield call(requestGetUserDetails, payload);
 
     if (response.status === 200) {
-      yield put(setUser(response.data.data));
+      yield put(setUser(response.data));
     }
   } catch (error) {
     yield put(failRequestUserDetails(error?.message));
@@ -27,7 +27,8 @@ export function* fetchUpdatedUserDetail({ payload }) {
     yield put(makeRequestUserDetails());
     const response = yield call(requestUpdatedUserDetail, payload);
     if (response.status === 200) {
-      yield put(setUpdatedUserDetail(response.data.message));
+      const dataObj = { message: response.data.message, data:response.data.data}
+      yield put(setUpdatedUserDetail(dataObj));
     }
   } catch (error) {
     yield put(failRequestUserDetails(error?.message));

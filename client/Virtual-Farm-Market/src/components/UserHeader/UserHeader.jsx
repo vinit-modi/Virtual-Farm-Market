@@ -44,6 +44,9 @@ import {
 } from "../../Redux/Reducers/userNotificationReducer";
 import UserNotification from "../UserNotification/UserNotification";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
+import axios from "axios";
+import { useState } from "react";
+import { CLEAR_MESSAGE_USERREDUCER } from "../../Redux/Reducers/userReducer";
 
 const settings = ["Update Profile", "Change Password", `Logout`];
 const settingsIcons = [<EditIcon />, <ManageAccountsIcon />, <LogoutIcon />];
@@ -66,6 +69,7 @@ function UserHeader() {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const notification = useSelector((state) => state.notification);
+  const userDetails = useSelector((state) => state.userDetails);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -115,6 +119,13 @@ function UserHeader() {
   }, []);
 
   useEffect(() => {
+    dispatch({ type: GET_USER_PROFILE_IMAGE });
+    dispatch({ type: CLEAR_MESSAGE_USERREDUCER });
+
+    //clear message
+  }, [userDetails.message]);
+
+  useEffect(() => {
     if (!notification.notiCount) {
     }
   }, [!notification.notiCount]);
@@ -130,7 +141,6 @@ function UserHeader() {
       dispatch({ type: GET_OBJ_NOTI, payload: { _id: id } });
       // be sure that I have used 'GET_OBJ_NOTI' for just to set {isRead: true}
     }
-    console.log(id);
     setExpandContentInNotification(id);
   };
 
@@ -383,7 +393,7 @@ function UserHeader() {
 
               <Tooltip title="Open profile">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar src={`${auth.userProfileImage}`} />
+                  <Avatar src={auth.userProfileImage} alt="User Profile" />
                 </IconButton>
               </Tooltip>
 

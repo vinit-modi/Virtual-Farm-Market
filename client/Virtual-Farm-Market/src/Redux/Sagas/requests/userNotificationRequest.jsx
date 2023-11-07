@@ -4,24 +4,22 @@ export const requestCountNoti = async () => {
   const response = await Axios.get(`/api/notificationCount`);
   return response;
 };
-export const requestAllNoti= async () => {
+export const requestAllNoti = async () => {
   const response = await Axios.get(`/api/getAllNotification`);
   return response;
 };
 
-export const requestObjNoti= async (payload) => {
-  const response = await Axios.post(`/api/getNotification`,payload);
+export const requestObjNoti = async (payload) => {
+  const response = await Axios.post(`/api/getNotification`, payload);
   return response;
 };
 
-
-export const requestDeleteNoti= async (payload) => {
-  const response = await Axios.post(`/api/deleteNotification`,payload);
+export const requestDeleteNoti = async (payload) => {
+  const response = await Axios.post(`/api/deleteNotification`, payload);
   return response;
 };
 
-export const requestAllDeleteNoti= async () => {
+export const requestAllDeleteNoti = async () => {
   const response = await Axios.get(`/api/clearAllNotification`);
   return response;
 };
-

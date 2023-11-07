@@ -1,5 +1,6 @@
 export const MAKE_REQUEST_USER_DETAILS = "MAKE_REQUEST_USER_DETAILS";
 export const FAIL_MESSAGE_USER_DETAILS = "FAIL_MESSAGE_USER_DETAILS";
+export const CLEAR_MESSAGE_USERREDUCER = "CLEAR_MESSAGE_USERREDUCER";
 export const GET_USER = "GET_USER";
 export const SET_USER = "SET_USER";
 export const GET_UPDATED_USER_DETAIL = "GET_UPDATED_USER_DETAIL";
@@ -64,10 +65,15 @@ export const userReducer = (state = initialState, action) => {
         userDetails: null,
         message: null,
       };
+    case CLEAR_MESSAGE_USERREDUCER:
+      return {
+        ...state,
+        message: null,
+      };
     case SET_USER:
       return {
         ...state,
-        userDetails: action.payload,
+        userDetails: action.payload.data,
         loading: false,
         error: null,
       };
@@ -77,7 +83,7 @@ export const userReducer = (state = initialState, action) => {
         loading: false,
         error: null,
         userDetails: null,
-        message: action.payload,
+        message: action.payload.message,
       };
     default:
       return state;

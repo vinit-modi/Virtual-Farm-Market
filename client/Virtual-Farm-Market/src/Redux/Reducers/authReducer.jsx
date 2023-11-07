@@ -112,6 +112,7 @@ const authInitialState = {
   cityList: null,
   provinceList: null,
   isEmailConfirmed: null,
+  _idOfLoggedIn : null,
   userId: "",
   userProfileImage:null
 };
@@ -161,6 +162,7 @@ export const authReducer = (state = authInitialState, action) => {
         ...state,
         message: action.payload.message,
         token: action.payload.data.accessToken,
+        _idOfLoggedIn:action.payload.data._id,
         loading: false,
         error: null,
       };
