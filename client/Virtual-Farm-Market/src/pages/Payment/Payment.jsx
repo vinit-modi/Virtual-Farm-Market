@@ -139,7 +139,7 @@ function Payment() {
                               borderRadius: 2,
                               p: 2,
                               mb: 2,
-                              boxShadow: 10
+                              boxShadow: 10,
                             }}
                           >
                             <Form onSubmit={handleSubmit}>
@@ -272,7 +272,7 @@ function Payment() {
                                   borderColor: blue[200],
                                   display: "flex",
                                   flexDirection: "column",
-                                   boxShadow: 4 
+                                  boxShadow: 4,
                                 }}
                                 key={card._id}
                               >

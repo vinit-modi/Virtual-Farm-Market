@@ -405,7 +405,7 @@ function UserHeader() {
               >
                 {/* Manu FOR USER PROFILE PICTURE */}
                 {settings.map((setting, index) => (
-                  <React.Fragment key={index}>
+                  <div key={index}>
                     {setting === `Logout` ? (
                       <>
                         <Divider />
@@ -435,7 +435,7 @@ function UserHeader() {
                         <Typography textAlign="center">{setting}</Typography>
                       </MenuItem>
                     )}
-                  </React.Fragment>
+                  </div>
                 ))}
               </Menu>
             </Box>
