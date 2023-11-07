@@ -13,7 +13,7 @@ const UserSchema = new mongoose.Schema({
   updatedAt: { type: String, default: "" },
   profilePicture: {
     type: String,
-    default: "server/uploads/profilePicture/userImage.jpeg",
+    default: "http://localhost:3001/uploads/profilePicture/userImage.jpeg",
   },
   isEmailConfirmed: { type: Boolean, default: false },
   emailConfirmationToken: { type: String, default: "" },
