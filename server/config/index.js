@@ -8,4 +8,6 @@ module.exports = {
 
   secret: "VirtualFarmMarket", // jwt secret key
   jwtExpirationTime: 7 * 24 * 60 * 60,
+
+  projectUrl: "http://localhost:3001/",
 };

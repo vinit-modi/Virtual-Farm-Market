@@ -238,7 +238,7 @@ module.exports = {
       try {
         if (req.file) {
           req.body.profilePicture =
-            "http://localhost:3001/uploads/profilePicture/" + req.file.filename;
+            `${config.projectUrl}uploads/profilePicture/` + req.file.filename;
         }
 
         const updatedUser = await UserModel.findByIdAndUpdate(

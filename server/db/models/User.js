@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const DS = require("../../services/date");
+const config = require("../../config/index");
 
 const UserSchema = new mongoose.Schema({
   name: String,
@@ -13,7 +14,7 @@ const UserSchema = new mongoose.Schema({
   updatedAt: { type: String, default: "" },
   profilePicture: {
     type: String,
-    default: "http://localhost:3001/uploads/profilePicture/userImage.jpeg",
+    default: `${config.projectUrl}uploads/profilePicture/userImage.jpeg`,
   },
   isEmailConfirmed: { type: Boolean, default: false },
   emailConfirmationToken: { type: String, default: "" },
