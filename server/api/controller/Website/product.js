@@ -4,6 +4,7 @@ const { check } = require("express-validator");
 const config = require("../../../config/index");
 const ProductModel = require("../../../db/models/Product");
 const upload = require("../../../utils/uploadImage");
+const CategoryModel = require("../../../db/models/Category");
 const productImagesUpload = upload("../uploads/productImages/");
 
 module.exports = {
@@ -15,6 +16,22 @@ module.exports = {
         status: "success",
         message: "All Units.",
         data: getAllUnits,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
+
+  categoriesForProduct: async (req, res) => {
+    try {
+      let getCategories = await CategoryModel.find({});
+      return res.status(200).json({
+        status: "success",
+        message: "All categories.",
+        data: getCategories,
       });
     } catch (error) {
       return res.status(500).json({
