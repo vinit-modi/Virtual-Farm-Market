@@ -13,7 +13,8 @@ const ProductSchema = new mongoose.Schema({
     ref: "User",
   },
   images: [],
-  location: { type: String },
+  city: { type: String },
+  province: { type: String },
   createdAt: { type: String, default: "" },
   updatedAt: { type: String, default: "" },
 });
