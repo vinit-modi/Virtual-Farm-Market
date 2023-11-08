@@ -149,4 +149,22 @@ module.exports = {
       });
     }
   },
+
+  cartItemsCount: async (req, res) => {
+    try {
+      let getCount = await CartModel.find({
+        user: req.userInfo._id,
+      }).count();
+      return res.status(200).json({
+        status: "success",
+        message: "Total Cart item count",
+        data: getCount,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
 };
