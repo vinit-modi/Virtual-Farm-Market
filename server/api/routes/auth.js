@@ -69,5 +69,6 @@ router.post("/getProduct", ProductController.getProduct);
 
 router.post("/addToCart", CartController.addToCart);
 router.post("/removeProduct", CartController.removeProduct);
+router.get("/getCartProducts", CartController.getCartProducts);
 
 module.exports = router;

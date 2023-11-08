@@ -55,7 +55,7 @@ module.exports = {
 
   removeProduct: async (req, res) => {
     const validationRules = [
-      check("productId").notEmpty().withMessage("Product Id must be provided"),
+      check("_id").notEmpty().withMessage("_Id must be provided"),
     ];
     await Promise.all(validationRules.map((rule) => rule.run(req)));
     const errors = validationResult(req);
@@ -64,10 +64,8 @@ module.exports = {
     }
 
     try {
-      const productId = new mongoose.Types.ObjectId(req.body.productId);
       const getProduct = await CartModel.findOne({
-        user: req.userInfo._id,
-        product: productId,
+        _id: req.body._id,
       });
 
       if (!getProduct) {
@@ -77,11 +75,73 @@ module.exports = {
         });
       } else {
         await CartModel.deleteOne({
-          user: req.userInfo._id,
-          product: productId,
+          _id: req.body._id,
         });
-        res.json({ message: "Product removed successfully." });
+        return res.status(200).json({
+          status: "success",
+          message: "Product removed successfully.",
+        });
       }
+    } catch (error) {
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
+
+  getCartProducts: async (req, res) => {
+    try {
+      const userId = new mongoose.Types.ObjectId(req.userInfo._id);
+      const getProducts = await CartModel.aggregate([
+        {
+          $match: {
+            user: userId,
+          },
+        },
+        {
+          $lookup: {
+            from: "products",
+            localField: "product",
+            foreignField: "_id",
+            as: "product",
+          },
+        },
+        {
+          $unwind: {
+            path: "$product",
+            includeArrayIndex: "string",
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+        {
+          $addFields: {
+            "product.seller": {
+              $toObjectId: "$product.seller",
+            },
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "product.seller",
+            foreignField: "_id",
+            as: "seller",
+          },
+        },
+        {
+          $unwind: {
+            path: "$seller",
+            includeArrayIndex: "string",
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+      ]);
+      return res.status(200).json({
+        status: "success",
+        message: "Cart details",
+        data: getProducts,
+      });
     } catch (error) {
       return res.status(500).json({
         status: "error",
