@@ -28,7 +28,7 @@ module.exports = {
 
   categoriesForProduct: async (req, res) => {
     try {
-      let getCategories = await CategoryModel.find({});
+      let getCategories = await CategoryModel.find({ isActive: true });
       return res.status(200).json({
         status: "success",
         message: "All categories.",
