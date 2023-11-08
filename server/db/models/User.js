@@ -9,6 +9,7 @@ const UserSchema = new mongoose.Schema({
   phoneNumber: String,
   city: String,
   province: String,
+  userType: { type: String, default: "Customer" },
   accessToken: { type: String, default: "" },
   createdAt: { type: String, default: "" },
   updatedAt: { type: String, default: "" },

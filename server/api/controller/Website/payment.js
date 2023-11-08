@@ -11,7 +11,7 @@ module.exports = {
         check("cardNumber")
           .notEmpty()
           .withMessage("Card Number must be provided")
-          .isLength({ min: 16 })
+          .isLength({ min: 15 })
           .withMessage("Card number must be 6 characters long"),
         check("cardExpiration")
           .notEmpty()
