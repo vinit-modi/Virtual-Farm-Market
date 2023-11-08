@@ -9,6 +9,7 @@ const AdCmsController = require("../controller/Admin/adCms");
 const PaymentController = require("../controller/Website/payment");
 const NotificationController = require("../controller/Website/notification");
 const ProductController = require("../controller/Website/product");
+const CartController = require("../controller/Website/cart");
 
 router.post("/adLogin", AdUserController.adLogin);
 router.post("/adGetAllUser", AdUserController.getAllUser);
@@ -65,5 +66,8 @@ router.post("/addProduct", ProductController.addProduct);
 router.get("/categoriesForProduct", ProductController.categoriesForProduct);
 router.get("/getAllProducts", ProductController.getAllProducts);
 router.post("/getProduct", ProductController.getProduct);
+
+router.post("/addToCart", CartController.addToCart);
+router.post("/removeProduct", CartController.removeProduct);
 
 module.exports = router;
