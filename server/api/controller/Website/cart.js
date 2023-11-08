@@ -52,4 +52,41 @@ module.exports = {
       });
     }
   },
+
+  removeProduct: async (req, res) => {
+    const validationRules = [
+      check("productId").notEmpty().withMessage("Product Id must be provided"),
+    ];
+    await Promise.all(validationRules.map((rule) => rule.run(req)));
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ message: errors.array()[0].msg });
+    }
+
+    try {
+      const productId = new mongoose.Types.ObjectId(req.body.productId);
+      const getProduct = await CartModel.findOne({
+        user: req.userInfo._id,
+        product: productId,
+      });
+
+      if (!getProduct) {
+        return res.status(401).json({
+          status: "error",
+          message: "Product not found.",
+        });
+      } else {
+        await CartModel.deleteOne({
+          user: req.userInfo._id,
+          product: productId,
+        });
+        res.json({ message: "Product removed successfully." });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
 };
