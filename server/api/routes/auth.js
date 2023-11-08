@@ -64,5 +64,6 @@ router.get("/getAllUnits", ProductController.getAllUnits);
 router.post("/addProduct", ProductController.addProduct);
 router.get("/categoriesForProduct", ProductController.categoriesForProduct);
 router.get("/getAllProducts", ProductController.getAllProducts);
+router.post("/getProduct", ProductController.getProduct);
 
 module.exports = router;

@@ -6,6 +6,7 @@ const ProductModel = require("../../../db/models/Product");
 const upload = require("../../../utils/uploadImage");
 const CategoryModel = require("../../../db/models/Category");
 const productImagesUpload = upload("../uploads/productImages/");
+const { ObjectId } = require("mongodb");
 
 module.exports = {
   getAllUnits: async (req, res) => {
@@ -84,6 +85,53 @@ module.exports = {
         status: "success",
         message: "List of all Products",
         data: getAllProducts,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
+
+  getProduct: async (req, res) => {
+    try {
+      const validationRules = [
+        check("_id").notEmpty().withMessage("_id must be provided"),
+      ];
+      await Promise.all(validationRules.map((rule) => rule.run(req)));
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ message: errors.array()[0].msg });
+      }
+
+      const objectId = new ObjectId(req.body._id);
+      let getProduct = await ProductModel.aggregate([
+        {
+          $match: {
+            _id: objectId,
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "seller",
+            foreignField: "_id",
+            as: "seller",
+          },
+        },
+        {
+          $unwind: {
+            path: "$seller",
+            includeArrayIndex: "string",
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+      ]);
+      return res.status(200).json({
+        status: "success",
+        message: "Product Details",
+        data: getProduct[0],
       });
     } catch (error) {
       return res.status(500).json({
