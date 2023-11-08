@@ -20,6 +20,7 @@ const emailTemplatePath = path.join(
 );
 const emailTemplate = fs.readFileSync(emailTemplatePath, "utf8");
 const notificationContent = require("../../../utils/notificationContent");
+const profilePictureUpload = upload("../uploads/profilePicture/");
 
 module.exports = {
   signUp: async (req, res) => {
@@ -230,8 +231,9 @@ module.exports = {
   },
 
   updateProfile: async (req, res) => {
-    upload.single("profilePicture")(req, res, async (err) => {
+    profilePictureUpload.single("profilePicture")(req, res, async (err) => {
       if (err) {
+        console.log(err);
         return res.status(400).json({ message: "Error uploading file" });
       }
 
