@@ -104,38 +104,6 @@ function UserHeader() {
     setAnchorElUser(null);
   };
 
-  useEffect(() => {
-    if (notification.message) {
-      dispatch({ type: GET_COUNT_OF_NOTI });
-      dispatch({ type: GET_ALL_NOTI });
-      dispatch({ type: CLEAR_MESSAGE_NOTI });
-    }
-  }, [notification.message]);
-
-  useEffect(() => {
-    dispatch({ type: GET_USER_PROFILE_IMAGE });
-    dispatch({ type: GET_ALL_NOTI });
-    dispatch({ type: GET_COUNT_OF_NOTI });
-  }, []);
-
-  useEffect(() => {
-    dispatch({ type: GET_USER_PROFILE_IMAGE });
-    dispatch({ type: CLEAR_MESSAGE_USERREDUCER });
-
-    //clear message
-  }, [userDetails.message]);
-
-  useEffect(() => {
-    if (!notification.notiCount) {
-    }
-  }, [!notification.notiCount]);
-
-  useEffect(() => {
-    if (Boolean(anchorEl)) {
-      dispatch({ type: GET_ALL_NOTI });
-    }
-  }, [Boolean(anchorEl)]);
-
   const handleClickNotificationRead = (id) => {
     if (id !== null) {
       dispatch({ type: GET_OBJ_NOTI, payload: { _id: id } });
@@ -160,6 +128,36 @@ function UserHeader() {
     // dispatch({ type: GET_ALL_NOTI });
     handleClosePopover();
   };
+
+  useEffect(() => {
+    if (notification.message) {
+      dispatch({ type: GET_COUNT_OF_NOTI });
+      dispatch({ type: GET_ALL_NOTI });
+      dispatch({ type: CLEAR_MESSAGE_NOTI });
+    }
+  }, [notification.message]);
+
+  useEffect(() => {
+    dispatch({ type: GET_USER_PROFILE_IMAGE });
+    dispatch({ type: GET_ALL_NOTI });
+    dispatch({ type: GET_COUNT_OF_NOTI });
+  }, []);
+
+  useEffect(() => {
+    dispatch({ type: GET_USER_PROFILE_IMAGE });
+    dispatch({ type: CLEAR_MESSAGE_USERREDUCER });
+  }, [userDetails.message]);
+
+  useEffect(() => {
+    if (!notification.notiCount) {
+    }
+  }, [!notification.notiCount]);
+
+  useEffect(() => {
+    if (Boolean(anchorEl)) {
+      dispatch({ type: GET_ALL_NOTI });
+    }
+  }, [Boolean(anchorEl)]);
 
   return (
     <>
