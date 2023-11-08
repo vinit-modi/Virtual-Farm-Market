@@ -31,6 +31,6 @@ ProductSchema.pre("findOneAndUpdate", function (next) {
   next();
 });
 
-const UserModel = mongoose.model("product", ProductSchema);
+const ProductModel = mongoose.model("product", ProductSchema);
 
-module.exports = UserModel;
+module.exports = ProductModel;

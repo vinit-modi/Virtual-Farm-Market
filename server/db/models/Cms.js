@@ -22,6 +22,6 @@ CmsSchema.pre("findOneAndUpdate", function (next) {
   next();
 });
 
-const UserModel = mongoose.model("cms", CmsSchema);
+const CmsModel = mongoose.model("cms", CmsSchema);
 
-module.exports = UserModel;
+module.exports = CmsModel;

@@ -21,6 +21,6 @@ FaqSchema.pre("findOneAndUpdate", function (next) {
   next();
 });
 
-const UserModel = mongoose.model("faq", FaqSchema);
+const FaqModel = mongoose.model("faq", FaqSchema);
 
-module.exports = UserModel;
+module.exports = FaqModel;

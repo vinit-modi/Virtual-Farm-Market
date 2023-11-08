@@ -7,6 +7,6 @@ const AdminSchema = new mongoose.Schema({
   phoneNumber: String,
 });
 
-const UserModel = mongoose.model("admin", AdminSchema);
+const AdminModel = mongoose.model("admin", AdminSchema);
 
-module.exports = UserModel;
+module.exports = AdminModel;

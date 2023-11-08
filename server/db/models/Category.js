@@ -21,6 +21,6 @@ CategorySchema.pre("findOneAndUpdate", function (next) {
   next();
 });
 
-const UserModel = mongoose.model("category", CategorySchema);
+const CategoryModel = mongoose.model("category", CategorySchema);
 
-module.exports = UserModel;
+module.exports = CategoryModel;

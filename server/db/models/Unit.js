@@ -20,6 +20,6 @@ UnitSchema.pre("findOneAndUpdate", function (next) {
   next();
 });
 
-const UserModel = mongoose.model("unit", UnitSchema);
+const UnitModel = mongoose.model("unit", UnitSchema);
 
-module.exports = UserModel;
+module.exports = UnitModel;

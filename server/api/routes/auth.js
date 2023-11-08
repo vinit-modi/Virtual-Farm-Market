@@ -8,6 +8,7 @@ const AdFaqController = require("../controller/Admin/adFaq");
 const AdCmsController = require("../controller/Admin/adCms");
 const PaymentController = require("../controller/Website/payment");
 const NotificationController = require("../controller/Website/notification");
+const ProductController = require("../controller/Website/product");
 
 router.post("/adLogin", AdUserController.adLogin);
 router.post("/adGetAllUser", AdUserController.getAllUser);
@@ -58,5 +59,7 @@ router.post("/getNotification", NotificationController.getNotification);
 router.post("/deleteNotification", NotificationController.deleteNotification);
 router.get("/clearAllNotification", NotificationController.clearAll);
 router.get("/notificationCount", NotificationController.notificationCount);
+
+router.get("/getAllUnits", ProductController.getAllUnits);
 
 module.exports = router;
