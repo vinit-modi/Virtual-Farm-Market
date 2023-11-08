@@ -1,7 +1,5 @@
 const { validationResult } = require("express-validator");
 const { check } = require("express-validator");
-const config = require("../../../config/index");
-const { ObjectId } = require("mongodb");
 const CartModel = require("../../../db/models/Cart");
 const mongoose = require("mongoose");
 

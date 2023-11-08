@@ -1,7 +1,6 @@
 const CardModel = require("../../../db/models/Card");
 const { validationResult } = require("express-validator");
 const { check } = require("express-validator");
-const config = require("../../../config/index");
 const encDec = require("../../../services/enDe");
 
 module.exports = {
