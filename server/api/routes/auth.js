@@ -63,5 +63,6 @@ router.get("/notificationCount", NotificationController.notificationCount);
 router.get("/getAllUnits", ProductController.getAllUnits);
 router.post("/addProduct", ProductController.addProduct);
 router.get("/categoriesForProduct", ProductController.categoriesForProduct);
+router.get("/getAllProducts", ProductController.getAllProducts);
 
 module.exports = router;
