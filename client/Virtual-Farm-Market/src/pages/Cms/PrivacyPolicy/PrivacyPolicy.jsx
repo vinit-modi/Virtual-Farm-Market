@@ -18,7 +18,7 @@ function PrivacyPolicy() {
   return (
     <>
       {cms.loading && !cms.cmsDetails ? null : (
-        <div className="main">
+        <div className="main"  style={{ whiteSpace: 'pre-line' }}>
           <div className="container">
             <div className="title">
               <Typography variant="h2">{cms.cmsDetails?.titleValue}</Typography>

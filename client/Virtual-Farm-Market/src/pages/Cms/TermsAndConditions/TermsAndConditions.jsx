@@ -25,7 +25,7 @@ function TermsAndConditions() {
               <Typography variant="h2">{cms.cmsDetails?.titleValue}</Typography>
             </div>
             <div className="section">
-              <Typography variant="subtitle1">
+              <Typography variant="subtitle1" style={{ whiteSpace: 'pre-line' }} >
                 {cms.cmsDetails?.content}
               </Typography>
             </div>

@@ -144,8 +144,8 @@ function UserHeader() {
   }, []);
 
   useEffect(() => {
-    dispatch({ type: GET_USER_PROFILE_IMAGE });
-    dispatch({ type: CLEAR_MESSAGE_USERREDUCER });
+    // dispatch({ type: GET_USER_PROFILE_IMAGE });
+    // dispatch({ type: CLEAR_MESSAGE_USERREDUCER });
   }, [userDetails.message]);
 
   useEffect(() => {
@@ -458,71 +458,73 @@ function UserHeader() {
       ) : (<Box sx={{
         m:2
       }}> */}
-      <Routes>
-        <Route
-          exact
-          path="changepassword"
-          element={
-            <ProtectedRoute>
-              <ChangePassword />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          exact
-          path="dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          exact
-          path="updateuserprofile"
-          element={
-            <ProtectedRoute>
-              <UpdateUserProfile />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          exact
-          path="faqs"
-          element={
-            <ProtectedRoute>
-              <FaqsUser />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          exact
-          path="payment"
-          element={
-            <ProtectedRoute>
-              <Payment />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          exact
-          path="termsandconditions"
-          element={
-            <ProtectedRoute>
-              <TermsAndConditions />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          exact
-          path="privacypolicy"
-          element={
-            <ProtectedRoute>
-              <PrivacyPolicy />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+      <div>
+        <Routes>
+          <Route
+            exact
+            path="changepassword"
+            element={
+              <ProtectedRoute>
+                <ChangePassword />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="updateuserprofile"
+            element={
+              <ProtectedRoute>
+                <UpdateUserProfile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="faqs"
+            element={
+              <ProtectedRoute>
+                <FaqsUser />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="payment"
+            element={
+              <ProtectedRoute>
+                <Payment />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="termsandconditions"
+            element={
+              <ProtectedRoute>
+                <TermsAndConditions />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="privacypolicy"
+            element={
+              <ProtectedRoute>
+                <PrivacyPolicy />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </div>
       {/* </Box>
       )} */}
     </>

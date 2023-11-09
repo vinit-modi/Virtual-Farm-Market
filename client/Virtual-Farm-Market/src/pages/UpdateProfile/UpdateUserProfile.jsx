@@ -58,13 +58,6 @@ function UpdateUserProfile() {
     setProfile([{ pview }]);
     setImageCrop(false);
   };
-
-  useEffect(() => {
-    if (userDetails.message) {
-      navigate("/user/dashboard");
-    }
-  }, [userDetails.message]);
-
   useEffect(() => {
     const value = {
       _id: param_id,
@@ -72,8 +65,15 @@ function UpdateUserProfile() {
     dispatch({ type: GET_PROVINCE_LIST });
     dispatch({ type: GET_CITY_LIST });
     dispatch({ type: GET_USER, payload: value });
-    dispatch({ type: CLEAR_MESSAGE_USERREDUCER });
+    // dispatch({ type: CLEAR_MESSAGE_USERREDUCER });
   }, []);
+
+  useEffect(() => {
+    if (userDetails.message) {
+      navigate("/user/dashboard");
+    }
+  }, [userDetails.message]);
+
 
   useEffect(() => {
     if (auth.cityList || auth.provinceList) {
