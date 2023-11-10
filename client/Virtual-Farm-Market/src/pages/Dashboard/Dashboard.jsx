@@ -6,12 +6,24 @@ import { CLEAR_MESSAGE_ERROR_CHANGE_PASSWORD } from "../../Redux/Reducers/handle
 import { toast } from "react-toastify";
 import { CLEAR_MESSAGE_USERREDUCER } from "../../Redux/Reducers/userReducer";
 import { GET_USER_PROFILE_IMAGE } from "../../Redux/Reducers/authReducer";
+import {
+  GET_ALL_PRODUCTS,
+  GET_CATEGORIES_PRODUCT,
+} from "../../Redux/Reducers/productReducer";
+import { Box } from "@mui/material";
+import UserProductCategoryTabs from "../../components/UserProductCategoryTabs/UserProductCategoryTabs";
 
 function Dashboard() {
+  const navigate = useNavigate();
   const setPassword = useSelector((state) => state.setPassword);
   const userDetails = useSelector((state) => state.userDetails);
-  const navigate = useNavigate();
+  const product = useSelector((state) => state.product);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({ type: GET_CATEGORIES_PRODUCT });
+    dispatch({ type: GET_ALL_PRODUCTS });
+  }, []);
 
   //Make it perfect
   useEffect(() => {
@@ -33,7 +45,13 @@ function Dashboard() {
     }
   }, [userDetails.message]);
 
-  return <>Dashboard</>;
+  return (
+    <>
+      <Box>
+        <UserProductCategoryTabs {...{ product }} />
+      </Box>
+    </>
+  );
 }
 
 export default Dashboard;
