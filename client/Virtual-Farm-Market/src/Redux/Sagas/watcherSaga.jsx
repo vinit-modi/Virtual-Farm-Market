@@ -94,8 +94,22 @@ import {
   fetchDeleteCardPayment,
   fetchMakeDefaultCardPayment,
 } from "./handlers/paymentHandler";
-import { GET_ALL_DELETE_NOTI, GET_ALL_NOTI, GET_COUNT_OF_NOTI, GET_DELETE_NOTI, GET_OBJ_NOTI } from "../Reducers/userNotificationReducer";
-import { fetchAllDeleteNofi, fetchAllNofi, fetchCountNofi, fetchDeleteNofi, fetchObjNofi } from "./handlers/userNotificationHandler";
+import {
+  GET_ALL_DELETE_NOTI,
+  GET_ALL_NOTI,
+  GET_COUNT_OF_NOTI,
+  GET_DELETE_NOTI,
+  GET_OBJ_NOTI,
+} from "../Reducers/userNotificationReducer";
+import {
+  fetchAllDeleteNofi,
+  fetchAllNofi,
+  fetchCountNofi,
+  fetchDeleteNofi,
+  fetchObjNofi,
+} from "./handlers/userNotificationHandler";
+import { GET_ALL_PRODUCTS, GET_CATEGORIES_PRODUCT } from "../Reducers/productReducer";
+import { fetchGetAllProduct, fetchGetCategoryListProduct } from "./handlers/productHandler";
 
 function* authStuff() {
   yield takeLatest(POST_SIGNUP_USER, fetchPostSignUpUser);
@@ -164,6 +178,11 @@ function* notification() {
   yield takeLatest(GET_ALL_DELETE_NOTI, fetchAllDeleteNofi);
 }
 
+function* product() {
+  yield takeLatest(GET_CATEGORIES_PRODUCT, fetchGetCategoryListProduct);
+  yield takeLatest(GET_ALL_PRODUCTS, fetchGetAllProduct);
+}
+
 const authSaga = [fork(authStuff)];
 const changePasswordSaga = [fork(changePassword)];
 const userDetailsSaga = [fork(userDetails)];
@@ -173,6 +192,7 @@ const faqsSaga = [fork(faqs)];
 const cmsSage = [fork(cms)];
 const paymentSaga = [fork(payment)];
 const notificationSaga = [fork(notification)];
+const productSaga = [fork(product)];
 
 export default function* waterSaga() {
   yield all([
@@ -185,5 +205,6 @@ export default function* waterSaga() {
     ...cmsSage,
     ...paymentSaga,
     ...notificationSaga,
+    ...productSaga,
   ]);
 }
