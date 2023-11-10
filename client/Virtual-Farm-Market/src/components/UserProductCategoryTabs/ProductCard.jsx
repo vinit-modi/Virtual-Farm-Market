@@ -21,6 +21,7 @@ import EmptyFoodImage from "../../Assets/EmptyProduct/EmptyFoodImage.jpg";
 import { useDispatch } from "react-redux";
 import { GET_OBJECT_PRODUCT } from "../../Redux/Reducers/productReducer";
 import { useNavigate } from "react-router-dom";
+import { GET_ADD_PRODUCT_TO_CART } from "../../Redux/Reducers/cartReducer";
 
 function ProductCard({ item }) {
   const grey = {
@@ -94,7 +95,7 @@ function ProductCard({ item }) {
                 display: "-webkit-box",
                 WebkitBoxOrient: "vertical",
                 WebkitLineClamp: 2,
-                height:48
+                height: 48,
               }}
             >
               {item.description}
@@ -126,6 +127,12 @@ function ProductCard({ item }) {
                 bgcolor: orange[`A700`],
                 "&:hover": { bgcolor: orange[`A400`] },
               }}
+              onClick={() =>
+                dispatch({
+                  type: GET_ADD_PRODUCT_TO_CART,
+                  payload: { _id: item._id },
+                })
+              }
             >
               {item.quantityAvailable > 0 ? `ADD TO CART` : `OUT OF STOCK`}
             </Button>
