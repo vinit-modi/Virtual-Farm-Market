@@ -66,6 +66,7 @@ router.post("/addProduct", ProductController.addProduct);
 router.get("/categoriesForProduct", ProductController.categoriesForProduct);
 router.get("/getAllProducts", ProductController.getAllProducts);
 router.post("/getProduct", ProductController.getProduct);
+router.post("/getPorductsByCategory", ProductController.getPorductsByCategory);
 
 router.post("/addToCart", CartController.addToCart);
 router.post("/removeProduct", CartController.removeProduct);

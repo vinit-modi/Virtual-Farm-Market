@@ -80,7 +80,23 @@ module.exports = {
 
   getAllProducts: async (req, res) => {
     try {
-      let getAllProducts = await ProductModel.find({});
+      let getAllProducts = await ProductModel.aggregate([
+        {
+          $lookup: {
+            from: "users",
+            localField: "seller",
+            foreignField: "_id",
+            as: "seller",
+          },
+        },
+        {
+          $unwind: {
+            path: "$seller",
+            includeArrayIndex: "string",
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+      ]);
       return res.status(200).json({
         status: "success",
         message: "List of all Products",
@@ -132,6 +148,39 @@ module.exports = {
         status: "success",
         message: "Product Details",
         data: getProduct[0],
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
+
+  getPorductsByCategory: async (req, res) => {
+    try {
+      let getPorductsByCategory = await ProductModel.aggregate([
+        { $match: { category: req.body.categoryName } },
+        {
+          $lookup: {
+            from: "users",
+            localField: "seller",
+            foreignField: "_id",
+            as: "seller",
+          },
+        },
+        {
+          $unwind: {
+            path: "$seller",
+            includeArrayIndex: "string",
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+      ]);
+      return res.status(200).json({
+        status: "success",
+        message: "List of all Products",
+        data: getPorductsByCategory,
       });
     } catch (error) {
       return res.status(500).json({
