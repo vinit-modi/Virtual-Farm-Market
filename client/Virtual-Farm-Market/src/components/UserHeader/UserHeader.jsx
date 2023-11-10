@@ -458,7 +458,7 @@ function UserHeader() {
       ) : (<Box sx={{
         m:2
       }}> */}
-      <div>
+      <Box sx={{m:1}}>
         <Routes>
           <Route
             exact
@@ -524,7 +524,7 @@ function UserHeader() {
             }
           />
         </Routes>
-      </div>
+      </Box>
       {/* </Box>
       )} */}
     </>
