@@ -47,6 +47,7 @@ import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import axios from "axios";
 import { useState } from "react";
 import { CLEAR_MESSAGE_USERREDUCER } from "../../Redux/Reducers/userReducer";
+import ShowProduct from "../../pages/Dashboard/showProduct";
 
 const settings = ["Update Profile", "Change Password", `Logout`];
 const settingsIcons = [<EditIcon />, <ManageAccountsIcon />, <LogoutIcon />];
@@ -520,6 +521,15 @@ function UserHeader() {
             element={
               <ProtectedRoute>
                 <PrivacyPolicy />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="showproduct"
+            element={
+              <ProtectedRoute>
+                <ShowProduct />
               </ProtectedRoute>
             }
           />

@@ -20,6 +20,7 @@ import { orange } from "@mui/material/colors";
 import EmptyFoodImage from "../../Assets/EmptyProduct/EmptyFoodImage.jpg";
 import { useDispatch } from "react-redux";
 import { GET_OBJECT_PRODUCT } from "../../Redux/Reducers/productReducer";
+import { useNavigate } from "react-router-dom";
 
 function ProductCard({ item }) {
   const grey = {
@@ -36,10 +37,12 @@ function ProductCard({ item }) {
   };
 
   const dispatch = useDispatch();
-  
+  const navigate = useNavigate();
+
   function handleProductShow(id) {
     console.log(id);
     dispatch({ type: GET_OBJECT_PRODUCT, payload: { _id: id } });
+    navigate(`/user/showproduct`);
   }
 
   return (
