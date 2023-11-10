@@ -9,3 +9,8 @@ export function requestGetAllProduct (){
     const response = Axios.get(`/api/getAllProducts`)
     return response
 }
+
+export function requestGetProductsByCategory_Product (payload){
+    const response = Axios.post(`/api/getPorductsByCategory`,payload)
+    return response
+}

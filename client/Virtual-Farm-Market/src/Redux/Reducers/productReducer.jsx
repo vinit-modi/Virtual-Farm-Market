@@ -4,6 +4,8 @@ export const GET_CATEGORIES_PRODUCT = "GET_CATEGORIES_PRODUCT";
 export const SET_CATEGORIES_PRODUCT = "SET_CATEGORIES_PRODUCT";
 export const GET_ALL_PRODUCTS = "GET_ALL_PRODUCTS";
 export const SET_ALL_PRODUCTS = "SET_ALL_PRODUCTS";
+export const GET_PRODUCTS_BY_CATEGORY_PRODUCT = "GET_PRODUCTS_BY_CATEGORY_PRODUCT";
+export const SET_PRODUCTS_BY_CATEGORY_PRODUCT = "SET_PRODUCTS_BY_CATEGORY_PRODUCT";
 
 export const makeRequestProduct = () => ({
   type: MAKE_REQUEST_PRODUCT,
@@ -18,6 +20,7 @@ export const setCategoryListProduct = (payload) => ({
   type: SET_CATEGORIES_PRODUCT,
   payload,
 });
+
 export const setAllProduct = (payload) => ({
   type: SET_ALL_PRODUCTS,
   payload,

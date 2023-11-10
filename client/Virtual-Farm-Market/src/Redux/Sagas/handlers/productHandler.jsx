@@ -8,6 +8,7 @@ import {
 import {
   requestGetAllProduct,
   requestGetCategoryListProduct,
+  requestGetProductsByCategory_Product,
 } from "../requests/productRequest";
 
 export function* fetchGetCategoryListProduct() {
@@ -26,6 +27,20 @@ export function* fetchGetAllProduct() {
   try {
     yield put(makeRequestProduct());
     const response = yield call(requestGetAllProduct);
+
+    response.status === 200
+      ? yield put(setAllProduct(response.data.data))
+      : yield put(failRequestProduct(response.data?.message));
+  } catch (error) {
+    yield put(failRequestProduct(error.message));
+  }
+}
+
+//Set All Products Selected By Category into productList:[] (Same as fetchGetAllProduct)
+export function* fetchGetProductByCategory_Product({payload}) {
+  try {
+    yield put(makeRequestProduct());
+    const response = yield call(requestGetProductsByCategory_Product,payload);
 
     response.status === 200
       ? yield put(setAllProduct(response.data.data))
