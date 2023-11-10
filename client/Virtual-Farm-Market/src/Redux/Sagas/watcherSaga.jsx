@@ -110,6 +110,8 @@ import {
 } from "./handlers/userNotificationHandler";
 import { GET_ALL_PRODUCTS, GET_CATEGORIES_PRODUCT, GET_OBJECT_PRODUCT, GET_PRODUCTS_BY_CATEGORY_PRODUCT } from "../Reducers/productReducer";
 import { fetchGetAllProduct, fetchGetCategoryListProduct, fetchGetObjectProduct, fetchGetProductByCategory_Product } from "./handlers/productHandler";
+import { GET_ADD_PRODUCT_TO_CART, GET_ALLPRODUCTS_CART, GET_REMOVE_PRODUCT_TO_CART } from "../Reducers/cartReducer";
+import { fetchGetAddProductToCart, fetchGetAllProductCart, fetchGetRemoveProductToCart } from "./handlers/cartHandler";
 
 function* authStuff() {
   yield takeLatest(POST_SIGNUP_USER, fetchPostSignUpUser);
@@ -185,6 +187,12 @@ function* product() {
   yield takeLatest(GET_OBJECT_PRODUCT, fetchGetObjectProduct);
 }
 
+function* cart(){
+  yield takeLatest(GET_ADD_PRODUCT_TO_CART,fetchGetAddProductToCart)
+  yield takeLatest(GET_REMOVE_PRODUCT_TO_CART,fetchGetRemoveProductToCart)
+  yield takeLatest(GET_ALLPRODUCTS_CART,fetchGetAllProductCart)
+}
+
 const authSaga = [fork(authStuff)];
 const changePasswordSaga = [fork(changePassword)];
 const userDetailsSaga = [fork(userDetails)];
@@ -195,6 +203,7 @@ const cmsSage = [fork(cms)];
 const paymentSaga = [fork(payment)];
 const notificationSaga = [fork(notification)];
 const productSaga = [fork(product)];
+const cartSaga = [fork(cart)];
 
 export default function* waterSaga() {
   yield all([
@@ -208,5 +217,6 @@ export default function* waterSaga() {
     ...paymentSaga,
     ...notificationSaga,
     ...productSaga,
+    ...cartSaga,
   ]);
 }
