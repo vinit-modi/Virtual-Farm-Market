@@ -12,31 +12,37 @@ export default function UserProductCategoryTabs({ product }) {
   const { categoryList, productList } = product;
 
   return (
-    <Tabs defaultValue={categoryList[0]._id}>
-      <TabsList>
-        {categoryList.length > 0 ? (
-          categoryList.map((item, index) => (
-            <Tab value={item._id} key={item._id}>
-              {item.name}
-            </Tab>
-          ))
-        ) : (
-          <LinearProgress color="success" />
-        )}
-      </TabsList>
-      {categoryList.length > 0 ? (
-        categoryList.map((item, index) => (
-            // value should be category ID
-          <ProductsOfSelectedCategory value={item._id} key={item._id}>
-            {productList}
-          </ProductsOfSelectedCategory>
-        ))
+    <>
+      {categoryList.length ? (
+        <Tabs defaultValue={categoryList[0]._id}>
+          <TabsList>
+            {categoryList.length > 0 ? (
+              categoryList.map((item, index) => (
+                <Tab value={item._id} key={item._id}>
+                  {item.name}
+                </Tab>
+              ))
+            ) : (
+              <LinearProgress color="success" />
+            )}
+          </TabsList>
+          {categoryList.length > 0 ? (
+            categoryList.map((item, index) => (
+              // value should be category ID
+              <ProductsOfSelectedCategory value={item._id} key={item._id}>
+                {productList}
+              </ProductsOfSelectedCategory>
+            ))
+          ) : (
+            <Box sx={{ display: "flex" }}>
+              <CircularProgress />
+            </Box>
+          )}
+        </Tabs>
       ) : (
-        <Box sx={{ display: "flex" }}>
-          <CircularProgress />
-        </Box>
+        <LinearProgress color="success" />
       )}
-    </Tabs>
+    </>
   );
 }
 
