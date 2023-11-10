@@ -10,6 +10,7 @@ export const SET_PRODUCTS_BY_CATEGORY_PRODUCT =
   "SET_PRODUCTS_BY_CATEGORY_PRODUCT";
 export const GET_OBJECT_PRODUCT = "GET_OBJECT_PRODUCT";
 export const SET_OBJECT_PRODUCT = "SET_OBJECT_PRODUCT";
+export const CLEAR_OBJECT_PRODUCT = "CLEAR_OBJECT_PRODUCT";
 
 export const makeRequestProduct = () => ({
   type: MAKE_REQUEST_PRODUCT,
@@ -29,6 +30,7 @@ export const setAllProduct = (payload) => ({
   type: SET_ALL_PRODUCTS,
   payload,
 });
+
 export const setObjectProduct = (payload) => ({
   type: SET_OBJECT_PRODUCT,
   payload,
@@ -77,6 +79,11 @@ export const productReducer = (state = initialState, action) => {
         loading: false,
         error: null,
         productObj: action.payload,
+      };
+    case CLEAR_OBJECT_PRODUCT:
+      return {
+        ...state,
+        productObj:{},
       };
     default:
       return state;

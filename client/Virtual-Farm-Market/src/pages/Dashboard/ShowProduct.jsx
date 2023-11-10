@@ -15,17 +15,25 @@ import ReactImageMagnify from "react-image-magnify";
 import { green } from "@mui/material/colors";
 import { useState } from "react";
 import { Button } from "@mui/base";
+import {
+  CLEAR_PRODUCT_COUNT_TO_CART,
+  GET_ADD_PRODUCT_TO_CART,
+  GET_ALLPRODUCTS_CART,
+  GET_REMOVE_PRODUCT_TO_CART,
+} from "../../Redux/Reducers/cartReducer";
+import { CLEAR_OBJECT_PRODUCT } from "../../Redux/Reducers/productReducer";
+import EmptyFoodImage from "../../Assets/EmptyProduct/EmptyFoodImage.jpg";
 
 function ShowProduct() {
-  const product = useSelector((state) => state.product);
-  const { productObj } = product;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  useEffect(() => {}, []);
+
+  const product = useSelector((state) => state.product);
+  const { productObj } = product;
+  const cart = useSelector((state) => state.cart);
 
   const [expanded, setExpanded] = useState(false);
-
-//   const [quantity, setQuantity] = useState(0);
+  const [quntityCount, setQuntityCount] = useState();
 
   const handleToggleExpand = () => {
     setExpanded(!expanded);
@@ -36,10 +44,13 @@ function ShowProduct() {
   };
 
   const truncateDescription = (text, limit) => {
+    if (!text) {
+      return "";
+    }
+
     const words = text.split(" ");
     const lines = [];
     let line = "";
-
     for (let i = 0; i < words.length; i++) {
       if ((line + words[i]).length <= 40) {
         line += ` ${words[i]}`;
@@ -56,20 +67,57 @@ function ShowProduct() {
   };
 
   const increment = () => {
-      // setQuantity(quantity + 1);
-      dispatch({type:GET_ADD_PRODUCT_TO_CART,payload:{_id:productObj._id}})
-    };
-    
-    const decrement = () => {
-      dispatch({type:GET_REMOVE_PRODUCT_TO_CART,payload:{_id:productObj._id}})
-    // if (quantity > 0) {
-    //   setQuantity(quantity - 1);
-    // }
+    dispatch({
+      type: GET_ADD_PRODUCT_TO_CART,
+      payload: { _id: productObj._id },
+    });
+    dispatch({ type: GET_ALLPRODUCTS_CART });
+    countQuntities();
   };
 
+  const decrement = () => {
+    dispatch({
+      type: GET_REMOVE_PRODUCT_TO_CART,
+      payload: { _id: productObj._id },
+    });
+    dispatch({ type: GET_ALLPRODUCTS_CART });
+    countQuntities();
+  };
+
+  function countQuntities() {
+    const quntity = cart.cartProductList.filter(
+      (item) => item.product._id === product.productObj._id
+    );
+    setQuntityCount(quntity[0]?.quantity);
+  }
+
+  const handleAddToCart = () => {
+    // dispatch({type:})
+    dispatch({
+      type: GET_ADD_PRODUCT_TO_CART,
+      payload: { _id: productObj._id },
+    });
+  };
+
+  useEffect(() => {
+    dispatch({ type: GET_ALLPRODUCTS_CART });
+    countQuntities();
+    return () => {
+      dispatch({ type: CLEAR_OBJECT_PRODUCT });
+      dispatch({ type: CLEAR_PRODUCT_COUNT_TO_CART });
+    };
+  }, []);
+
+  useEffect(() => {
+    countQuntities();
+  }, [cart.cartProductList, product]);
+
+  useEffect(() => {
+    console.log(quntityCount);
+  }, [quntityCount]);
   return (
     <>
-      <Box sx={{ bgcolor: green[200] }}>
+      <Box>
         {!!productObj ? (
           <Stack
             direction="row"
@@ -84,12 +132,16 @@ function ShowProduct() {
                     {...{
                       smallImage: {
                         alt: "Small Image",
-                        src: productObj.images[0],
+                        src:
+                          (productObj.images && productObj.images[0]) ||
+                          EmptyFoodImage,
                         width: 400,
                         height: 300,
                       },
                       largeImage: {
-                        src: productObj.images[0],
+                        src:
+                          (productObj.images && productObj.images[0]) ||
+                          EmptyFoodImage,
                         width: 1200,
                         height: 900,
                       },
@@ -120,6 +172,78 @@ function ShowProduct() {
                     </span>
                     {/* <sup style={{ position: 'relative' ,top: '-1em'}}>.99</sup> */}
                   </Typography>
+                </Grid>{" "}
+                <Grid>
+                  <Typography
+                    variant="body1"
+                    component="p"
+                    color={green["A700"]}
+                  >
+                    <span style={{ color: "black" }}>Total Price:&nbsp;</span>
+                    <span style={{ fontSize: "1em" }}>$</span>
+
+                    <span style={{ fontSize: "1.6em" }}>
+                      {!(
+                        productObj.price *
+                        (cart.productQuantityCount
+                          ? cart.productQuantityCount
+                          : quntityCount)
+                      )
+                        ? 0
+                        : productObj.price *
+                          (cart.productQuantityCount
+                            ? cart.productQuantityCount
+                            : quntityCount)}
+                    </span>
+                  </Typography>
+                </Grid>{" "}
+                <Grid item>
+                  <Box display="flex" alignItems="center">
+                    <Button
+                      className="btn btn-primary"
+                      variant="contained"
+                      onClick={decrement}
+                    >
+                      -
+                    </Button>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        height: 40,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        fontSize: 26,
+                      }}
+                      width={35}
+                    >
+                      {!(
+                        productObj.price *
+                        (cart.productQuantityCount
+                          ? cart.productQuantityCount
+                          : quntityCount)
+                      )
+                        ? 0
+                        : cart.productQuantityCount
+                        ? cart.productQuantityCount
+                        : quntityCount}
+                    </Typography>
+                    <Button
+                      className="btn btn-primary"
+                      variant="contained"
+                      onClick={increment}
+                    >
+                      +
+                    </Button>
+                  </Box>
+                </Grid>
+                <Grid item>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => handleAddToCart()}
+                  >
+                    Add to Cart
+                  </button>
                 </Grid>
                 <Grid item>
                   <Box sx={{ mr: 3 }}>
@@ -151,29 +275,6 @@ function ShowProduct() {
                         </span>
                       )}
                     </Typography>
-                  </Box>
-                </Grid>
-                <Grid item>
-                  <Box display="flex" alignItems="center">
-                    <Button variant="contained" onClick={decrement}>
-                      -
-                    </Button>
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        height: 40,
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        fontSize: 26,
-                      }}
-                      width={40}
-                    >
-                      {/* {quantity} */}
-                    </Typography>
-                    <Button variant="contained" onClick={increment}>
-                      +
-                    </Button>
                   </Box>
                 </Grid>
               </Grid>

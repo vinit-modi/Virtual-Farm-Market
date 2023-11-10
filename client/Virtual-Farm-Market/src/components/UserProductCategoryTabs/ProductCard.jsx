@@ -94,6 +94,7 @@ function ProductCard({ item }) {
                 display: "-webkit-box",
                 WebkitBoxOrient: "vertical",
                 WebkitLineClamp: 2,
+                height:48
               }}
             >
               {item.description}
