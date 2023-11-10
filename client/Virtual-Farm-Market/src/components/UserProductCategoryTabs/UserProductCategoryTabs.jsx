@@ -43,9 +43,7 @@ export default function UserProductCategoryTabs({ product }) {
   };
 
   const { categoryList, productList } = product;
-
   const dispatch = useDispatch();
-
   const handleTabClick = (categoryName) => {
     console.log(categoryName);
     if (categoryName === "All Product") {
@@ -59,7 +57,7 @@ export default function UserProductCategoryTabs({ product }) {
   };
 
   return (
-    <Tabs defaultValue={1}>
+    <Tabs defaultValue={"All Product"}>
       <TabsList>
         <Box onClick={() => handleTabClick("All Product")} sx={BoxStyle}>
           <Tab value={"All Product"}>All Product</Tab>
@@ -84,7 +82,7 @@ export default function UserProductCategoryTabs({ product }) {
 
       <TabPanel value={"All Product"}>
         <Grid container spacing={2}>
-          {productList.length > 0 ? (
+          {productList.length ? (
             productList.map((item, index) => (
               <Grid item xs={6} sm={4} md={3} lg={2} key={item._id}>
                 <Box sx={{ borderRadius: 1 }}>
@@ -94,9 +92,13 @@ export default function UserProductCategoryTabs({ product }) {
             ))
           ) : (
             <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
-              <Typography variant="body1">
-                Products are currently not available for this category
-              </Typography>
+              {categoryList.length ? (
+                <Typography variant="body1">
+                  Products are currently not available for this category
+                </Typography>
+              ) : (
+                <LinearProgress color="success" />
+              )}
             </Box>
           )}
         </Grid>
@@ -107,7 +109,7 @@ export default function UserProductCategoryTabs({ product }) {
           {categoryList.map((category, index) => (
             <TabPanel value={category.name}>
               <Grid container spacing={2}>
-                {productList.length > 0 ? (
+                {productList.length ? (
                   productList.map((item, index) => (
                     <Grid item xs={6} sm={4} md={3} lg={2} key={item._id}>
                       <Box sx={{ borderRadius: 1 }}>
