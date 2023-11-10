@@ -5,44 +5,131 @@ import { TabsList as BaseTabsList } from "@mui/base/TabsList";
 import { TabPanel as BaseTabPanel } from "@mui/base/TabPanel";
 import { buttonClasses } from "@mui/base/Button";
 import { Tab as BaseTab, tabClasses } from "@mui/base/Tab";
-import { CircularProgress, LinearProgress, Typography } from "@mui/material";
-import ProductsOfSelectedCategory from "./ProductsOfSelectedCategory";
+import {
+  Box,
+  CircularProgress,
+  Grid,
+  LinearProgress,
+  Typography,
+} from "@mui/material";
+import ProductCard from "./ProductCard";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import {
+  GET_ALL_PRODUCTS,
+  GET_PRODUCTS_BY_CATEGORY_PRODUCT,
+} from "../../Redux/Reducers/productReducer";
 
 export default function UserProductCategoryTabs({ product }) {
+  const BoxStyle = {
+    fontFamily: "IBM Plex Sans, sans-serif",
+    color: "white",
+    cursor: "pointer",
+    fontSize: "0.875rem",
+    backgroundColor: "transparent",
+    width: "100%",
+    lineHeight: 1.5,
+    border: "none",
+    borderRadius: "8px",
+    display: "flex",
+    justifyContent: "center",
+    "&:hover": {
+      backgroundColor: green[400],
+    },
+    "&:focus": {
+      color: "#fff",
+      outline: `3px solid ${green[200]}`,
+    },
+  };
+
   const { categoryList, productList } = product;
 
+  const dispatch = useDispatch();
+
+  const handleTabClick = (categoryName) => {
+    console.log(categoryName);
+    if (categoryName === "All Product") {
+      dispatch({ type: GET_ALL_PRODUCTS });
+    } else {
+      dispatch({
+        type: GET_PRODUCTS_BY_CATEGORY_PRODUCT,
+        payload: { categoryName: categoryName },
+      });
+    }
+  };
+
   return (
-    <>
-      {categoryList.length ? (
-        <Tabs defaultValue={categoryList[0]._id}>
-          <TabsList>
-            {categoryList.length > 0 ? (
-              categoryList.map((item, index) => (
-                <Tab value={item._id} key={item._id}>
-                  {item.name}
-                </Tab>
-              ))
-            ) : (
-              <LinearProgress color="success" />
-            )}
-          </TabsList>
-          {categoryList.length > 0 ? (
-            categoryList.map((item, index) => (
-              // value should be category ID
-              <ProductsOfSelectedCategory value={item._id} key={item._id}>
-                {productList}
-              </ProductsOfSelectedCategory>
+    <Tabs defaultValue={1}>
+      <TabsList>
+        <Box onClick={() => handleTabClick("All Product")} sx={BoxStyle}>
+          <Tab value={"All Product"}>All Product</Tab>
+        </Box>
+        {categoryList.length ? (
+          <>
+            {" "}
+            {categoryList.map((category, index) => (
+              <Box
+                key={category.name}
+                onClick={() => handleTabClick(category.name)}
+                sx={BoxStyle}
+              >
+                <Tab value={category.name}>{category.name}</Tab>
+              </Box>
+            ))}
+          </>
+        ) : (
+          <LinearProgress color="success" />
+        )}
+      </TabsList>
+
+      <TabPanel value={"All Product"}>
+        <Grid container spacing={2}>
+          {productList.length > 0 ? (
+            productList.map((item, index) => (
+              <Grid item xs={6} sm={4} md={3} lg={2} key={item._id}>
+                <Box sx={{ borderRadius: 1 }}>
+                  <ProductCard {...{ item }} />
+                </Box>
+              </Grid>
             ))
           ) : (
-            <Box sx={{ display: "flex" }}>
-              <CircularProgress />
+            <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
+              <Typography variant="body1">
+                Products are currently not available for this category
+              </Typography>
             </Box>
           )}
-        </Tabs>
+        </Grid>
+      </TabPanel>
+      {categoryList.length ? (
+        <>
+          {" "}
+          {categoryList.map((category, index) => (
+            <TabPanel value={category.name}>
+              <Grid container spacing={2}>
+                {productList.length > 0 ? (
+                  productList.map((item, index) => (
+                    <Grid item xs={6} sm={4} md={3} lg={2} key={item._id}>
+                      <Box sx={{ borderRadius: 1 }}>
+                        <ProductCard {...{ item }} />
+                      </Box>
+                    </Grid>
+                  ))
+                ) : (
+                  <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
+                    <Typography variant="body1">
+                      Products are currently not available for this category
+                    </Typography>
+                  </Box>
+                )}
+              </Grid>
+            </TabPanel>
+          ))}
+        </>
       ) : (
         <LinearProgress color="success" />
       )}
-    </>
+    </Tabs>
   );
 }
 
