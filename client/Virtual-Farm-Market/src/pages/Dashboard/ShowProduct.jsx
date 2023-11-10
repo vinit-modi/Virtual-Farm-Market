@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   ButtonGroup,
   Divider,
@@ -23,6 +24,7 @@ import {
 } from "../../Redux/Reducers/cartReducer";
 import { CLEAR_OBJECT_PRODUCT } from "../../Redux/Reducers/productReducer";
 import EmptyFoodImage from "../../Assets/EmptyProduct/EmptyFoodImage.jpg";
+import { CheckCircle } from "@mui/icons-material";
 
 function ShowProduct() {
   const dispatch = useDispatch();
@@ -34,6 +36,12 @@ function ShowProduct() {
 
   const [expanded, setExpanded] = useState(false);
   const [quntityCount, setQuntityCount] = useState();
+  const [selectImage, setSelectImage] = useState(null);
+
+  const images = product.productObj.images;
+
+  const displayImages = images.slice(0, 4);
+  const remainingImages = images.slice(4);
 
   const handleToggleExpand = () => {
     setExpanded(!expanded);
@@ -72,7 +80,7 @@ function ShowProduct() {
       payload: { _id: productObj._id },
     });
     dispatch({ type: GET_ALLPRODUCTS_CART });
-    countQuntities();
+    // countQuntities();
   };
 
   const decrement = () => {
@@ -81,7 +89,7 @@ function ShowProduct() {
       payload: { _id: productObj._id },
     });
     dispatch({ type: GET_ALLPRODUCTS_CART });
-    countQuntities();
+    // countQuntities();
   };
 
   function countQuntities() {
@@ -92,7 +100,6 @@ function ShowProduct() {
   }
 
   const handleAddToCart = () => {
-    // dispatch({type:})
     dispatch({
       type: GET_ADD_PRODUCT_TO_CART,
       payload: { _id: productObj._id },
@@ -103,16 +110,18 @@ function ShowProduct() {
     dispatch({ type: GET_ALLPRODUCTS_CART });
     countQuntities();
     return () => {
-      dispatch({ type: CLEAR_OBJECT_PRODUCT });
+      //   dispatch({ type: CLEAR_OBJECT_PRODUCT });
       dispatch({ type: CLEAR_PRODUCT_COUNT_TO_CART });
     };
   }, []);
 
   useEffect(() => {
     countQuntities();
+    console.log(quntityCount);
   }, [cart.cartProductList, product]);
 
   useEffect(() => {
+    dispatch({ type: GET_ALLPRODUCTS_CART });
     console.log(quntityCount);
   }, [quntityCount]);
   return (
@@ -120,7 +129,7 @@ function ShowProduct() {
       <Box>
         {!!productObj ? (
           <Stack
-            direction="row"
+            direction={{ xs: "column", sm: "row" }}
             divider={<Divider orientation="vertical" flexItem />}
             spacing={2}
           >
@@ -129,10 +138,16 @@ function ShowProduct() {
                 <Paper elevation={3} sx={{ width: 400, height: 300, m: 4 }}>
                   <ReactImageMagnify
                     isHintEnabled={true}
+                    enlargedImageContainerStyle={{
+                      zIndex: 9999,
+                      overflow: "hidden",
+                    }}
+                    enlargedImagePosition="over"
                     {...{
                       smallImage: {
                         alt: "Small Image",
                         src:
+                          selectImage ||
                           (productObj.images && productObj.images[0]) ||
                           EmptyFoodImage,
                         width: 400,
@@ -140,24 +155,83 @@ function ShowProduct() {
                       },
                       largeImage: {
                         src:
+                          selectImage ||
                           (productObj.images && productObj.images[0]) ||
                           EmptyFoodImage,
                         width: 1200,
                         height: 900,
                       },
                       enlargedImageContainerDimensions: {
-                        width: "150%",
-                        height: "150%",
+                        width: "100%",
+                        height: "100%",
                       },
                     }}
                   />
                 </Paper>
               </Stack>
-              <Stack>
-                <div>More Images</div>
+
+              {/* //More Images */}
+              <Stack direction="row" spacing={1} sx={{ px: 3 }}>
+                <Paper elevation={3} bgcolor="#cfd8dc">
+                  <Stack direction="row" spacing={1} sx={{ px: 2 }}>
+                    {displayImages.map((image, index) => (
+                      <Avatar
+                        variant="rounded"
+                        key={index}
+                        alt={`Image ${index}`}
+                        src={image}
+                        sx={{
+                          width: 48,
+                          height: 48,
+                          border: selectImage
+                            ? `2px solid ${
+                                selectImage === image ? `#4fc3f7` : `none`
+                              }`
+                            : displayImages[0] === image
+                            ? `#4fc3f7`
+                            : `none`,
+                        }}
+                        onClick={() => setSelectImage(image)}
+                      />
+                    ))}
+                    {remainingImages.length > 0 && (
+                      <Avatar
+                        variant="rounded"
+                        alt={`+${remainingImages.length}`}
+                        sx={{
+                          width: 48,
+                          height: 48,
+                          backgroundColor: "grey",
+                          fontSize: 20,
+                        }}
+                      >
+                        +{remainingImages.length}
+                      </Avatar>
+                    )}
+                  </Stack>
+                </Paper>
+              </Stack>
+
+              {/* 100% satisfaction guarantee */}
+              <Stack sx={{ pt: 5 }}>
+                <Typography
+                  variant="body1"
+                  sx={{ display: "flex", justifyContent: "center" }}
+                >
+                  <Box>
+                    <strong>
+                      <CheckCircle color="primary" fontSize="small" />
+                      <u>100% satisfaction guarantee</u>
+                    </strong>
+                    <Typography>
+                      Place your order with peace of mind.
+                    </Typography>
+                  </Box>
+                </Typography>
               </Stack>
             </Stack>
 
+            {/* All Details */}
             <Stack>
               <Grid container mt={3} ml={2} direction={"column"} rowSpacing={2}>
                 <Grid item>
@@ -190,10 +264,12 @@ function ShowProduct() {
                           : quntityCount)
                       )
                         ? 0
-                        : productObj.price *
-                          (cart.productQuantityCount
-                            ? cart.productQuantityCount
-                            : quntityCount)}
+                        : (
+                            productObj.price *
+                            (cart.productQuantityCount
+                              ? cart.productQuantityCount
+                              : quntityCount)
+                          ).toFixed(2)}
                     </span>
                   </Typography>
                 </Grid>{" "}
@@ -203,6 +279,12 @@ function ShowProduct() {
                       className="btn btn-primary"
                       variant="contained"
                       onClick={decrement}
+                      disabled={cart.cartProductList.some(
+                        (item) =>
+                          item.product._id === product.productObj._id &&
+                          item.quntity &&
+                          item.quntity[0]?.quantity > 0
+                      )}
                     >
                       -
                     </Button>
@@ -246,6 +328,9 @@ function ShowProduct() {
                   </button>
                 </Grid>
                 <Grid item>
+                  <Typography variant="h6">Country of Origin: CA</Typography>
+                </Grid>
+                <Grid item>
                   <Box sx={{ mr: 3 }}>
                     <Typography variant="body1">
                       <span style={{ fontSize: "1.3em" }}>
@@ -276,6 +361,27 @@ function ShowProduct() {
                       )}
                     </Typography>
                   </Box>
+                </Grid>
+                <Grid item>
+                  <Grid container spacing={1} alignItems="center">
+                    <Grid item>
+                      <Avatar
+                        sx={{ width: 42, height: 42, bgcolor: green[500] }}
+                        src={product.productObj.seller.profilePicture}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <Typography variant="body1">
+                        <strong>Farmer:</strong>&nbsp;
+                        {product.productObj.seller.name}
+                      </Typography>
+                      <Typography variant="body1">
+                        <strong>Location:</strong>
+                        &nbsp;
+                        {`${product.productObj.seller.city}, ${product.productObj.seller.province}`}
+                      </Typography>
+                    </Grid>
+                  </Grid>
                 </Grid>
               </Grid>
             </Stack>

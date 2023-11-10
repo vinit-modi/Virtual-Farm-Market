@@ -1,26 +1,16 @@
-import Axios from "../../../Utils/Axios"
+import Axios from "../../../Utils/Axios";
 
-export function requestGetAddProductToCart (payload){
-    const response = Axios.post(`/api/addToCart`,payload)
-    return response
+export function requestGetAddProductToCart(payload) {
+  const response = Axios.post(`/api/addToCart`, payload);
+  return response;
 }
 
-export function requestGetRemoveProductToCart (payload){
-
-    //add new API here for remove
-    const response = Axios.post(`/api/addToCart`,payload)
-    return response
+export function requestGetRemoveProductToCart(payload) {
+  const response = Axios.post(`/api/decreaseQuantity`, payload);
+  return response;
 }
 
-// export function requestGetRemoveProductToCart (payload){
-
-//     //add new API here for remove
-//     const response = Axios.post(`/api/addToCart`,payload)
-//     return response
-// }
-
-export function requestGetAllProductCart (){
-    const response = Axios.get(`/api/getCartProducts`)
-    return response
+export function requestGetAllProductCart() {
+  const response = Axios.get(`/api/getCartProducts`);
+  return response;
 }
-

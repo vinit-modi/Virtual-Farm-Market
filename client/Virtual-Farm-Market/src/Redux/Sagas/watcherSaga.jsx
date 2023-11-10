@@ -108,10 +108,28 @@ import {
   fetchDeleteNofi,
   fetchObjNofi,
 } from "./handlers/userNotificationHandler";
-import { GET_ALL_PRODUCTS, GET_CATEGORIES_PRODUCT, GET_OBJECT_PRODUCT, GET_PRODUCTS_BY_CATEGORY_PRODUCT } from "../Reducers/productReducer";
-import { fetchGetAllProduct, fetchGetCategoryListProduct, fetchGetObjectProduct, fetchGetProductByCategory_Product } from "./handlers/productHandler";
-import { GET_ADD_PRODUCT_TO_CART, GET_ALLPRODUCTS_CART, GET_REMOVE_PRODUCT_TO_CART } from "../Reducers/cartReducer";
-import { fetchGetAddProductToCart, fetchGetAllProductCart, fetchGetRemoveProductToCart } from "./handlers/cartHandler";
+import {
+  GET_ALL_PRODUCTS,
+  GET_CATEGORIES_PRODUCT,
+  GET_OBJECT_PRODUCT,
+  GET_PRODUCTS_BY_CATEGORY_PRODUCT,
+} from "../Reducers/productReducer";
+import {
+  fetchGetAllProduct,
+  fetchGetCategoryListProduct,
+  fetchGetObjectProduct,
+  fetchGetProductByCategory_Product,
+} from "./handlers/productHandler";
+import {
+  GET_ADD_PRODUCT_TO_CART,
+  GET_ALLPRODUCTS_CART,
+  GET_REMOVE_PRODUCT_TO_CART,
+} from "../Reducers/cartReducer";
+import {
+  fetchGetAddProductToCart,
+  fetchGetAllProductCart,
+  fetchGetRemoveProductToCart,
+} from "./handlers/cartHandler";
 
 function* authStuff() {
   yield takeLatest(POST_SIGNUP_USER, fetchPostSignUpUser);
@@ -183,14 +201,17 @@ function* notification() {
 function* product() {
   yield takeLatest(GET_CATEGORIES_PRODUCT, fetchGetCategoryListProduct);
   yield takeLatest(GET_ALL_PRODUCTS, fetchGetAllProduct);
-  yield takeLatest(GET_PRODUCTS_BY_CATEGORY_PRODUCT, fetchGetProductByCategory_Product);
+  yield takeLatest(
+    GET_PRODUCTS_BY_CATEGORY_PRODUCT,
+    fetchGetProductByCategory_Product
+  );
   yield takeLatest(GET_OBJECT_PRODUCT, fetchGetObjectProduct);
 }
 
-function* cart(){
-  yield takeLatest(GET_ADD_PRODUCT_TO_CART,fetchGetAddProductToCart)
-  yield takeLatest(GET_REMOVE_PRODUCT_TO_CART,fetchGetRemoveProductToCart)
-  yield takeLatest(GET_ALLPRODUCTS_CART,fetchGetAllProductCart)
+function* cart() {
+  yield takeLatest(GET_ADD_PRODUCT_TO_CART, fetchGetAddProductToCart);
+  yield takeLatest(GET_REMOVE_PRODUCT_TO_CART, fetchGetRemoveProductToCart);
+  yield takeLatest(GET_ALLPRODUCTS_CART, fetchGetAllProductCart);
 }
 
 const authSaga = [fork(authStuff)];

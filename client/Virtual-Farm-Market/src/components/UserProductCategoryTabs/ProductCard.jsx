@@ -18,10 +18,11 @@ import { grey } from "@mui/material/colors";
 import { Box, Button } from "@mui/material";
 import { orange } from "@mui/material/colors";
 import EmptyFoodImage from "../../Assets/EmptyProduct/EmptyFoodImage.jpg";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { GET_OBJECT_PRODUCT } from "../../Redux/Reducers/productReducer";
 import { useNavigate } from "react-router-dom";
 import { GET_ADD_PRODUCT_TO_CART } from "../../Redux/Reducers/cartReducer";
+import { green } from "@mui/material/colors";
 
 function ProductCard({ item }) {
   const grey = {
@@ -51,11 +52,26 @@ function ProductCard({ item }) {
       <Card
         sx={{
           maxWidth: 345,
-          bgcolor: grey[100],
+          bgcolor: '#d1c4e9',
+        //   bgcolor: grey[100],
           "&:hover": { bgcolor: grey[300], cursor: "pointer" },
         }}
       >
         <Box onClick={() => handleProductShow(item._id)}>
+          <CardHeader
+
+sx={{ bgcolor:'#b39ddb', color:'white'
+  }}
+            avatar={
+              <Avatar
+                sx={{ bgcolor: red[500] }}
+                aria-label={item.seller.name}
+                src={item.seller.profilePicture}
+              />
+            }
+            title={item.seller.name}
+            subheader={`${item.seller.city}, ${item.seller.province}`}
+          />
           <Box
             sx={{
               position: "relative",
@@ -106,7 +122,8 @@ function ProductCard({ item }) {
         <CardActions
           disableSpacing
           sx={{
-            bgcolor: grey[200],
+            // bgcolor: grey[200],
+            bgcolor: '#7e57c2',
             display: "flex",
             justifyContent: "space-between",
           }}
@@ -124,8 +141,8 @@ function ProductCard({ item }) {
               variant="contained"
               disabled={!(item.quantityAvailable > 0)}
               sx={{
-                bgcolor: orange[`A700`],
-                "&:hover": { bgcolor: orange[`A400`] },
+                bgcolor: green[`A700`],
+                "&:hover": { bgcolor: green[`A400`],color:'black' },
               }}
               onClick={() =>
                 dispatch({
