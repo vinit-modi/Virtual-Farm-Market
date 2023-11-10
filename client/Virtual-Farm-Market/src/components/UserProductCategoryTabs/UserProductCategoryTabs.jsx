@@ -19,6 +19,7 @@ import {
   GET_ALL_PRODUCTS,
   GET_PRODUCTS_BY_CATEGORY_PRODUCT,
 } from "../../Redux/Reducers/productReducer";
+import { grey } from "@mui/material/colors";
 
 export default function UserProductCategoryTabs({ product }) {
   const BoxStyle = {

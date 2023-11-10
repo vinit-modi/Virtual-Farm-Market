@@ -14,3 +14,7 @@ export function requestGetProductsByCategory_Product (payload){
     const response = Axios.post(`/api/getPorductsByCategory`,payload)
     return response
 }
+export function requestGetObjectProduct (payload){
+    const response = Axios.post(`/api/getProduct`,payload)
+    return response
+}

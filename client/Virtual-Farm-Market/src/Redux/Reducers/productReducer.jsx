@@ -4,8 +4,12 @@ export const GET_CATEGORIES_PRODUCT = "GET_CATEGORIES_PRODUCT";
 export const SET_CATEGORIES_PRODUCT = "SET_CATEGORIES_PRODUCT";
 export const GET_ALL_PRODUCTS = "GET_ALL_PRODUCTS";
 export const SET_ALL_PRODUCTS = "SET_ALL_PRODUCTS";
-export const GET_PRODUCTS_BY_CATEGORY_PRODUCT = "GET_PRODUCTS_BY_CATEGORY_PRODUCT";
-export const SET_PRODUCTS_BY_CATEGORY_PRODUCT = "SET_PRODUCTS_BY_CATEGORY_PRODUCT";
+export const GET_PRODUCTS_BY_CATEGORY_PRODUCT =
+  "GET_PRODUCTS_BY_CATEGORY_PRODUCT";
+export const SET_PRODUCTS_BY_CATEGORY_PRODUCT =
+  "SET_PRODUCTS_BY_CATEGORY_PRODUCT";
+export const GET_OBJECT_PRODUCT = "GET_OBJECT_PRODUCT";
+export const SET_OBJECT_PRODUCT = "SET_OBJECT_PRODUCT";
 
 export const makeRequestProduct = () => ({
   type: MAKE_REQUEST_PRODUCT,
@@ -23,6 +27,10 @@ export const setCategoryListProduct = (payload) => ({
 
 export const setAllProduct = (payload) => ({
   type: SET_ALL_PRODUCTS,
+  payload,
+});
+export const setObjectProduct = (payload) => ({
+  type: SET_OBJECT_PRODUCT,
   payload,
 });
 
@@ -62,6 +70,13 @@ export const productReducer = (state = initialState, action) => {
         loading: false,
         error: null,
         productList: action.payload,
+      };
+    case SET_OBJECT_PRODUCT:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        productObj: action.payload,
       };
     default:
       return state;

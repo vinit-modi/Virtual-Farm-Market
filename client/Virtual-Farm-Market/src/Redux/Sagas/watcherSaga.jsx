@@ -108,8 +108,8 @@ import {
   fetchDeleteNofi,
   fetchObjNofi,
 } from "./handlers/userNotificationHandler";
-import { GET_ALL_PRODUCTS, GET_CATEGORIES_PRODUCT, GET_PRODUCTS_BY_CATEGORY_PRODUCT } from "../Reducers/productReducer";
-import { fetchGetAllProduct, fetchGetCategoryListProduct, fetchGetProductByCategory_Product } from "./handlers/productHandler";
+import { GET_ALL_PRODUCTS, GET_CATEGORIES_PRODUCT, GET_OBJECT_PRODUCT, GET_PRODUCTS_BY_CATEGORY_PRODUCT } from "../Reducers/productReducer";
+import { fetchGetAllProduct, fetchGetCategoryListProduct, fetchGetObjectProduct, fetchGetProductByCategory_Product } from "./handlers/productHandler";
 
 function* authStuff() {
   yield takeLatest(POST_SIGNUP_USER, fetchPostSignUpUser);
@@ -182,6 +182,7 @@ function* product() {
   yield takeLatest(GET_CATEGORIES_PRODUCT, fetchGetCategoryListProduct);
   yield takeLatest(GET_ALL_PRODUCTS, fetchGetAllProduct);
   yield takeLatest(GET_PRODUCTS_BY_CATEGORY_PRODUCT, fetchGetProductByCategory_Product);
+  yield takeLatest(GET_OBJECT_PRODUCT, fetchGetObjectProduct);
 }
 
 const authSaga = [fork(authStuff)];

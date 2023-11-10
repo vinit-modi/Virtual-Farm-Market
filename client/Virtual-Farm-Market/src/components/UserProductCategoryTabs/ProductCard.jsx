@@ -18,6 +18,8 @@ import { grey } from "@mui/material/colors";
 import { Box, Button } from "@mui/material";
 import { orange } from "@mui/material/colors";
 import EmptyFoodImage from "../../Assets/EmptyProduct/EmptyFoodImage.jpg";
+import { useDispatch } from "react-redux";
+import { GET_OBJECT_PRODUCT } from "../../Redux/Reducers/productReducer";
 
 function ProductCard({ item }) {
   const grey = {
@@ -33,53 +35,68 @@ function ProductCard({ item }) {
     900: "#212121",
   };
 
+  const dispatch = useDispatch();
+  
+  function handleProductShow(id) {
+    console.log(id);
+    dispatch({ type: GET_OBJECT_PRODUCT, payload: { _id: id } });
+  }
+
   return (
     <>
-      <Card sx={{ maxWidth: 345, bgcolor: grey[100] }}>
-        <Box
-          sx={{
-            position: "relative",
-            width: "100%",
-            height: "200px",
-            overflow: "hidden",
-          }}
-        >
-          <CardMedia
-            component="img"
-            height="100%"
-            image={item.images.length > 0 ? item.images[0] : EmptyFoodImage}
-            alt={item.name}
+      <Card
+        sx={{
+          maxWidth: 345,
+          bgcolor: grey[100],
+          "&:hover": { bgcolor: grey[300], cursor: "pointer" },
+        }}
+      >
+        <Box onClick={() => handleProductShow(item._id)}>
+          <Box
             sx={{
+              position: "relative",
               width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              objectPosition: "center",
-              p: 0.2,
-            }}
-          />
-        </Box>
-        <CardContent>
-          <Typography variant="h5" color={grey[800]}>
-            {item.name}
-          </Typography>
-          <Typography variant="body1" color={grey[700]}>
-            Price: {item.price}
-          </Typography>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{
-              pt: 1,
+              height: "200px",
               overflow: "hidden",
-              textOverflow: "ellipsis",
-              display: "-webkit-box",
-              WebkitBoxOrient: "vertical",
-              WebkitLineClamp: 2,
             }}
           >
-            {item.description}
-          </Typography>
-        </CardContent>
+            <CardMedia
+              component="img"
+              height="100%"
+              image={item.images.length > 0 ? item.images[0] : EmptyFoodImage}
+              alt={item.name}
+              sx={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                objectPosition: "center",
+                p: 0.2,
+              }}
+            />
+          </Box>
+          <CardContent>
+            <Typography variant="h5" color={grey[800]}>
+              {item.name}
+            </Typography>
+            <Typography variant="body1" color={grey[700]}>
+              Price: {item.price}
+            </Typography>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{
+                pt: 1,
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                display: "-webkit-box",
+                WebkitBoxOrient: "vertical",
+                WebkitLineClamp: 2,
+              }}
+            >
+              {item.description}
+            </Typography>
+          </CardContent>
+        </Box>
 
         <CardActions
           disableSpacing
