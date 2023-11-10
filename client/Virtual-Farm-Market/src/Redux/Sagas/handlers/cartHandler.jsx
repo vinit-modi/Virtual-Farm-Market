@@ -6,7 +6,11 @@ import {
   setAllProductsCart,
   setRemoveProductToCart,
 } from "../../Reducers/cartReducer";
-import { requestGetAddProductToCart, requestGetAllProductCart, requestGetRemoveProductToCart } from "../requests/cartRequest";
+import {
+  requestGetAddProductToCart,
+  requestGetAllProductCart,
+  requestGetRemoveProductToCart,
+} from "../requests/cartRequest";
 
 export function* fetchGetAddProductToCart({ payload }) {
   try {
@@ -33,6 +37,7 @@ export function* fetchGetRemoveProductToCart({ payload }) {
     yield put(failRequestCart(error.message));
   }
 }
+
 export function* fetchGetAllProductCart() {
   try {
     yield put(makeRequestCart());

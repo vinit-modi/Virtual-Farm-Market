@@ -459,7 +459,7 @@ function UserHeader() {
       ) : (<Box sx={{
         m:2
       }}> */}
-      <Box sx={{m:1}}>
+      <Box sx={{ m: 1 }}>
         <Routes>
           <Route
             exact

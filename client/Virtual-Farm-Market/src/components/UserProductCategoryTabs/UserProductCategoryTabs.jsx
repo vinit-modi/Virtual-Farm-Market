@@ -86,7 +86,7 @@ export default function UserProductCategoryTabs({ product }) {
           {productList.length ? (
             productList.map((item, index) => (
               <Grid item xs={6} sm={4} md={3} lg={2} key={item._id}>
-                <Box sx={{ borderRadius: 1 }}>
+                <Box sx={{ borderRadius: 1 }} >
                   <ProductCard {...{ item }} />
                 </Box>
               </Grid>
@@ -113,7 +113,7 @@ export default function UserProductCategoryTabs({ product }) {
                 {productList.length ? (
                   productList.map((item, index) => (
                     <Grid item xs={6} sm={4} md={3} lg={2} key={item._id}>
-                      <Box sx={{ borderRadius: 1 }}>
+                      <Box sx={{ borderRadius: 1 }}  >
                         <ProductCard {...{ item }} />
                       </Box>
                     </Grid>
