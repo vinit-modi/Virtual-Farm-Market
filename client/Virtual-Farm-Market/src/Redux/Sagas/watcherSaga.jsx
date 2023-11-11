@@ -123,9 +123,11 @@ import {
 import {
   GET_ADD_PRODUCT_TO_CART,
   GET_ALLPRODUCTS_CART,
+  GET_CART_ITEM_COUNT_CART,
   GET_REMOVE_PRODUCT_TO_CART,
 } from "../Reducers/cartReducer";
 import {
+  fetchCartItemCountCart,
   fetchGetAddProductToCart,
   fetchGetAllProductCart,
   fetchGetRemoveProductToCart,
@@ -212,6 +214,7 @@ function* cart() {
   yield takeLatest(GET_ADD_PRODUCT_TO_CART, fetchGetAddProductToCart);
   yield takeLatest(GET_REMOVE_PRODUCT_TO_CART, fetchGetRemoveProductToCart);
   yield takeLatest(GET_ALLPRODUCTS_CART, fetchGetAllProductCart);
+  yield takeLatest(GET_CART_ITEM_COUNT_CART, fetchCartItemCountCart);
 }
 
 const authSaga = [fork(authStuff)];

@@ -9,6 +9,8 @@ export const SET_REMOVE_PRODUCT_TO_CART = "SET_REMOVE_PRODUCT_TO_CART";
 export const CLEAR_PRODUCT_COUNT_TO_CART = "CLEAR_PRODUCT_COUNT_TO_CART";
 export const GET_ALLPRODUCTS_CART = "GET_ALLPRODUCTS_CART";
 export const SET_ALLPRODUCTS_CART = "SET_ALLPRODUCTS_CART";
+export const GET_CART_ITEM_COUNT_CART = "GET_CART_ITEM_COUNT_CART";
+export const SET_CART_ITEM_COUNT_CART = "SET_CART_ITEM_COUNT_CART";
 
 export const makeRequestCart = () => ({
   type: MAKE_REQUEST_CART,
@@ -31,6 +33,11 @@ export const setRemoveProductToCart = (payload) => ({
 
 export const setAllProductsCart = (payload) => ({
   type: SET_ALLPRODUCTS_CART,
+  payload,
+});
+
+export const setCartItemCountCart = (payload) => ({
+  type: SET_CART_ITEM_COUNT_CART,
   payload,
 });
 
@@ -82,6 +89,14 @@ export const cartReducer = (state = initialState, action) => {
         loading: false,
         error: null,
         cartProductList: action.payload,
+      };
+
+    case SET_CART_ITEM_COUNT_CART:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        TotalCartQuantityCount: action.payload,
       };
     default:
       return state;

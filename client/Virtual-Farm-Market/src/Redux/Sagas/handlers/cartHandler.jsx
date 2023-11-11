@@ -4,11 +4,13 @@ import {
   makeRequestCart,
   setAddProductToCart,
   setAllProductsCart,
+  setCartItemCountCart,
   setRemoveProductToCart,
 } from "../../Reducers/cartReducer";
 import {
   requestGetAddProductToCart,
   requestGetAllProductCart,
+  requestGetCartItemCountCart,
   requestGetRemoveProductToCart,
 } from "../requests/cartRequest";
 
@@ -45,6 +47,19 @@ export function* fetchGetAllProductCart() {
 
     response.status === 200
       ? yield put(setAllProductsCart(response.data.data))
+      : yield put(failRequestCart(response.data?.message));
+  } catch (error) {
+    yield put(failRequestCart(error.message));
+  }
+}
+
+export function* fetchCartItemCountCart() {
+  try {
+    yield put(makeRequestCart());
+    const response = yield call(requestGetCartItemCountCart);
+
+    response.status === 200
+      ? yield put(setCartItemCountCart(response.data.data))
       : yield put(failRequestCart(response.data?.message));
   } catch (error) {
     yield put(failRequestCart(error.message));
