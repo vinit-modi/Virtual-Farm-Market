@@ -8,23 +8,33 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Avatar,
   ButtonGroup,
+  CircularProgress,
   LinearProgress,
   Paper,
+  Slide,
+  Snackbar,
   Stack,
 } from "@mui/material";
 import EmptyFoodImage from "../../Assets/EmptyProduct/EmptyFoodImage.jpg";
 import { red } from "@mui/material/colors";
 import { useDispatch } from "react-redux";
 import {
+  CLEAR_CART_LIST_CART,
   GET_ADD_PRODUCT_TO_CART,
   GET_ALLPRODUCTS_CART,
+  GET_CART_ITEM_COUNT_CART,
+  GET_REMOVE_PRODUCT_CART,
   GET_REMOVE_PRODUCT_TO_CART,
 } from "../../Redux/Reducers/cartReducer";
 import { useEffect } from "react";
 
+
+
 function CartCard({ item }) {
   const { product, seller } = item;
   const dispatch = useDispatch();
+
+
 
   useEffect(() => {
     dispatch({ type: GET_ALLPRODUCTS_CART });
@@ -33,7 +43,10 @@ function CartCard({ item }) {
 
   const handleAddQuantity = () => {
     dispatch({ type: GET_ADD_PRODUCT_TO_CART, payload: { _id: product._id } });
-    dispatch({ type: GET_ALLPRODUCTS_CART });
+    dispatch({ type: CLEAR_CART_LIST_CART });
+    setTimeout(() => {
+      dispatch({ type: GET_ALLPRODUCTS_CART });
+    }, 10);
   };
 
   const handleRemoveQuantity = () => {
@@ -41,9 +54,22 @@ function CartCard({ item }) {
       type: GET_REMOVE_PRODUCT_TO_CART,
       payload: { _id: product._id },
     });
-    dispatch({ type: GET_ALLPRODUCTS_CART });
+    dispatch({ type: CLEAR_CART_LIST_CART });
+    setTimeout(() => {
+      dispatch({ type: GET_ALLPRODUCTS_CART });
+    }, 10);
   };
 
+  const handleRemoveCart = () => {
+    dispatch({ type: GET_REMOVE_PRODUCT_CART, payload: { _id: item._id } });
+    setTimeout(() => {
+      dispatch({ type: GET_ALLPRODUCTS_CART });
+      dispatch({ type: GET_CART_ITEM_COUNT_CART });
+      
+    }, 10);
+    dispatch({ type: CLEAR_CART_LIST_CART });
+
+  };
   return (
     <Box sx={{ borderBottom: "1px solid #ccc", padding: 2 }}>
       {item ? (
@@ -89,11 +115,12 @@ function CartCard({ item }) {
                 </ButtonGroup>
               </Stack>
               <Stack>
-                <Typography>Price:&nbsp;{product.price}</Typography>
+                <Typography>Price:&nbsp;{product.price.toFixed(2)}</Typography>
                 <Typography>
-                  Total:&nbsp;{item.quantity * product.price}
+                  Total:&nbsp;{(item.quantity * product.price).toFixed(2)}
                 </Typography>
                 <Button
+                  onClick={() => handleRemoveCart()}
                   variant="outlined"
                   startIcon={<DeleteIcon />}
                   sx={{
@@ -112,6 +139,7 @@ function CartCard({ item }) {
       ) : (
         <LinearProgress color="success" />
       )}
+
     </Box>
   );
 }

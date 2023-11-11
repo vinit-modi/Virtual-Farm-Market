@@ -14,6 +14,7 @@ import {
   requestGetAllProductCart,
   requestGetCartItemCountCart,
   requestGetRemoveProductToCart,
+  requestRemoveProductCart,
 } from "../requests/cartRequest";
 
 export function* fetchGetAddProductToCart({ payload }) {
@@ -68,15 +69,15 @@ export function* fetchCartItemCountCart() {
   }
 }
 
-// export function* fetchAllCartItemsCart() {
-//   try {
-//     yield put(makeRequestCart());
-//     const response = yield call(requestGetAllItemForCart);
+export function* fetchRemoveProductCart({payload}) {
+  try {
+    yield put(makeRequestCart());
+    const response = yield call(requestRemoveProductCart,payload);
 
-//     response.status === 200
-//       ? yield put(setAllItemsForCart(response.data.data))
-//       : yield put(failRequestCart(response.data?.message));
-//   } catch (error) {
-//     yield put(failRequestCart(error.message));
-//   }
-// }
+    response.status === 200
+      ? yield put(setRemoveProductCart(response.data.data))
+      : yield put(failRequestCart(response.data?.message));
+  } catch (error) {
+    yield put(failRequestCart(error.message));
+  }
+}

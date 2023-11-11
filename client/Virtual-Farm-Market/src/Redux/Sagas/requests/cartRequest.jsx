@@ -20,7 +20,7 @@ export function requestGetCartItemCountCart() {
   return response;
 }
 
-// export function requestGetAllItemForCart() {
-//   const response = Axios.get(`/api/getCartProducts`);
-//   return response;
-// }
+export function requestRemoveProductCart(payload) {
+  const response = Axios.post(`/api/removeProduct`,payload);
+  return response;
+}

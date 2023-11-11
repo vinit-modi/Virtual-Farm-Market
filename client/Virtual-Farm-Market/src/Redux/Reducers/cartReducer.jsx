@@ -11,8 +11,9 @@ export const GET_ALLPRODUCTS_CART = "GET_ALLPRODUCTS_CART";
 export const SET_ALLPRODUCTS_CART = "SET_ALLPRODUCTS_CART";
 export const GET_CART_ITEM_COUNT_CART = "GET_CART_ITEM_COUNT_CART";
 export const SET_CART_ITEM_COUNT_CART = "SET_CART_ITEM_COUNT_CART";
-// export const GET_ALL_ITEM_FOR_CART = "GET_ALL_ITEM_FOR_CART";
-// export const SET_ALL_ITEM_FOR_CART = "SET_ALL_ITEM_FOR_CART";
+export const CLEAR_CART_LIST_CART = "CLEAR_CART_LIST_CART";
+export const GET_REMOVE_PRODUCT_CART = "GET_REMOVE_PRODUCT_CART";
+export const SET_REMOVE_PRODUCT_CART = "SET_REMOVE_PRODUCT_CART";
 
 export const makeRequestCart = () => ({
   type: MAKE_REQUEST_CART,
@@ -43,10 +44,11 @@ export const setCartItemCountCart = (payload) => ({
   payload,
 });
 
-// export const setAllItemsForCart = (payload) => ({
-//   type: SET_ALL_ITEM_FOR_CART,
-//   payload,
-// });
+
+export const setRemoveProductCart = (payload) => ({
+  type: SET_REMOVE_PRODUCT_CART,
+  payload,
+});
 
 const initialState = {
   loading: false,
@@ -105,6 +107,20 @@ export const cartReducer = (state = initialState, action) => {
         error: null,
         TotalCartQuantityCount: action.payload,
       };
+
+      case CLEAR_CART_LIST_CART:
+        return{
+            ...state,
+            cartProductList:null 
+        }
+
+        case SET_REMOVE_PRODUCT_CART:
+            return {
+                ...state,
+                loading:false,
+                error:null,
+                message:action.payload
+            }
     default:
       return state;
   }

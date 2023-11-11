@@ -29,7 +29,15 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import EditIcon from "@mui/icons-material/Edit";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { Divider, LinearProgress, List, Popover, Stack } from "@mui/material";
+import {
+  Divider,
+  LinearProgress,
+  List,
+  Popover,
+  Slide,
+  Snackbar,
+  Stack,
+} from "@mui/material";
 import Dashboard from "../../pages/Dashboard/Dashboard";
 import { green, grey, red } from "@mui/material/colors";
 import Payment from "../../pages/Payment/Payment";
@@ -46,11 +54,16 @@ import UserNotification from "../UserNotification/UserNotification";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import ShowProduct from "../../pages/Dashboard/showProduct";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
-import { GET_ALLPRODUCTS_CART, GET_CART_ITEM_COUNT_CART } from "../../Redux/Reducers/cartReducer";
+import {
+  GET_ALLPRODUCTS_CART,
+  GET_CART_ITEM_COUNT_CART,
+} from "../../Redux/Reducers/cartReducer";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import CloseIcon from "@mui/icons-material/Close";
 import CartCard from "../CartCard/CartCard";
+import Skeleton from "@mui/material/Skeleton";
+import { cartListSkeleton } from "../Skeletons/Skeleton";
 
 const settings = ["Update Profile", "Change Password", `Logout`];
 const settingsIcons = [<EditIcon />, <ManageAccountsIcon />, <LogoutIcon />];
@@ -140,9 +153,9 @@ function UserHeader() {
   };
 
   const handleAnchorForCart = (elementTarget) => {
-    dispatch({type:GET_ALLPRODUCTS_CART})
-    setAnchorElCart(elementTarget)
-  }
+    dispatch({ type: GET_ALLPRODUCTS_CART });
+    setAnchorElCart(elementTarget);
+  };
 
   useEffect(() => {
     if (notification.message) {
@@ -158,7 +171,6 @@ function UserHeader() {
     dispatch({ type: GET_COUNT_OF_NOTI });
     dispatch({ type: GET_CART_ITEM_COUNT_CART });
     dispatch({ type: GET_ALLPRODUCTS_CART });
-    
   }, []);
 
   useEffect(() => {
@@ -320,15 +332,14 @@ function UserHeader() {
                     }}
                   >
                     <Stack>
-                      <Stack sx={{mb:2}}>
+                      <Stack sx={{ mb: 2 }}>
                         {" "}
                         <Box
                           style={{
                             display: "flex",
                             justifyContent: "space-between",
                             alignItems: "center",
-                            height:50,
-                            
+                            height: 50,
                           }}
                         >
                           <Typography
@@ -354,24 +365,26 @@ function UserHeader() {
                         <Divider />
                         <Divider />
                         <Divider />
-                        <Divider  />
+                        <Divider />
                       </Stack>
                       <Stack spacing={1}>
-                        {
-                          cart.cartProductList.map((item,index)=>
-                          
-                        <Stack>
-                          
-                            <CartCard   {...{item}}   />    
-                         
-                        </Stack>
-                          )
-                        }
-                        </Stack>
+                        {cart.cartProductList ? (
+                          cart.cartProductList.map((item, index) => (
+                            <Stack>
+                              <CartCard {...{ item }} />
+                            </Stack>
+                          ))
+                        ) : (
+                          <>{cartListSkeleton()}</>
+                        )}
+                      </Stack>
                     </Stack>
                   </Box>
                 </Box>
               </Popover>
+
+
+
 
 
 

@@ -157,7 +157,10 @@ function ProductCard({ item }) {
                   type: GET_ADD_PRODUCT_TO_CART,
                   payload: { _id: item._id },
                 });
-                dispatch({ type: GET_CART_ITEM_COUNT_CART });
+                setTimeout(() => {
+                    
+                    dispatch({ type: GET_CART_ITEM_COUNT_CART });
+                }, 10);
               }}
             >
               {item.quantityAvailable > 0 ? `ADD TO CART` : `OUT OF STOCK`}

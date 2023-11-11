@@ -39,11 +39,11 @@ function ShowProduct() {
   const [quntityCount, setQuntityCount] = useState();
   const [selectImage, setSelectImage] = useState(null);
 
-  const images = product.productObj.images;
+  const images = product.productObj?.images;
+const displayImages = (images && images.length > 0) ? images.slice(0, 4) : [];
+const remainingImages = (images && images.length > 4) ? images.slice(4) : [];
 
-  const displayImages = images.slice(0, 4);
-  const remainingImages = images.slice(4);
-
+console.log(displayImages)
   const handleToggleExpand = () => {
     setExpanded(!expanded);
   };
@@ -96,9 +96,9 @@ function ShowProduct() {
   };
 
   function countQuntities() {
-    const quntity = cart.cartProductList.filter(
+    const quntity = cart.cartProductList ? cart.cartProductList.filter(
       (item) => item.product._id === product.productObj._id
-    );
+    ) :[]; 
     setQuntityCount(quntity[0]?.quantity);
   }
 
@@ -112,7 +112,7 @@ function ShowProduct() {
 
   useEffect(() => {
     dispatch({ type: GET_ALLPRODUCTS_CART });
-    dispatch({ type: GET_CART_ITEM_COUNT_CART });
+    // dispatch({ type: GET_CART_ITEM_COUNT_CART });
     countQuntities();
     return () => {
       //   dispatch({ type: CLEAR_OBJECT_PRODUCT });
@@ -178,7 +178,7 @@ function ShowProduct() {
               <Stack direction="row" spacing={1} sx={{ px: 3 }}>
                 <Paper elevation={3} bgcolor="#cfd8dc">
                   <Stack direction="row" spacing={1} sx={{ px: 2 }}>
-                    {displayImages.map((image, index) => (
+                    {displayImages.length && displayImages.map((image, index) => (
                       <Avatar
                         variant="rounded"
                         key={index}
@@ -295,12 +295,7 @@ function ShowProduct() {
                       className="btn btn-primary"
                       variant="contained"
                       onClick={decrement}
-                      disabled={cart.cartProductList.some(
-                        (item) =>
-                          item.product._id === product.productObj._id &&
-                          item.quntity &&
-                          item.quntity[0]?.quantity > 0
-                      )}
+                     
                     >
                       -
                     </Button>
@@ -379,6 +374,9 @@ function ShowProduct() {
                   </Box>
                 </Grid>
                 <Grid item>
+                    {
+                        Object.keys(product.productObj).length === 0 ?null:
+                    
                   <Grid container spacing={1} alignItems="center">
                     <Grid item>
                       <Avatar
@@ -397,7 +395,7 @@ function ShowProduct() {
                         {`${product.productObj.seller.city}, ${product.productObj.seller.province}`}
                       </Typography>
                     </Grid>
-                  </Grid>
+                  </Grid>}
                 </Grid>
               </Grid>
             </Stack>
