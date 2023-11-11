@@ -19,3 +19,8 @@ export function requestGetCartItemCountCart() {
   const response = Axios.get(`/api/cartItemsCount`);
   return response;
 }
+
+// export function requestGetAllItemForCart() {
+//   const response = Axios.get(`/api/getCartProducts`);
+//   return response;
+// }

@@ -123,10 +123,12 @@ import {
 import {
   GET_ADD_PRODUCT_TO_CART,
   GET_ALLPRODUCTS_CART,
+  // GET_ALL_ITEM_FOR_CART,
   GET_CART_ITEM_COUNT_CART,
   GET_REMOVE_PRODUCT_TO_CART,
 } from "../Reducers/cartReducer";
 import {
+  // fetchAllCartItemsCart,
   fetchCartItemCountCart,
   fetchGetAddProductToCart,
   fetchGetAllProductCart,
@@ -215,6 +217,7 @@ function* cart() {
   yield takeLatest(GET_REMOVE_PRODUCT_TO_CART, fetchGetRemoveProductToCart);
   yield takeLatest(GET_ALLPRODUCTS_CART, fetchGetAllProductCart);
   yield takeLatest(GET_CART_ITEM_COUNT_CART, fetchCartItemCountCart);
+  // yield takeLatest(GET_ALL_ITEM_FOR_CART, fetchAllCartItemsCart);
 }
 
 const authSaga = [fork(authStuff)];

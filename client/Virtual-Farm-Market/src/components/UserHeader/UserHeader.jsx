@@ -44,12 +44,13 @@ import {
 } from "../../Redux/Reducers/userNotificationReducer";
 import UserNotification from "../UserNotification/UserNotification";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
-import axios from "axios";
-import { useState } from "react";
-import { CLEAR_MESSAGE_USERREDUCER } from "../../Redux/Reducers/userReducer";
 import ShowProduct from "../../pages/Dashboard/showProduct";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
-import { GET_CART_ITEM_COUNT_CART, cartReducer } from "../../Redux/Reducers/cartReducer";
+import { GET_ALLPRODUCTS_CART, GET_CART_ITEM_COUNT_CART } from "../../Redux/Reducers/cartReducer";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import CloseIcon from "@mui/icons-material/Close";
+import CartCard from "../CartCard/CartCard";
 
 const settings = ["Update Profile", "Change Password", `Logout`];
 const settingsIcons = [<EditIcon />, <ManageAccountsIcon />, <LogoutIcon />];
@@ -64,6 +65,7 @@ const pages = [
 function UserHeader() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElCart, setAnchorElCart] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [expandContentInNotification, setExpandContentInNotification] =
     React.useState(null);
@@ -74,6 +76,9 @@ function UserHeader() {
   const notification = useSelector((state) => state.notification);
   const userDetails = useSelector((state) => state.userDetails);
   const cart = useSelector((state) => state.cart);
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -118,6 +123,7 @@ function UserHeader() {
 
   const handleClosePopover = () => {
     setAnchorEl(null);
+    setAnchorElCart(null);
     setExpandContentInNotification(null);
   };
 
@@ -133,6 +139,11 @@ function UserHeader() {
     handleClosePopover();
   };
 
+  const handleAnchorForCart = (elementTarget) => {
+    dispatch({type:GET_ALLPRODUCTS_CART})
+    setAnchorElCart(elementTarget)
+  }
+
   useEffect(() => {
     if (notification.message) {
       dispatch({ type: GET_COUNT_OF_NOTI });
@@ -146,6 +157,8 @@ function UserHeader() {
     dispatch({ type: GET_ALL_NOTI });
     dispatch({ type: GET_COUNT_OF_NOTI });
     dispatch({ type: GET_CART_ITEM_COUNT_CART });
+    dispatch({ type: GET_ALLPRODUCTS_CART });
+    
   }, []);
 
   useEffect(() => {
@@ -265,11 +278,12 @@ function UserHeader() {
 
             <Box sx={{ flexGrow: 0, display: "flex", flexDirection: "row" }}>
               <Box sx={{ mr: 2 }}>
-                <Tooltip title="Notifications">
+                <Tooltip title="Cart">
                   <IconButton
                     size="large"
-                    aria-label="show badged new notifications"
+                    aria-label="show badged new cart count"
                     color="inherit"
+                    onClick={(e) => handleAnchorForCart(e.currentTarget)}
                   >
                     {cart.TotalCartQuantityCount > 0 ? (
                       <Badge
@@ -285,18 +299,79 @@ function UserHeader() {
                 </Tooltip>{" "}
               </Box>
 
-
-
-
-
-
-
-
-
-
-
-
-
+              <Popover
+                open={Boolean(anchorElCart)}
+                anchorEl={anchorElCart}
+                anchorOrigin={{
+                  vertical: isSmallScreen ? "top" : "bottom",
+                  horizontal: isSmallScreen ? "left" : "center",
+                }}
+                transformOrigin={{
+                  vertical: isSmallScreen ? "bottom" : "top",
+                  horizontal: isSmallScreen ? "left" : "right",
+                }}
+                onClose={handleClosePopover}
+              >
+                <Box sx={{ p: 2 }}>
+                  <Box
+                    sx={{
+                      width: isSmallScreen ? "100vw" : 400,
+                      height: isSmallScreen ? "100vh" : 700,
+                    }}
+                  >
+                    <Stack>
+                      <Stack sx={{mb:2}}>
+                        {" "}
+                        <Box
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            height:50,
+                            
+                          }}
+                        >
+                          <Typography
+                            variant="h5"
+                            sx={{
+                              display: "flex",
+                              justifyContent: "space-around",
+                              alignItems: "center",
+                              fontSize: 28,
+                              color: green["A700"],
+                              my: 2,
+                            }}
+                          >
+                            Cart List
+                          </Typography>
+                          {/* {notification.loading ? (
+                          <LinearProgress color="success" />
+                        ) : null} */}{" "}
+                          <IconButton onClick={handleClosePopover}>
+                            <CloseIcon />
+                          </IconButton>
+                        </Box>{" "}
+                        <Divider />
+                        <Divider />
+                        <Divider />
+                        <Divider  />
+                      </Stack>
+                      <Stack spacing={1}>
+                        {
+                          cart.cartProductList.map((item,index)=>
+                          
+                        <Stack>
+                          
+                            <CartCard   {...{item}}   />    
+                         
+                        </Stack>
+                          )
+                        }
+                        </Stack>
+                    </Stack>
+                  </Box>
+                </Box>
+              </Popover>
 
 
 
