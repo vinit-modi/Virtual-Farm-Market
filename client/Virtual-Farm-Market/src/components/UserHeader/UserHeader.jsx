@@ -48,6 +48,8 @@ import axios from "axios";
 import { useState } from "react";
 import { CLEAR_MESSAGE_USERREDUCER } from "../../Redux/Reducers/userReducer";
 import ShowProduct from "../../pages/Dashboard/showProduct";
+import LocalMallIcon from "@mui/icons-material/LocalMall";
+import { GET_CART_ITEM_COUNT_CART, cartReducer } from "../../Redux/Reducers/cartReducer";
 
 const settings = ["Update Profile", "Change Password", `Logout`];
 const settingsIcons = [<EditIcon />, <ManageAccountsIcon />, <LogoutIcon />];
@@ -71,6 +73,7 @@ function UserHeader() {
   const auth = useSelector((state) => state.auth);
   const notification = useSelector((state) => state.notification);
   const userDetails = useSelector((state) => state.userDetails);
+  const cart = useSelector((state) => state.cart);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -142,6 +145,7 @@ function UserHeader() {
     dispatch({ type: GET_USER_PROFILE_IMAGE });
     dispatch({ type: GET_ALL_NOTI });
     dispatch({ type: GET_COUNT_OF_NOTI });
+    dispatch({ type: GET_CART_ITEM_COUNT_CART });
   }, []);
 
   useEffect(() => {
@@ -260,6 +264,48 @@ function UserHeader() {
             </Box>
 
             <Box sx={{ flexGrow: 0, display: "flex", flexDirection: "row" }}>
+              <Box sx={{ mr: 2 }}>
+                <Tooltip title="Notifications">
+                  <IconButton
+                    size="large"
+                    aria-label="show badged new notifications"
+                    color="inherit"
+                  >
+                    {cart.TotalCartQuantityCount > 0 ? (
+                      <Badge
+                        badgeContent={cart.TotalCartQuantityCount}
+                        color="error"
+                      >
+                        <LocalMallIcon />
+                      </Badge>
+                    ) : (
+                      <LocalMallIcon />
+                    )}
+                  </IconButton>
+                </Tooltip>{" "}
+              </Box>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
               {/* Notifications */}
               <Box sx={{ mr: 3 }}>
                 <Tooltip title="Notifications">
