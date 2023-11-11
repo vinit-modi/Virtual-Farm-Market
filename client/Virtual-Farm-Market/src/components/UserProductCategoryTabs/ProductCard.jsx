@@ -52,16 +52,14 @@ function ProductCard({ item }) {
       <Card
         sx={{
           maxWidth: 345,
-          bgcolor: '#d1c4e9',
-        //   bgcolor: grey[100],
-          "&:hover": { bgcolor: grey[300], cursor: "pointer" },
+          //   bgcolor: "#d1c4e9",
+          bgcolor: green[200],
+          "&:hover": { bgcolor: green[300], cursor: "pointer", color:'white' },
         }}
       >
         <Box onClick={() => handleProductShow(item._id)}>
           <CardHeader
-
-sx={{ bgcolor:'#b39ddb', color:'white'
-  }}
+            sx={{ bgcolor: green[400], color: "white" }}
             avatar={
               <Avatar
                 sx={{ bgcolor: red[500] }}
@@ -95,10 +93,14 @@ sx={{ bgcolor:'#b39ddb', color:'white'
             />
           </Box>
           <CardContent>
-            <Typography variant="h5" color={grey[800]}>
+            <Typography variant="h5" 
+            // color={grey[800]}
+            >
               {item.name}
             </Typography>
-            <Typography variant="body1" color={grey[700]}>
+            <Typography variant="body1"
+            //      color={grey[700]}
+             >
               Price: {item.price}
             </Typography>
             <Typography
@@ -122,8 +124,8 @@ sx={{ bgcolor:'#b39ddb', color:'white'
         <CardActions
           disableSpacing
           sx={{
-            // bgcolor: grey[200],
-            bgcolor: '#7e57c2',
+            bgcolor: green[500],
+            // bgcolor: "#7e57c2",
             display: "flex",
             justifyContent: "space-between",
           }}
@@ -141,8 +143,8 @@ sx={{ bgcolor:'#b39ddb', color:'white'
               variant="contained"
               disabled={!(item.quantityAvailable > 0)}
               sx={{
-                bgcolor: green[`A700`],
-                "&:hover": { bgcolor: green[`A400`],color:'black' },
+                bgcolor: orange[`A700`],
+                "&:hover": { bgcolor: orange[`A400`] },
               }}
               onClick={() =>
                 dispatch({

@@ -20,6 +20,7 @@ import {
   CLEAR_PRODUCT_COUNT_TO_CART,
   GET_ADD_PRODUCT_TO_CART,
   GET_ALLPRODUCTS_CART,
+  GET_CART_ITEM_COUNT_CART,
   GET_REMOVE_PRODUCT_TO_CART,
 } from "../../Redux/Reducers/cartReducer";
 import { CLEAR_OBJECT_PRODUCT } from "../../Redux/Reducers/productReducer";
@@ -80,6 +81,7 @@ function ShowProduct() {
       payload: { _id: productObj._id },
     });
     dispatch({ type: GET_ALLPRODUCTS_CART });
+    dispatch({ type: GET_CART_ITEM_COUNT_CART });
     // countQuntities();
   };
 
@@ -89,6 +91,7 @@ function ShowProduct() {
       payload: { _id: productObj._id },
     });
     dispatch({ type: GET_ALLPRODUCTS_CART });
+    dispatch({ type: GET_CART_ITEM_COUNT_CART });
     // countQuntities();
   };
 
@@ -104,6 +107,7 @@ function ShowProduct() {
       type: GET_ADD_PRODUCT_TO_CART,
       payload: { _id: productObj._id },
     });
+    dispatch({ type: GET_CART_ITEM_COUNT_CART });
   };
 
   useEffect(() => {
@@ -117,13 +121,12 @@ function ShowProduct() {
 
   useEffect(() => {
     countQuntities();
-    console.log(quntityCount);
   }, [cart.cartProductList, product]);
 
   useEffect(() => {
     dispatch({ type: GET_ALLPRODUCTS_CART });
-    console.log(quntityCount);
   }, [quntityCount]);
+
   return (
     <>
       <Box>
@@ -242,9 +245,11 @@ function ShowProduct() {
                     Price:&nbsp;
                     <span style={{ fontSize: "1em" }}>$</span>
                     <span style={{ fontSize: "1.6em" }}>
-                      {productObj.price}
+                      {Math.floor(productObj.price)}
                     </span>
-                    {/* <sup style={{ position: 'relative' ,top: '-1em'}}>.99</sup> */}
+                    <sup style={{ position: "relative", top: "-1em" }}>
+                      {((productObj.price % 1) * 100).toFixed(0)}
+                    </sup>
                   </Typography>
                 </Grid>{" "}
                 <Grid>
@@ -264,13 +269,23 @@ function ShowProduct() {
                           : quntityCount)
                       )
                         ? 0
-                        : (
+                        : Math.floor(
                             productObj.price *
-                            (cart.productQuantityCount
-                              ? cart.productQuantityCount
-                              : quntityCount)
-                          ).toFixed(2)}
+                              (cart.productQuantityCount
+                                ? cart.productQuantityCount
+                                : quntityCount)
+                          )}
                     </span>
+                    <sup style={{ position: "relative", top: "-1em" }}>
+                      {(
+                        (((cart.productQuantityCount
+                          ? cart.productQuantityCount
+                          : quntityCount) *
+                          productObj.price) %
+                          1) *
+                        100
+                      ).toFixed(0)}
+                    </sup>
                   </Typography>
                 </Grid>{" "}
                 <Grid item>
