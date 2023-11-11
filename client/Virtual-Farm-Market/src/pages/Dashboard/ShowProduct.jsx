@@ -112,6 +112,7 @@ function ShowProduct() {
 
   useEffect(() => {
     dispatch({ type: GET_ALLPRODUCTS_CART });
+    dispatch({ type: GET_CART_ITEM_COUNT_CART });
     countQuntities();
     return () => {
       //   dispatch({ type: CLEAR_OBJECT_PRODUCT });

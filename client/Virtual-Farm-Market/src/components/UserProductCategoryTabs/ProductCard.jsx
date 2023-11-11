@@ -21,7 +21,10 @@ import EmptyFoodImage from "../../Assets/EmptyProduct/EmptyFoodImage.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_OBJECT_PRODUCT } from "../../Redux/Reducers/productReducer";
 import { useNavigate } from "react-router-dom";
-import { GET_ADD_PRODUCT_TO_CART } from "../../Redux/Reducers/cartReducer";
+import {
+  GET_ADD_PRODUCT_TO_CART,
+  GET_CART_ITEM_COUNT_CART,
+} from "../../Redux/Reducers/cartReducer";
 import { green } from "@mui/material/colors";
 
 function ProductCard({ item }) {
@@ -44,6 +47,7 @@ function ProductCard({ item }) {
   function handleProductShow(id) {
     console.log(id);
     dispatch({ type: GET_OBJECT_PRODUCT, payload: { _id: id } });
+    dispatch({ type: GET_CART_ITEM_COUNT_CART });
     navigate(`/user/showproduct`);
   }
 
@@ -54,7 +58,7 @@ function ProductCard({ item }) {
           maxWidth: 345,
           //   bgcolor: "#d1c4e9",
           bgcolor: green[200],
-          "&:hover": { bgcolor: green[300], cursor: "pointer", color:'white' },
+          "&:hover": { bgcolor: green[300], cursor: "pointer", color: "white" },
         }}
       >
         <Box onClick={() => handleProductShow(item._id)}>
@@ -93,14 +97,16 @@ function ProductCard({ item }) {
             />
           </Box>
           <CardContent>
-            <Typography variant="h5" 
-            // color={grey[800]}
+            <Typography
+              variant="h5"
+              // color={grey[800]}
             >
               {item.name}
             </Typography>
-            <Typography variant="body1"
-            //      color={grey[700]}
-             >
+            <Typography
+              variant="body1"
+              //      color={grey[700]}
+            >
               Price: {item.price}
             </Typography>
             <Typography
@@ -146,12 +152,13 @@ function ProductCard({ item }) {
                 bgcolor: orange[`A700`],
                 "&:hover": { bgcolor: orange[`A400`] },
               }}
-              onClick={() =>
+              onClick={() => {
                 dispatch({
                   type: GET_ADD_PRODUCT_TO_CART,
                   payload: { _id: item._id },
-                })
-              }
+                });
+                dispatch({ type: GET_CART_ITEM_COUNT_CART });
+              }}
             >
               {item.quantityAvailable > 0 ? `ADD TO CART` : `OUT OF STOCK`}
             </Button>
