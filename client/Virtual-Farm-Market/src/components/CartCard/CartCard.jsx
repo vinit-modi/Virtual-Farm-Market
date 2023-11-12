@@ -27,6 +27,7 @@ import {
   GET_REMOVE_PRODUCT_TO_CART,
 } from "../../Redux/Reducers/cartReducer";
 import { useEffect } from "react";
+import { GET_OBJECT_PRODUCT } from "../../Redux/Reducers/productReducer";
 
 
 
@@ -57,6 +58,7 @@ function CartCard({ item }) {
     dispatch({ type: CLEAR_CART_LIST_CART });
     setTimeout(() => {
       dispatch({ type: GET_ALLPRODUCTS_CART });
+      dispatch({type:GET_OBJECT_PRODUCT,payload:{_id:product._id}})
     }, 10);
   };
 

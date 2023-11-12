@@ -6,6 +6,7 @@ import {
 //   setAllItemsForCart,
   setAllProductsCart,
   setCartItemCountCart,
+  setRemoveProductCart,
   setRemoveProductToCart,
 } from "../../Reducers/cartReducer";
 import {
@@ -75,7 +76,7 @@ export function* fetchRemoveProductCart({payload}) {
     const response = yield call(requestRemoveProductCart,payload);
 
     response.status === 200
-      ? yield put(setRemoveProductCart(response.data.data))
+      ? yield put(setRemoveProductCart(response.data.message))
       : yield put(failRequestCart(response.data?.message));
   } catch (error) {
     yield put(failRequestCart(error.message));

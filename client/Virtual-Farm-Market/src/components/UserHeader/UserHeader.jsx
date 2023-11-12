@@ -55,6 +55,7 @@ import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import ShowProduct from "../../pages/Dashboard/showProduct";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import {
+  CLEAR_MESSAGE_CART,
   GET_ALLPRODUCTS_CART,
   GET_CART_ITEM_COUNT_CART,
 } from "../../Redux/Reducers/cartReducer";
@@ -64,6 +65,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import CartCard from "../CartCard/CartCard";
 import Skeleton from "@mui/material/Skeleton";
 import { cartListSkeleton } from "../Skeletons/Skeleton";
+import { toast } from "react-toastify";
 
 const settings = ["Update Profile", "Change Password", `Logout`];
 const settingsIcons = [<EditIcon />, <ManageAccountsIcon />, <LogoutIcon />];
@@ -78,7 +80,7 @@ const pages = [
 function UserHeader() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [anchorElCart, setAnchorElCart] = React.useState(true);
+  const [anchorElCart, setAnchorElCart] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [expandContentInNotification, setExpandContentInNotification] =
     React.useState(null);
@@ -188,6 +190,14 @@ function UserHeader() {
       dispatch({ type: GET_ALL_NOTI });
     }
   }, [Boolean(anchorEl)]);
+
+  useEffect(() => {
+    if (cart.message) {
+      toast.success(cart.message);
+
+      dispatch({ type: CLEAR_MESSAGE_CART });
+    }
+  }, [cart.message, dispatch]);
 
   return (
     <>
@@ -382,17 +392,6 @@ function UserHeader() {
                   </Box>
                 </Box>
               </Popover>
-
-
-
-
-
-
-
-
-
-
-
 
               {/* Notifications */}
               <Box sx={{ mr: 3 }}>

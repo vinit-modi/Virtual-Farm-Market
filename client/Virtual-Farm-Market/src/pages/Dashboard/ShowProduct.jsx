@@ -118,6 +118,7 @@ console.log(displayImages)
       //   dispatch({ type: CLEAR_OBJECT_PRODUCT });
       dispatch({ type: CLEAR_PRODUCT_COUNT_TO_CART });
     };
+
   }, []);
 
   useEffect(() => {
