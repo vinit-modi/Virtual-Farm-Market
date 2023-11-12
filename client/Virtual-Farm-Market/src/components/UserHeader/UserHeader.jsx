@@ -66,6 +66,7 @@ import CartCard from "../CartCard/CartCard";
 import Skeleton from "@mui/material/Skeleton";
 import { cartListSkeleton } from "../Skeletons/Skeleton";
 import { toast } from "react-toastify";
+import { useRef } from "react";
 
 const settings = ["Update Profile", "Change Password", `Logout`];
 const settingsIcons = [<EditIcon />, <ManageAccountsIcon />, <LogoutIcon />];
@@ -78,6 +79,7 @@ const pages = [
 ];
 
 function UserHeader() {
+  const mainEl = useRef();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [anchorElCart, setAnchorElCart] = React.useState(null);
@@ -199,9 +201,17 @@ function UserHeader() {
     }
   }, [cart.message, dispatch]);
 
+  useEffect(() => {
+    if (Boolean(anchorElCart)) {
+      mainEl.current.style.filter = "blur(2px)";
+    } else {
+      mainEl.current.style.filter = "blur(0px)";
+    }
+  }, [anchorElCart]);
+
   return (
     <>
-      <AppBar position="static">
+      <AppBar id="main" ref={mainEl} position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <StorefrontIcon
@@ -365,9 +375,6 @@ function UserHeader() {
                           >
                             Cart List
                           </Typography>
-                          {/* {notification.loading ? (
-                          <LinearProgress color="success" />
-                        ) : null} */}{" "}
                           <IconButton onClick={handleClosePopover}>
                             <CloseIcon />
                           </IconButton>
