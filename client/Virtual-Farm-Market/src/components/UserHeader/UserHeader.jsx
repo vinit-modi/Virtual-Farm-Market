@@ -202,12 +202,12 @@ function UserHeader() {
   }, [cart.message, dispatch]);
 
   useEffect(() => {
-    if (Boolean(anchorElCart)) {
-      mainEl.current.style.filter = "blur(2px)";
+    if (Boolean(anchorElCart) ||Boolean(anchorEl) || Boolean(anchorElUser) || Boolean(anchorElNav) ) {
+      mainEl.current.style.filter = "blur(1.4px)";
     } else {
       mainEl.current.style.filter = "blur(0px)";
     }
-  }, [anchorElCart]);
+  }, [anchorElCart,anchorElUser,anchorEl,anchorElNav]);
 
   return (
     <>
