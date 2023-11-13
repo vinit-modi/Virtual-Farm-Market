@@ -183,6 +183,12 @@ module.exports = {
         product: productId,
       });
       if (getProduct) {
+        if (getProduct.quantity <= 1) {
+          return res.status(400).json({
+            status: "error",
+            message: "Quantity is already at the minimum.",
+          });
+        }
         let updateCart = await CartModel.findByIdAndUpdate(
           getProduct._id,
           { $inc: { quantity: -1 } },
