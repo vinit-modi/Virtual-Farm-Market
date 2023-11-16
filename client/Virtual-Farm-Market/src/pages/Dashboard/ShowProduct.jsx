@@ -40,10 +40,10 @@ function ShowProduct() {
   const [selectImage, setSelectImage] = useState(null);
 
   const images = product.productObj?.images;
-const displayImages = (images && images.length > 0) ? images.slice(0, 4) : [];
-const remainingImages = (images && images.length > 4) ? images.slice(4) : [];
+  const displayImages = images && images.length > 0 ? images.slice(0, 4) : [];
+  const remainingImages = images && images.length > 4 ? images.slice(4) : [];
 
-console.log(displayImages)
+  console.log(displayImages);
   const handleToggleExpand = () => {
     setExpanded(!expanded);
   };
@@ -61,7 +61,7 @@ console.log(displayImages)
     const lines = [];
     let line = "";
     for (let i = 0; i < words.length; i++) {
-      if ((line + words[i]).length <= 40) {
+      if ((line + words[i]).length <= 120) {
         line += ` ${words[i]}`;
       } else {
         lines.push(line.trim());
@@ -96,9 +96,11 @@ console.log(displayImages)
   };
 
   function countQuntities() {
-    const quntity = cart.cartProductList ? cart.cartProductList.filter(
-      (item) => item.product._id === product.productObj._id
-    ) :[]; 
+    const quntity = cart.cartProductList
+      ? cart.cartProductList.filter(
+          (item) => item.product._id === product.productObj._id
+        )
+      : [];
     setQuntityCount(quntity[0]?.quantity);
   }
 
@@ -118,7 +120,6 @@ console.log(displayImages)
       //   dispatch({ type: CLEAR_OBJECT_PRODUCT });
       dispatch({ type: CLEAR_PRODUCT_COUNT_TO_CART });
     };
-
   }, []);
 
   useEffect(() => {
@@ -179,26 +180,27 @@ console.log(displayImages)
               <Stack direction="row" spacing={1} sx={{ px: 3 }}>
                 <Paper elevation={3} bgcolor="#cfd8dc">
                   <Stack direction="row" spacing={1} sx={{ px: 2 }}>
-                    {displayImages.length && displayImages.map((image, index) => (
-                      <Avatar
-                        variant="rounded"
-                        key={index}
-                        alt={`Image ${index}`}
-                        src={image}
-                        sx={{
-                          width: 48,
-                          height: 48,
-                          border: selectImage
-                            ? `2px solid ${
-                                selectImage === image ? `#4fc3f7` : `none`
-                              }`
-                            : displayImages[0] === image
-                            ? `#4fc3f7`
-                            : `none`,
-                        }}
-                        onClick={() => setSelectImage(image)}
-                      />
-                    ))}
+                    {displayImages.length > 0 &&
+                      displayImages.map((image, index) => (
+                        <Avatar
+                          variant="rounded"
+                          key={index}
+                          alt={`Image ${index}`}
+                          src={image}
+                          sx={{
+                            width: 48,
+                            height: 48,
+                            border: selectImage
+                              ? `2px solid ${
+                                  selectImage === image ? `#4fc3f7` : `none`
+                                }`
+                              : displayImages[0] === image
+                              ? `#4fc3f7`
+                              : `none`,
+                          }}
+                          onClick={() => setSelectImage(image)}
+                        />
+                      ))}
                     {remainingImages.length > 0 && (
                       <Avatar
                         variant="rounded"
@@ -296,7 +298,6 @@ console.log(displayImages)
                       className="btn btn-primary"
                       variant="contained"
                       onClick={decrement}
-                     
                     >
                       -
                     </Button>
@@ -331,14 +332,14 @@ console.log(displayImages)
                     </Button>
                   </Box>
                 </Grid>
-                <Grid item>
+                {/* <Grid item>
                   <button
                     className="btn btn-primary"
                     onClick={() => handleAddToCart()}
                   >
                     Add to Cart
                   </button>
-                </Grid>
+                </Grid> */}
                 <Grid item>
                   <Typography variant="h6">Country of Origin: CA</Typography>
                 </Grid>
@@ -375,28 +376,27 @@ console.log(displayImages)
                   </Box>
                 </Grid>
                 <Grid item>
-                    {
-                        Object.keys(product.productObj).length === 0 ?null:
-                    
-                  <Grid container spacing={1} alignItems="center">
-                    <Grid item>
-                      <Avatar
-                        sx={{ width: 42, height: 42, bgcolor: green[500] }}
-                        src={product.productObj.seller.profilePicture}
-                      />
+                  {Object.keys(product.productObj).length === 0 ? null : (
+                    <Grid container spacing={1} alignItems="center">
+                      <Grid item>
+                        <Avatar
+                          sx={{ width: 42, height: 42, bgcolor: green[500] }}
+                          src={product.productObj.seller.profilePicture}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <Typography variant="body1">
+                          <strong>Farmer:</strong>&nbsp;
+                          {product.productObj.seller.name}
+                        </Typography>
+                        <Typography variant="body1">
+                          <strong>Location:</strong>
+                          &nbsp;
+                          {`${product.productObj.seller.city}, ${product.productObj.seller.province}`}
+                        </Typography>
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      <Typography variant="body1">
-                        <strong>Farmer:</strong>&nbsp;
-                        {product.productObj.seller.name}
-                      </Typography>
-                      <Typography variant="body1">
-                        <strong>Location:</strong>
-                        &nbsp;
-                        {`${product.productObj.seller.city}, ${product.productObj.seller.province}`}
-                      </Typography>
-                    </Grid>
-                  </Grid>}
+                  )}
                 </Grid>
               </Grid>
             </Stack>

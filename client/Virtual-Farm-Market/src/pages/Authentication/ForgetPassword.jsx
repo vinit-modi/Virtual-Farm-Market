@@ -24,9 +24,15 @@ const useStyles = styled("div")({
 const ForgetPasswordSchema = Yup.object().shape({
   email: Yup.string()
     .required("Email is required")
+    .test("is-lowercase", "Email should be in lowercase", function (value) {
+      if (value && value !== value.toLowerCase()) {
+        return false;
+      }
+      return true;
+    })
     .matches(
-      /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
-      "Invalid email address"
+      /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+      "Invalid email address."
     ),
 });
 

@@ -62,18 +62,34 @@ function ProductCard({ item }) {
         }}
       >
         <Box onClick={() => handleProductShow(item._id)}>
+          {
+            item.seller ? 
           <CardHeader
-            sx={{ bgcolor: green[400], color: "white" }}
-            avatar={
-              <Avatar
-                sx={{ bgcolor: red[500] }}
-                aria-label={item.seller.name}
-                src={item.seller.profilePicture}
-              />
-            }
-            title={item.seller.name}
-            subheader={`${item.seller.city}, ${item.seller.province}`}
+          sx={{ bgcolor: green[400], color: "white" }}
+          avatar={
+            <Avatar
+            sx={{ bgcolor: red[500] }}
+            aria-label={item.seller.name}
+            src={item.seller.profilePicture}
+            />
+          }
+          title={item.seller.name}
+          subheader={`${item.seller.city}, ${item.seller.province}`}
           />
+          :
+          <CardHeader
+          sx={{ bgcolor: green[400], color: "white" }}
+          avatar={
+            <Avatar
+            sx={{ bgcolor: red[500] }}
+            aria-label='Empty'
+            // src={item.seller.profilePicture}
+            />
+          }
+          title='Empty'
+          subheader='Empty'
+          />
+        }
           <Box
             sx={{
               position: "relative",

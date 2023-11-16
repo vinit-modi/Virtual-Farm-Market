@@ -29,10 +29,12 @@ import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 
 const validateYupSchema = Yup.object().shape({
-  cardholderName: Yup.string().required("Required"),
+  cardholderName: Yup.string()
+    .required("Required")
+    .matches(/^[^\d]+$/, "Cardholder name should not contain digits."),
   cardNumber: Yup.string()
     .required("Required")
-    .matches(/^\d{16}$/, "Card number must be 16 digits"),
+    .matches(/^(\d{15}|\d{16})$/, "Card number must be 15 or 16 digits"),
   cardExpiration: Yup.string()
     .required("Required")
     .matches(/^(0[1-9]|1[0-2])\/\d{2}$/, "Invalid MM/YY format"),
@@ -98,9 +100,9 @@ function Payment() {
                 >
                   <Tooltip title="Add New Card">
                     <Button
-                      sx={{
-                        bgcolor: green["A700"],
-                      }}
+                      // sx={{
+                      //   bgcolor: green["A700"],
+                      // }}
                       variant="contained"
                       startIcon={addNewCard ? <RemoveIcon /> : <AddIcon />}
                       onClick={() => setAddNewCard(!addNewCard)}

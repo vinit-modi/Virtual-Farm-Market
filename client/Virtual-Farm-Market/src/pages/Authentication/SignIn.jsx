@@ -33,9 +33,15 @@ import { GET_ADMIN_LOGIN } from "../../Redux/Reducers/adminReducer";
 const validationSchema = Yup.object().shape({
   email: Yup.string()
     .required("Email is required")
+    .test("is-lowercase", "Email should be in lowercase", function (value) {
+      if (value && value !== value.toLowerCase()) {
+        return false;
+      }
+      return true;
+    })
     .matches(
-      /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
-      "Invalid email address"
+      /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+      "Invalid email address."
     ),
   password: Yup.string()
     .required("Required")
@@ -164,7 +170,7 @@ export default function SignInSide() {
               initialValues={{
                 email: "",
                 password: "",
-                rememberMe: false,
+                // rememberMe: false,
               }}
               validationSchema={validationSchema}
               onSubmit={(values, { setSubmitting }) => {
@@ -232,19 +238,21 @@ export default function SignInSide() {
                     component="div"
                     className="error text-danger"
                   />
-                  {currentPath === `/admin/login` ? null : (
-                    <FormControlLabel
-                      control={
-                        <Field
-                          as={Checkbox}
-                          name="rememberMe"
-                          id="rememberMe"
-                          color="primary"
-                        />
-                      }
-                      label="Remember Me"
-                    />
-                  )}
+                  {/* {currentPath === `/admin/login` ? null : null
+                  // (
+                  //   <FormControlLabel
+                  //     control={
+                  //       <Field
+                  //         as={Checkbox}
+                  //         name="rememberMe"
+                  //         id="rememberMe"
+                  //         color="primary"
+                  //       />
+                  //     }
+                  //     label="Remember Me"
+                  //   />
+                  // )
+                  } */}
                   <Button
                     type="submit"
                     fullWidth

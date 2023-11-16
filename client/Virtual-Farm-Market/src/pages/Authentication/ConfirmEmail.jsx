@@ -13,6 +13,7 @@ import {
 } from "../../Redux/Reducers/authReducer";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import { persistor } from "../../Redux/store";
 
 function ConfirmEmail() {
   const dispatch = useDispatch();
@@ -36,7 +37,7 @@ function ConfirmEmail() {
     dispatch({ type: CLEAR_MESSAGE_ERROR, payload: "message" });
     navigate(`/user/login`);
   };
-
+  
   useEffect(() => {
     dispatch({ type: CLEAR_MESSAGE_ERROR, payload: "message" });
     dispatch({ type: CLEAR_MESSAGE_ERROR, payload: "error" });

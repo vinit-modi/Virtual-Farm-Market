@@ -45,9 +45,15 @@ import { useEffect } from "react";
 const validationSchema = Yup.object().shape({
   email: Yup.string()
     .required("Email is required")
+    .test("is-lowercase", "Email should be in lowercase", function (value) {
+      if (value && value !== value.toLowerCase()) {
+        return false;
+      }
+      return true;
+    })
     .matches(
-      /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
-      "Invalid email address"
+      /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+      "Invalid email address."
     ),
   password: Yup.string()
     .required("Password Required")
@@ -61,9 +67,12 @@ const validationSchema = Yup.object().shape({
     .oneOf([Yup.ref("password"), null], "Must Match Both Password"),
   firstName: Yup.string().required("FirstName Required"),
   lastName: Yup.string().required("LastName Required"),
-  phoneNumber: Yup.string().required("Phone Required"),
+  phoneNumber: Yup.string()
+    .required("Phone Required")
+    .matches(/^\d{10}$/, "Phone number should contain only 10 digits."),
   address: Yup.string().required("Address Required"),
   city: Yup.string().required("City Required"),
+  province: Yup.string().required("Province Required"),
 });
 
 function Copyright(props) {
@@ -410,7 +419,7 @@ export default function SignUp() {
                     />
                   </Grid>
 
-                  <Grid item xs={12} className="mb-3 ms-2">
+                  {/* <Grid item xs={12} className="mb-3 ms-2">
                     <FormControlLabel
                       control={
                         <Field
@@ -422,9 +431,9 @@ export default function SignUp() {
                       }
                       label="I want recieve emails."
                     />
-                  </Grid>
+                  </Grid> */}
 
-                  <Grid className="mb-4" item xs={12}>
+                  <Grid className="mb-4 mt-3" item xs={12}>
                     <Button
                       type="submit"
                       fullWidth
@@ -452,7 +461,6 @@ export default function SignUp() {
               </Form>
             )}
           </Formik>
-          <Grid>GOOGLE</Grid>
           <Grid container justifyContent="flex-end">
             <Grid item>
               Already have an account? &nbsp;
