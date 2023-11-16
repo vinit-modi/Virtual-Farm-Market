@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import EmptyFoodImage from "../../Assets/EmptyProduct/EmptyFoodImage.jpg";
 import { red } from "@mui/material/colors";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   CLEAR_CART_LIST_CART,
   GET_ADD_PRODUCT_TO_CART,
@@ -29,13 +29,11 @@ import {
 import { useEffect } from "react";
 import { GET_OBJECT_PRODUCT } from "../../Redux/Reducers/productReducer";
 
-
-
 function CartCard({ item }) {
   const { product, seller } = item;
   const dispatch = useDispatch();
-
-
+  const cart = useSelector(state => state.cart)
+ 
 
   useEffect(() => {
     dispatch({ type: GET_ALLPRODUCTS_CART });
@@ -58,7 +56,7 @@ function CartCard({ item }) {
     dispatch({ type: CLEAR_CART_LIST_CART });
     setTimeout(() => {
       dispatch({ type: GET_ALLPRODUCTS_CART });
-      dispatch({type:GET_OBJECT_PRODUCT,payload:{_id:product._id}})
+      dispatch({ type: GET_OBJECT_PRODUCT, payload: { _id: product._id } });
     }, 10);
   };
 
@@ -66,12 +64,18 @@ function CartCard({ item }) {
     dispatch({ type: GET_REMOVE_PRODUCT_CART, payload: { _id: item._id } });
     setTimeout(() => {
       dispatch({ type: GET_ALLPRODUCTS_CART });
-      dispatch({ type: GET_CART_ITEM_COUNT_CART });
-      
     }, 10);
     dispatch({ type: CLEAR_CART_LIST_CART });
 
+    dispatch({ type: GET_CART_ITEM_COUNT_CART });
+
   };
+ 
+useEffect(()=>{
+  dispatch({ type: GET_CART_ITEM_COUNT_CART });
+},[cart.message, product.message])
+
+
   return (
     <Box sx={{ borderBottom: "1px solid #ccc", padding: 2 }}>
       {item ? (
@@ -100,7 +104,25 @@ function CartCard({ item }) {
                   variant="contained"
                   aria-label="counter buttons"
                 >
-                  <Button onClick={() => handleRemoveQuantity()}>-</Button>
+                  {item.quantity === 1 ? (
+                    <Button
+                      onClick={() => handleRemoveCart()}
+                      variant="outlined"
+                      sx={{
+                        border: "none",
+                        color: "red",
+                        "&:hover": {
+                          bgcolor: red[500],
+                          color: "white",
+                          border: "none",
+                        },
+                      }}
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  ) : (
+                    <Button onClick={() => handleRemoveQuantity()}>-</Button>
+                  )}
                   <Typography
                     style={{
                       width: 40,
@@ -141,7 +163,6 @@ function CartCard({ item }) {
       ) : (
         <LinearProgress color="success" />
       )}
-
     </Box>
   );
 }

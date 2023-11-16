@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  ButtonGroup,
   Divider,
   Grid,
   LinearProgress,
@@ -11,25 +10,24 @@ import {
 } from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import ReactImageMagnify from "react-image-magnify";
 import { green } from "@mui/material/colors";
 import { useState } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Button } from "@mui/base";
 import {
   CLEAR_PRODUCT_COUNT_TO_CART,
   GET_ADD_PRODUCT_TO_CART,
   GET_ALLPRODUCTS_CART,
   GET_CART_ITEM_COUNT_CART,
+  GET_REMOVE_PRODUCT_CART,
   GET_REMOVE_PRODUCT_TO_CART,
 } from "../../Redux/Reducers/cartReducer";
-import { CLEAR_OBJECT_PRODUCT } from "../../Redux/Reducers/productReducer";
 import EmptyFoodImage from "../../Assets/EmptyProduct/EmptyFoodImage.jpg";
 import { CheckCircle } from "@mui/icons-material";
 
 function ShowProduct() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const product = useSelector((state) => state.product);
   const { productObj } = product;
@@ -43,7 +41,6 @@ function ShowProduct() {
   const displayImages = images && images.length > 0 ? images.slice(0, 4) : [];
   const remainingImages = images && images.length > 4 ? images.slice(4) : [];
 
-  console.log(displayImages);
   const handleToggleExpand = () => {
     setExpanded(!expanded);
   };
@@ -81,8 +78,10 @@ function ShowProduct() {
       payload: { _id: productObj._id },
     });
     dispatch({ type: GET_ALLPRODUCTS_CART });
-    dispatch({ type: GET_CART_ITEM_COUNT_CART });
-    // countQuntities();
+    setTimeout(() => {
+      dispatch({ type: GET_CART_ITEM_COUNT_CART });
+    }, 100);
+    countQuntities();
   };
 
   const decrement = () => {
@@ -91,8 +90,10 @@ function ShowProduct() {
       payload: { _id: productObj._id },
     });
     dispatch({ type: GET_ALLPRODUCTS_CART });
-    dispatch({ type: GET_CART_ITEM_COUNT_CART });
-    // countQuntities();
+    setTimeout(() => {
+      dispatch({ type: GET_CART_ITEM_COUNT_CART });
+    }, 100);
+    countQuntities();
   };
 
   function countQuntities() {
@@ -104,20 +105,28 @@ function ShowProduct() {
     setQuntityCount(quntity[0]?.quantity);
   }
 
-  const handleAddToCart = () => {
-    dispatch({
-      type: GET_ADD_PRODUCT_TO_CART,
-      payload: { _id: productObj._id },
+  const handleRemoveProductInCart = () => {
+    dispatch({ type: CLEAR_PRODUCT_COUNT_TO_CART });
+
+    dispatch({ type: GET_ALLPRODUCTS_CART });
+    const cartProductIdOnShownProduct = cart.cartProductList.filter((item) => {
+      return productObj._id === item.product._id;
     });
-    dispatch({ type: GET_CART_ITEM_COUNT_CART });
+
+    dispatch({
+      type: GET_REMOVE_PRODUCT_CART,
+      payload: { _id: cartProductIdOnShownProduct[0]._id },
+    });
+
+    setTimeout(() => {
+      dispatch({ type: GET_CART_ITEM_COUNT_CART });
+    }, 100);
   };
 
   useEffect(() => {
     dispatch({ type: GET_ALLPRODUCTS_CART });
-    // dispatch({ type: GET_CART_ITEM_COUNT_CART });
     countQuntities();
     return () => {
-      //   dispatch({ type: CLEAR_OBJECT_PRODUCT });
       dispatch({ type: CLEAR_PRODUCT_COUNT_TO_CART });
     };
   }, []);
@@ -125,6 +134,10 @@ function ShowProduct() {
   useEffect(() => {
     countQuntities();
   }, [cart.cartProductList, product]);
+
+  useEffect(() => {
+    dispatch({ type: GET_CART_ITEM_COUNT_CART });
+  }, [cart.message, product.message]);
 
   useEffect(() => {
     dispatch({ type: GET_ALLPRODUCTS_CART });
@@ -180,7 +193,7 @@ function ShowProduct() {
               <Stack direction="row" spacing={1} sx={{ px: 3 }}>
                 <Paper elevation={3} bgcolor="#cfd8dc">
                   <Stack direction="row" spacing={1} sx={{ px: 2 }}>
-                    {displayImages.length > 0 &&
+                    {displayImages.length &&
                       displayImages.map((image, index) => (
                         <Avatar
                           variant="rounded"
@@ -266,12 +279,7 @@ function ShowProduct() {
                     <span style={{ fontSize: "1em" }}>$</span>
 
                     <span style={{ fontSize: "1.6em" }}>
-                      {!(
-                        productObj.price *
-                        (cart.productQuantityCount
-                          ? cart.productQuantityCount
-                          : quntityCount)
-                      )
+                      {!cart.productQuantityCount
                         ? 0
                         : Math.floor(
                             productObj.price *
@@ -282,11 +290,7 @@ function ShowProduct() {
                     </span>
                     <sup style={{ position: "relative", top: "-1em" }}>
                       {(
-                        (((cart.productQuantityCount
-                          ? cart.productQuantityCount
-                          : quntityCount) *
-                          productObj.price) %
-                          1) *
+                        ((cart.productQuantityCount * productObj.price) % 1) *
                         100
                       ).toFixed(0)}
                     </sup>
@@ -294,13 +298,26 @@ function ShowProduct() {
                 </Grid>{" "}
                 <Grid item>
                   <Box display="flex" alignItems="center">
-                    <Button
-                      className="btn btn-primary"
-                      variant="contained"
-                      onClick={decrement}
-                    >
-                      -
-                    </Button>
+                    {cart.productQuantityCount &&
+                    cart.productQuantityCount === 1 ? (
+                      <Button
+                        className="btn btn-primary"
+                        variant="contained"
+                        onClick={() => handleRemoveProductInCart()}
+                      >
+                        <DeleteIcon />
+                      </Button>
+                    ) : (
+                      <Button
+                        className="btn btn-primary"
+                        variant="contained"
+                        onClick={decrement}
+                        disabled={!cart.productQuantityCount}
+                      >
+                        -
+                      </Button>
+                    )}
+
                     <Typography
                       variant="body1"
                       sx={{
@@ -312,7 +329,10 @@ function ShowProduct() {
                       }}
                       width={35}
                     >
-                      {!(
+                      {cart.productQuantityCount
+                        ? cart.productQuantityCount
+                        : 0}
+                      {/* {!(
                         productObj.price *
                         (cart.productQuantityCount
                           ? cart.productQuantityCount
@@ -321,7 +341,7 @@ function ShowProduct() {
                         ? 0
                         : cart.productQuantityCount
                         ? cart.productQuantityCount
-                        : quntityCount}
+                        : quntityCount} */}
                     </Typography>
                     <Button
                       className="btn btn-primary"
