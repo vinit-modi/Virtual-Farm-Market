@@ -10,10 +10,11 @@ export function* fetchChangePassword({ payload }) {
   try {
     yield put(makeRequestPassword());
     const response = yield call(requestChangePassword, payload);
-    if (response.status === 200)
-    
+    if (response.status === 200) {
       yield put(setChangePassword(response.data.message));
-    else yield put(failRequestPassword(response.data.message));
+    } else {
+      yield put(failRequestPassword(response.data.message));
+    }
   } catch (error) {
     yield put(failRequestPassword(error.message));
   }

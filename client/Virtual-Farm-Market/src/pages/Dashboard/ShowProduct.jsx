@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Button,
   Divider,
   Grid,
   LinearProgress,
@@ -11,10 +12,10 @@ import {
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ReactImageMagnify from "react-image-magnify";
-import { green } from "@mui/material/colors";
+import { green, red } from "@mui/material/colors";
 import { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Button } from "@mui/base";
+// import { Button } from "@mui/base";
 import {
   CLEAR_PRODUCT_COUNT_TO_CART,
   GET_ADD_PRODUCT_TO_CART,
@@ -302,8 +303,17 @@ function ShowProduct() {
                     cart.productQuantityCount === 1 ? (
                       <Button
                         className="btn btn-primary"
-                        variant="contained"
+                        variant="outlined"
                         onClick={() => handleRemoveProductInCart()}
+                        sx={{
+                          border: "1px solid red",
+                          color: "red",
+                          "&:hover": {
+                            bgcolor: red[500],
+                            color: "white",
+                            border: "none",
+                          },
+                        }}
                       >
                         <DeleteIcon />
                       </Button>
@@ -327,7 +337,7 @@ function ShowProduct() {
                         alignItems: "center",
                         fontSize: 26,
                       }}
-                      width={35}
+                      width={55}
                     >
                       {cart.productQuantityCount
                         ? cart.productQuantityCount

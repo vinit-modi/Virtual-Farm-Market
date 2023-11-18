@@ -219,12 +219,12 @@ module.exports = {
           message: "Password changed successfully",
         });
       } else {
-        res.json({
+        res.status(404).json({
           message: "Your current password did not match",
         });
       }
     } else {
-      res.json({
+      res.status(404).json({
         message: "Something went wrong (User not found)",
       });
     }

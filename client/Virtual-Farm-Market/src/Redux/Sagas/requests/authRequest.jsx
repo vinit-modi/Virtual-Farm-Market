@@ -20,7 +20,7 @@ export async function requestProvinceList(payload) {
 }
 
 export async function requestChangePassword(payload) {
-  const response = await Axios.post(`/api/changePassword`, payload);
+  const response = await Axios.post(`/api/changePasswordForUser`, payload);
   return response;
 }
 export async function requestUpdatedUserDetail(payload) {
