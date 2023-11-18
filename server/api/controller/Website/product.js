@@ -7,6 +7,7 @@ const upload = require("../../../utils/uploadImage");
 const CategoryModel = require("../../../db/models/Category");
 const productImagesUpload = upload("../uploads/productImages/");
 const { ObjectId } = require("mongodb");
+const UserModel = require("../../../db/models/User");
 
 module.exports = {
   getAllUnits: async (req, res) => {
@@ -80,6 +81,7 @@ module.exports = {
 
   getAllProducts: async (req, res) => {
     try {
+      let getUserLocation = await UserModel.findOne({ _id: req.userInfo._id });
       let getAllProducts = await ProductModel.aggregate([
         {
           $lookup: {
@@ -96,6 +98,7 @@ module.exports = {
             preserveNullAndEmptyArrays: true,
           },
         },
+        { $match: { location: getUserLocation.city } },
       ]);
       return res.status(200).json({
         status: "success",
