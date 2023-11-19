@@ -79,7 +79,7 @@ useEffect(()=>{
   return (
     <Box sx={{ borderBottom: "1px solid #ccc", padding: 2 }}>
       {item ? (
-        <Grid container spacing={2} alignItems="center">
+        <Grid container spacing={3} alignItems="center">
           <Grid item xs={3}>
             <Paper elevation={3}>
               <Avatar
