@@ -96,7 +96,18 @@ function FarmersAddProduct() {
   }, []);
 
   const handleSubmit = (values) => {
-    console.log(values);
+    const finalProduct = {
+      name: values.productName,
+      description: values.productDescription,
+      category: values.productCategory,
+      price: values.productPrice,
+      unit: values.productUnit,
+      quantityAvailable: values.productQuantityAvailable,
+      image: values.productImages,
+      city: values.productCity,
+    };
+    console.log(finalProduct);
+    //Send finalProduct to BE
   };
 
   const handleLogout = () => {
