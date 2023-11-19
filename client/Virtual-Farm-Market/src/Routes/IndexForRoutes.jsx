@@ -23,8 +23,12 @@ import PrivacyPolicy from "../pages/Cms/PrivacyPolicy/PrivacyPolicy";
 import AdminPublicRoute from "../auth/authAdmin/AdminPublicRoute";
 import AdminHeader from "../components/AdminHeader/AdminHeader";
 import UserHeader from "../components/UserHeader/UserHeader";
+import FarmersAddProduct from "../pages/Farmers/FarmersAddProduct";
+import { useSelector } from "react-redux";
 
 function IndexForRoutes() {
+  const auth = useSelector((state) => state.auth);
+
   return (
     <div>
       <Routes>
@@ -41,12 +45,11 @@ function IndexForRoutes() {
               </AdminPublicRoute>
             }
           />
-
           <Route exact path="*" element={<AdminHeader />} />
         </Route>
         {/* Admin-DONE */}
-        
-        {/* USER */}
+
+        {/* CONFIRMEMAIL */}
         <Route
           path="/confirmemail"
           exact
@@ -56,7 +59,26 @@ function IndexForRoutes() {
             </PublicRoute>
           }
         />
-        <Route path="/user">
+
+        {/* FARMER */}
+        <Route exact path="/farmer">
+          <Route
+            exact
+            path="addproduct"
+            element={
+              <ProtectedRoute
+                path="/farmer/addproduct"
+                userTypeAllowed="Farmer"
+              >
+                <FarmersAddProduct />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<PageNotFound />} />
+        </Route>
+
+        {/* USER */}
+        <Route exact path="/user">
           <Route
             exact
             path="login"
@@ -79,7 +101,7 @@ function IndexForRoutes() {
             exact
             path="resetpassword"
             element={
-              <PublicRoute>
+              <PublicRoute userTypeAllowed="Customer" path="user/resetpassword">
                 <ResetPassword />
               </PublicRoute>
             }
@@ -88,7 +110,10 @@ function IndexForRoutes() {
             exact
             path="forgetpassword"
             element={
-              <PublicRoute>
+              <PublicRoute
+                userTypeAllowed="Customer"
+                path="user/forgetpassword"
+              >
                 <ForgetPassword />
               </PublicRoute>
             }

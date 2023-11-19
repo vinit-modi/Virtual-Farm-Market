@@ -49,6 +49,7 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import Collapse from "@mui/material/Collapse";
 import QuizIcon from "@mui/icons-material/Quiz";
 import AdminFaqs from "../../pages/AdminPages/AdminFaqs";
+import PageNotFound from "../../pages/PageNotFound/PageNotFound";
 
 const icons = [
   <RecentActorsIcon />,
@@ -463,6 +464,8 @@ export default function AdminHeader() {
                 </AdminProtectedRoute>
               }
             />
+                    <Route path="*" element={<PageNotFound />} />
+
           </Routes>
         )}
       </Box>

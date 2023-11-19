@@ -112,9 +112,10 @@ const authInitialState = {
   cityList: null,
   provinceList: null,
   isEmailConfirmed: null,
-  _idOfLoggedIn : null,
+  _idOfLoggedIn: null,
   userId: "",
-  userProfileImage:null
+  userProfileImage: null,
+  userType: null,
 };
 
 export const authReducer = (state = authInitialState, action) => {
@@ -136,6 +137,7 @@ export const authReducer = (state = authInitialState, action) => {
         loading: false,
         isEmailConfirmed: null,
         allUsers: null,
+        userType: null,
       };
     case SET_SIGNUP_USER_MESSAGE:
       return {
@@ -162,7 +164,8 @@ export const authReducer = (state = authInitialState, action) => {
         ...state,
         message: action.payload.message,
         token: action.payload.data.accessToken,
-        _idOfLoggedIn:action.payload.data._id,
+        _idOfLoggedIn: action.payload.data._id,
+        userType: action.payload.data.userType,
         loading: false,
         error: null,
       };
@@ -193,13 +196,16 @@ export const authReducer = (state = authInitialState, action) => {
         ...state,
         loading: false,
         error: null,
-        userProfileImage:action.payload
+        userProfileImage: action.payload,
       };
 
     case GET_AUTH_LOGOUT:
       return {
         ...state,
         token: null,
+        userType: null,
+        userProfileImage:null,
+        _idOfLoggedIn:null
       };
 
     default:
