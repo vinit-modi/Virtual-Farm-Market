@@ -65,14 +65,19 @@ const validationSchema = Yup.object().shape({
   confirmPassword: Yup.string()
     .required("Confirm Password Required")
     .oneOf([Yup.ref("password"), null], "Must Match Both Password"),
-  firstName: Yup.string().required("FirstName Required"),
-  lastName: Yup.string().required("LastName Required"),
+  firstName: Yup.string()
+    .matches(/^[^\d]+$/, "Firstname should not contain digits")
+    .required("FirstName Required"),
+  lastName: Yup.string()
+    .matches(/^[^\d]+$/, "Lastname should not contain digits")
+    .required("LastName Required"),
   phoneNumber: Yup.string()
     .required("Phone Required")
     .matches(/^\d{10}$/, "Phone number should contain only 10 digits."),
   address: Yup.string().required("Address Required"),
   city: Yup.string().required("City Required"),
   province: Yup.string().required("Province Required"),
+  userType: Yup.string().required("Required"),
 });
 
 function Copyright(props) {
@@ -167,12 +172,12 @@ export default function SignUp() {
               `User created successfully. Check your email for confirmation.` && (
               <Alert severity="success">
                 {auth.message} &nbsp;
-                {/* <button
+                <button
                   className="btn btn-primary btn-sm"
                   onClick={() => handleEmailClick()}
                 >
                   Open Email
-                </button> */}
+                </button>
               </Alert>
             )}
           </div>
@@ -188,6 +193,7 @@ export default function SignUp() {
               confirmPassword: "",
               city: "",
               province: "",
+              userType: "Customer",
               isSubscribed: isSubscribed,
             }}
             validationSchema={validationSchema}
@@ -200,6 +206,7 @@ export default function SignUp() {
                 phoneNumber: values.phoneNumber,
                 city: values.city,
                 province: values.province,
+                userType: values.userType,
               };
               dispatch({ type: POST_SIGNUP_USER, payload: value });
             }}
@@ -332,6 +339,28 @@ export default function SignUp() {
                       className="error text-danger"
                     />
                   </Grid>
+                  <Grid className="mb-2" item xs={12}>
+                    <InputLabel htmlFor="userType">User Type</InputLabel>
+                    <Field
+                      as={Select}
+                      fullWidth
+                      id="userType"
+                      label="User Type"
+                      name="userType"
+                      autoComplete="userType"
+                      value={values.userType}
+                    >
+                      <MenuItem value="Customer">Customer</MenuItem>
+                      <MenuItem value="Farmer">Farmer</MenuItem>
+                    </Field>
+                    <ErrorMessage
+                      name="userType"
+                      id="userType"
+                      component="div"
+                      className="error text-danger"
+                    />
+                  </Grid>
+
                   <Grid className="mb-2" item xs={12}>
                     <Field
                       as={TextField}
