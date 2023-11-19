@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Button,
   ButtonGroup,
   Divider,
   Grid,
@@ -13,11 +14,10 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ReactImageMagnify from "react-image-magnify";
-import { green } from "@mui/material/colors";
+import { green, red } from "@mui/material/colors";
 import { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import { Button } from "@mui/base";
 import {
   CLEAR_PRODUCT_COUNT_TO_CART,
   GET_ADD_PRODUCT_TO_CART,
@@ -127,7 +127,7 @@ function ShowProduct() {
   useEffect(() => {
 
 
-    dispatch({ type: GET_ALLPRODUCTS_CART });
+    // dispatch({ type: GET_ALLPRODUCTS_CART });
 
     countQuntities();
   }, [cart.cartProductList, product]);
@@ -135,12 +135,13 @@ function ShowProduct() {
   useEffect(() => {
     dispatch({ type: GET_ALLPRODUCTS_CART });
 
-  
   }, [quntityCount]);
 
 
 
   const handleRemoveProductInCart = () =>{
+
+    dispatch({type:CLEAR_PRODUCT_COUNT_TO_CART})
     
     dispatch({ type: GET_ALLPRODUCTS_CART });
     const cartProductIdOnShownProduct = cart.cartProductList.filter((item)=>{ return productObj._id === item.product._id} )
@@ -151,13 +152,6 @@ function ShowProduct() {
   }
 
 
-  useEffect(() => {
-    // Your logic here
-    console.log('Your logic here')
-    dispatch({ type: GET_ALLPRODUCTS_CART });
-
-  }, [cart.cartProductList]);
-  
 
 
   return (
@@ -327,9 +321,17 @@ function ShowProduct() {
                      cart.productQuantityCount && cart.productQuantityCount === 1 ? 
                       <Button
                       className="btn btn-primary"
-                      variant="contained"
+                      variant="outlined"
                       onClick={()=>handleRemoveProductInCart()}
-                     
+                      sx={{
+                        border: "1px solid red",
+                        color: "red",
+                        "&:hover": {
+                          bgcolor: red[500],
+                          color: "white",
+                          border: "none",
+                        },
+                      }}
                     >
                       <DeleteIcon/>
                     </Button>
@@ -337,19 +339,7 @@ function ShowProduct() {
                       className="btn btn-primary"
                       variant="contained"
                       onClick={decrement}
-                      disabled={
-                        (!(
-                          productObj.price *
-                          (cart.productQuantityCount
-                            ? cart.productQuantityCount
-                            : quntityCount)
-                        )
-                          ? 0
-                          : cart.productQuantityCount
-                          ? cart.productQuantityCount
-                          : quntityCount) === 0 
-                       
-                      }
+                      disabled={!cart.productQuantityCount}
                     >
                       -
                     </Button>
@@ -364,7 +354,7 @@ function ShowProduct() {
                         alignItems: "center",
                         fontSize: 26,
                       }}
-                      width={35}
+                      width={55}
                     >
                       {!(
                         productObj.price *
