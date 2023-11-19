@@ -445,7 +445,7 @@ function UserHeader() {
                       variant="contained"
                       onClick={() => handleCheckout()}
                       sx={{
-                        bgcolor: orange[400],
+                        bgcolor: orange['A400'],
                         "&:hover": { bgcolor: orange["A700"] },
                       }}
                     >

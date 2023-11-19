@@ -34,18 +34,15 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object().shape({
-  // productName: Yup.string().required("Product Name is required"),
-  // productDescription: Yup.string().required("Product Description is required"),
-  // productCategory: Yup.string().required("Product Category is required"),
-  // productPrice: Yup.number()
-  //   .typeError("Product Price must be a number")
-  //   .required("Product Price is required"),
-  // productUnit: Yup.string().required("Product Unit is required"),
-  // productQuantityAvailable: Yup.number()
-  //   .typeError("Quantity must be a number")
-  //   .required("Quantity Available is required"),
-  // productCity: Yup.string().required("Product City is required"),
-  // productImages: Yup.array().min(1, "Select at least one image"),
+  streetNumber: Yup.string()
+    .matches(/^[0-9]+$/, "Street Number must contain only numbers")
+    .required("Street Number is required"),
+  homeAddress: Yup.string().required("Street Name is required"),
+  city: Yup.string().required("City is required"),
+  province: Yup.string().required("Province is required"),
+  postalCode: Yup.string()
+    .matches(/^([A-Z]\d[A-Z] ?\d[A-Z]\d)$/, "Invalid Postal Code format")
+    .required("Postal code is required"),
 });
 
 function UserAddressForm() {
@@ -98,6 +95,17 @@ function UserAddressForm() {
                       autoComplete="streetNumber"
                       placeholder="Street Number"
                     />
+                    {formik.touched.streetNumber &&
+                      Boolean(formik.errors.streetNumber) && (
+                        <Box sx={{ mb: 2 }}>
+                          <ErrorMessage
+                            name="streetNumber"
+                            id="streetNumber"
+                            component="div"
+                            className="error text-danger"
+                          />
+                        </Box>
+                      )}
                     <Field
                       as={TextField}
                       fullWidth
@@ -105,12 +113,6 @@ function UserAddressForm() {
                       name="homeAddress"
                       autoComplete="homeAddress"
                       placeholder="Apt, Suite, Unit, Building"
-                    />
-                    <ErrorMessage
-                      name="streetNumber"
-                      id="streetNumber"
-                      component="div"
-                      className="error text-danger"
                     />
                     <ErrorMessage
                       name="homeAddress"
@@ -153,7 +155,6 @@ function UserAddressForm() {
                         <Typography variant="h5" sx={{ ml: 1, mt: 2 }}>
                           Province/Territory:
                         </Typography>
-
                         <Field
                           as={Select}
                           fullWidth
@@ -185,6 +186,7 @@ function UserAddressForm() {
                           id="postalCode"
                           name="postalCode"
                           autoComplete="postalCode"
+                          placeholder="V2V 2V2 or V2V2V2"
                         />
                         <ErrorMessage
                           name="postalCode"
