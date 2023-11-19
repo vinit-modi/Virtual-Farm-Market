@@ -180,7 +180,7 @@ module.exports = {
             preserveNullAndEmptyArrays: true,
           },
         },
-        { $match: { location: getUserLocation.city } },
+        { $match: { city: getUserLocation.city } },
       ]);
       return res.status(200).json({
         status: "success",
