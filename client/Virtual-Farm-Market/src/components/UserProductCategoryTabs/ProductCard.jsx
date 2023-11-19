@@ -57,39 +57,42 @@ function ProductCard({ item }) {
         sx={{
           maxWidth: 345,
           //   bgcolor: "#d1c4e9",
-          bgcolor: green[200],
-          "&:hover": { bgcolor: green[300], cursor: "pointer", color: "white" },
+          // bgcolor: green[200],
+          "&:hover": {
+            // bgcolor: green[300],
+            // color: "white",
+            cursor: "pointer",
+          },
         }}
       >
         <Box onClick={() => handleProductShow(item._id)}>
-          {
-            item.seller ? 
-          <CardHeader
-          sx={{ bgcolor: green[400], color: "white" }}
-          avatar={
-            <Avatar
-            sx={{ bgcolor: red[500] }}
-            aria-label={item.seller.name}
-            src={item.seller.profilePicture}
+          {item.seller ? (
+            <CardHeader
+              // sx={{ bgcolor: green[400], color: "white" }}
+              avatar={
+                <Avatar
+                  sx={{ bgcolor: red[500] }}
+                  aria-label={item.seller.name}
+                  src={item.seller.profilePicture}
+                />
+              }
+              title={item.seller.name}
+              subheader={`${item.seller.city}, ${item.seller.province}`}
             />
-          }
-          title={item.seller.name}
-          subheader={`${item.seller.city}, ${item.seller.province}`}
-          />
-          :
-          <CardHeader
-          sx={{ bgcolor: green[400], color: "white" }}
-          avatar={
-            <Avatar
-            sx={{ bgcolor: red[500] }}
-            aria-label='Empty'
-            // src={item.seller.profilePicture}
+          ) : (
+            <CardHeader
+              sx={{ bgcolor: green[400], color: "white" }}
+              avatar={
+                <Avatar
+                  sx={{ bgcolor: red[500] }}
+                  aria-label="Empty"
+                  // src={item.seller.profilePicture}
+                />
+              }
+              title="Empty"
+              subheader="Empty"
             />
-          }
-          title='Empty'
-          subheader='Empty'
-          />
-        }
+          )}
           <Box
             sx={{
               position: "relative",
@@ -104,6 +107,7 @@ function ProductCard({ item }) {
               image={item.images.length > 0 ? item.images[0] : EmptyFoodImage}
               alt={item.name}
               sx={{
+                borderRadius: 3,
                 width: "100%",
                 height: "100%",
                 objectFit: "cover",
@@ -125,7 +129,7 @@ function ProductCard({ item }) {
             >
               Price: {item.price}
             </Typography>
-            <Typography
+            {/* <Typography
               variant="body2"
               color="text.secondary"
               sx={{
@@ -139,6 +143,14 @@ function ProductCard({ item }) {
               }}
             >
               {item.description}
+            </Typography> */}
+            <Typography>
+              Available at:&nbsp;
+              <span
+              //  style={{color:'white', backgroundColor:green[600], padding:3, borderRadius:4}}
+              >
+                {item.city}
+              </span>
             </Typography>
           </CardContent>
         </Box>
@@ -146,18 +158,20 @@ function ProductCard({ item }) {
         <CardActions
           disableSpacing
           sx={{
-            bgcolor: green[500],
+            // bgcolor: green[500],
             // bgcolor: "#7e57c2",
+
+            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.4)",
             display: "flex",
             justifyContent: "space-between",
           }}
         >
           <Box>
             <IconButton aria-label="add to favorites">
-              <FavoriteIcon />
+              <FavoriteIcon color="error" />
             </IconButton>
             <IconButton aria-label="share">
-              <ShareIcon />
+              <ShareIcon color="primary" />
             </IconButton>
           </Box>
           <Box>
@@ -165,8 +179,8 @@ function ProductCard({ item }) {
               variant="contained"
               disabled={!(item.quantityAvailable > 0)}
               sx={{
-                bgcolor: orange[`A700`],
-                "&:hover": { bgcolor: orange[`A400`] },
+                bgcolor: green[600],
+                "&:hover": { bgcolor: green[400] },
               }}
               onClick={() => {
                 dispatch({
@@ -174,8 +188,7 @@ function ProductCard({ item }) {
                   payload: { _id: item._id },
                 });
                 setTimeout(() => {
-                    
-                    dispatch({ type: GET_CART_ITEM_COUNT_CART });
+                  dispatch({ type: GET_CART_ITEM_COUNT_CART });
                 }, 10);
               }}
             >
