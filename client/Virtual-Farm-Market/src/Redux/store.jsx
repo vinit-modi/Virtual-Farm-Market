@@ -27,6 +27,7 @@ import { paymentReducer } from "./Reducers/paymentReducer";
 import { userNotificationReducer } from "./Reducers/userNotificationReducer";
 import { productReducer } from "./Reducers/productReducer";
 import { cartReducer } from "./Reducers/cartReducer";
+import { farmerReducer } from "./Reducers/Farmer/farmerReducer";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -47,6 +48,7 @@ const rootReducer = combineReducers({
   notification: userNotificationReducer,
   product: productReducer,
   cart: cartReducer,
+  farmer: farmerReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

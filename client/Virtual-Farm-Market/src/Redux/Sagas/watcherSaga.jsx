@@ -136,6 +136,8 @@ import {
   fetchGetRemoveProductToCart,
   fetchRemoveProductCart,
 } from "./handlers/cartHandler";
+import { GET_CATEGORY_LIST_FOR_PRODUCT_FARMER, GET_UNIT_LIST_FOR_PRODUCT_FARMER } from "../Reducers/Farmer/farmerReducer";
+import { fetchCategoryListForProductFarmer, fetchUnitListForProductFarmer } from "./handlers/Farmer/farmerHandler";
 
 function* authStuff() {
   yield takeLatest(POST_SIGNUP_USER, fetchPostSignUpUser);
@@ -222,6 +224,11 @@ function* cart() {
   yield takeLatest(GET_REMOVE_PRODUCT_CART, fetchRemoveProductCart);
 }
 
+function* farmer(){
+  yield takeLatest(GET_CATEGORY_LIST_FOR_PRODUCT_FARMER,fetchCategoryListForProductFarmer)
+  yield takeLatest(GET_UNIT_LIST_FOR_PRODUCT_FARMER,fetchUnitListForProductFarmer)
+}
+
 const authSaga = [fork(authStuff)];
 const changePasswordSaga = [fork(changePassword)];
 const userDetailsSaga = [fork(userDetails)];
@@ -233,6 +240,7 @@ const paymentSaga = [fork(payment)];
 const notificationSaga = [fork(notification)];
 const productSaga = [fork(product)];
 const cartSaga = [fork(cart)];
+const farmerSaga = [fork(farmer)]
 
 export default function* waterSaga() {
   yield all([
@@ -247,5 +255,6 @@ export default function* waterSaga() {
     ...notificationSaga,
     ...productSaga,
     ...cartSaga,
+    ...farmerSaga
   ]);
 }
