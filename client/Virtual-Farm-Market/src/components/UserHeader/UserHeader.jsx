@@ -32,6 +32,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import {
   Divider,
   LinearProgress,
+  Link,
   List,
   Popover,
   Slide,
@@ -67,6 +68,9 @@ import Skeleton from "@mui/material/Skeleton";
 import { cartListSkeleton } from "../Skeletons/Skeleton";
 import { toast } from "react-toastify";
 import { useRef } from "react";
+import PageNotFound from "../../pages/PageNotFound/PageNotFound";
+import VFMIconNoBG from "../../Assets/VFMIcon/VFM-Logo-NoBG.png";
+import VFMIcon from "../../Assets/VFMIcon/VFM-Logo.png";
 
 const settings = ["Update Profile", "Change Password", `Logout`];
 const settingsIcons = [<EditIcon />, <ManageAccountsIcon />, <LogoutIcon />];
@@ -202,38 +206,58 @@ function UserHeader() {
   }, [cart.message, dispatch]);
 
   useEffect(() => {
-    if (Boolean(anchorElCart) ||Boolean(anchorEl) || Boolean(anchorElUser) || Boolean(anchorElNav) ) {
+    if (
+      Boolean(anchorElCart) ||
+      Boolean(anchorEl) ||
+      Boolean(anchorElUser) ||
+      Boolean(anchorElNav)
+    ) {
       mainEl.current.style.filter = "blur(1.4px)";
     } else {
       mainEl.current.style.filter = "blur(0px)";
     }
-  }, [anchorElCart,anchorElUser,anchorEl,anchorElNav]);
+  }, [anchorElCart, anchorElUser, anchorEl, anchorElNav]);
 
   return (
     <>
-      <AppBar id="main" ref={mainEl} position="static">
+      <AppBar
+        id="main"
+        ref={mainEl}
+        position="static"
+        sx={{ bgcolor: green["A700"] }}
+      >
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <StorefrontIcon
-              sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
-            />
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="#app-bar-with-responsive-menu"
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              VFM
-            </Typography>
+            <Box sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}>
+              <Link
+                // noWrap
+                component="a"
+                href="#app-bar-with-responsive-menu"
+                underline="none"
+                sx={{
+                  mr: 2,
+                  display: { xs: "none", md: "flex" },
+                  fontFamily: "monospace",
+                  fontWeight: 700,
+                  letterSpacing: ".3rem",
+                  color: "inherit",
+                  textDecoration: "none",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <img
+                  src={VFMIcon}
+                  style={{
+                    height: "50px",
+                    width: "auto",
+                    borderRadius: 3,
+                    marginRight: "8px",
+                  }}
+                  alt="VFM Icon"
+                />
+              </Link>
+            </Box>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
@@ -246,6 +270,7 @@ function UserHeader() {
               >
                 <MenuIcon />
               </IconButton>
+
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorElNav}
@@ -270,29 +295,40 @@ function UserHeader() {
                   </MenuItem>
                 ))}
               </Menu>
-            </Box>
-            <StorefrontIcon
-              sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
-            />
 
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href="#app-bar-with-responsive-menu"
-              sx={{
-                mr: 2,
-                display: { xs: "flex", md: "none" },
-                flexGrow: 1,
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              VFM
-            </Typography>
+              <Box sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}>
+                <Tooltip title="Virtual Farm Market">
+                  <Link
+                    // noWrap
+                    component="a"
+                    href="#app-bar-with-responsive-menu"
+                    underline="none"
+                    sx={{
+                      mr: 2,
+                      display: { xs: "none", md: "flex" },
+                      fontFamily: "monospace",
+                      fontWeight: 700,
+                      letterSpacing: ".3rem",
+                      color: "inherit",
+                      textDecoration: "none",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <img
+                      src={VFMIcon}
+                      style={{
+                        height: "50px",
+                        width: "auto",
+                        borderRadius: 3,
+                        marginRight: "8px",
+                      }}
+                      alt="VFM Icon"
+                    />
+                  </Link>
+                </Tooltip>
+              </Box>
+            </Box>
 
             <Box
               sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, ml: 5 }}
@@ -605,7 +641,7 @@ function UserHeader() {
             exact
             path="changepassword"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute userTypeAllowed="Customer">
                 <ChangePassword />
               </ProtectedRoute>
             }
@@ -614,7 +650,7 @@ function UserHeader() {
             exact
             path="dashboard"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute userTypeAllowed="Customer">
                 <Dashboard />
               </ProtectedRoute>
             }
@@ -623,7 +659,7 @@ function UserHeader() {
             exact
             path="updateuserprofile"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute userTypeAllowed="Customer">
                 <UpdateUserProfile />
               </ProtectedRoute>
             }
@@ -632,7 +668,7 @@ function UserHeader() {
             exact
             path="faqs"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute userTypeAllowed="Customer">
                 <FaqsUser />
               </ProtectedRoute>
             }
@@ -641,7 +677,7 @@ function UserHeader() {
             exact
             path="payment"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute userTypeAllowed="Customer">
                 <Payment />
               </ProtectedRoute>
             }
@@ -650,7 +686,7 @@ function UserHeader() {
             exact
             path="termsandconditions"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute userTypeAllowed="Customer">
                 <TermsAndConditions />
               </ProtectedRoute>
             }
@@ -659,7 +695,7 @@ function UserHeader() {
             exact
             path="privacypolicy"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute userTypeAllowed="Customer">
                 <PrivacyPolicy />
               </ProtectedRoute>
             }
@@ -668,11 +704,12 @@ function UserHeader() {
             exact
             path="showproduct"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute userTypeAllowed="Customer">
                 <ShowProduct />
               </ProtectedRoute>
             }
           />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Box>
       {/* </Box>
