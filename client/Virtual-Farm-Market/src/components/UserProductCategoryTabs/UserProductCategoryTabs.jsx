@@ -82,7 +82,7 @@ export default function UserProductCategoryTabs({ product }) {
       </TabsList>
 
       <TabPanel value={"All Product"}>
-        <Grid container spacing={2}>
+        <Grid container spacing={3}>
           {productList.length ? (
             productList.map((item, index) => (
               <Grid item xs={6} sm={4} md={3} lg={2} key={item._id}>
@@ -109,7 +109,7 @@ export default function UserProductCategoryTabs({ product }) {
           {" "}
           {categoryList.map((category, index) => (
             <TabPanel value={category.name}>
-              <Grid container spacing={2}>
+              <Grid container spacing={3}>
                 {productList.length ? (
                   productList.map((item, index) => (
                     <Grid item xs={6} sm={4} md={3} lg={2} key={item._id}>

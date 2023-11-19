@@ -11,6 +11,7 @@ export const SET_PRODUCTS_BY_CATEGORY_PRODUCT =
 export const GET_OBJECT_PRODUCT = "GET_OBJECT_PRODUCT";
 export const SET_OBJECT_PRODUCT = "SET_OBJECT_PRODUCT";
 export const CLEAR_OBJECT_PRODUCT = "CLEAR_OBJECT_PRODUCT";
+export const CLEAR_PRODUCT_LIST_PRODUCT = "CLEAR_PRODUCT_LIST_PRODUCT";
 
 export const makeRequestProduct = () => ({
   type: MAKE_REQUEST_PRODUCT,
@@ -80,6 +81,12 @@ export const productReducer = (state = initialState, action) => {
         error: null,
         productObj: action.payload,
       };
+      
+      case CLEAR_PRODUCT_LIST_PRODUCT:
+        return {
+          ...state,
+          productList:[],
+        };
     case CLEAR_OBJECT_PRODUCT:
       return {
         ...state,

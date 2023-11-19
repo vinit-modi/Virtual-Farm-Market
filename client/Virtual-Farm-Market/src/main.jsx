@@ -12,8 +12,11 @@ import 'react-toastify/dist/ReactToastify.css';
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.Fragment>
+    <React.StrictMode>
+
     <BrowserRouter>
       <App />
     </BrowserRouter>
+    </React.StrictMode>
   </React.Fragment>
 );

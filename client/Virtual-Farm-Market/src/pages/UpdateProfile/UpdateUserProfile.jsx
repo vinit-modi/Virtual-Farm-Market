@@ -23,11 +23,11 @@ import { useNavigate } from "react-router-dom";
 import { store } from "../../Redux/store";
 
 const validationSchema = Yup.object({
-  name: Yup.string().required("Name is required"),
-  phoneNumber: Yup.string().required("Phone number is required"),
+  name: Yup.string().matches(/^[^\d]+$/, 'Name should not contain digits').required("Name is required"),
+  phoneNumber: Yup.string().matches(/^\d{10}$/, "Phone number should contain only 10 digits.").required("Phone number is required"),
   city: Yup.string().required("City is required"),
   province: Yup.string().required("Province is required"),
-  // profilePicture: Yup.string().required("Profile Picture is required"),
+
 });
 
 function UpdateUserProfile() {

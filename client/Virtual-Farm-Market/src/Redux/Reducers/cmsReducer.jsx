@@ -3,6 +3,7 @@ export const FAIL_CMS_REQUEST = "FAIL_CMS_REQUEST";
 export const CLEAR_CMS_MESSAGE = "CLEAR_CMS_MESSAGE";
 export const GET_CMS_FOR_USER = "GET_CMS_FOR_USER";
 export const SET_CMS_FOR_USER = "SET_CMS_FOR_USER";
+export const CLEAR_CMS_FOR_USER = "CLEAR_CMS_FOR_USER";
 export const GET_CMS_OBJECT_ADMIN = "GET_CMS_OBJECT_ADMIN";
 export const SET_CMS_OBJECT_ADMIN = "SET_CMS_OBJECT_ADMIN";
 export const GET_CMS_UPDATE_ADMIN = "GET_CMS_UPDATE_ADMIN";
@@ -64,6 +65,12 @@ export const cmsReducer = (state = initialState, action) => {
         error: null,
         cmsDetails: action.payload,
       };
+      
+      case CLEAR_CMS_FOR_USER:
+        return {
+          cmsDetails:null,
+
+        }
     case SET_CMS_OBJECT_ADMIN:
       return {
         ...state,
