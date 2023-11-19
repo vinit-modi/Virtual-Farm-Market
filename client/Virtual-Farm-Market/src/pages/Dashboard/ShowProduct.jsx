@@ -125,8 +125,6 @@ function ShowProduct() {
   }, []);
 
   useEffect(() => {
-
-
     // dispatch({ type: GET_ALLPRODUCTS_CART });
 
     countQuntities();
@@ -134,25 +132,23 @@ function ShowProduct() {
 
   useEffect(() => {
     dispatch({ type: GET_ALLPRODUCTS_CART });
-
   }, [quntityCount]);
 
+  const handleRemoveProductInCart = () => {
+    dispatch({ type: CLEAR_PRODUCT_COUNT_TO_CART });
 
-
-  const handleRemoveProductInCart = () =>{
-
-    dispatch({type:CLEAR_PRODUCT_COUNT_TO_CART})
-    
     dispatch({ type: GET_ALLPRODUCTS_CART });
-    const cartProductIdOnShownProduct = cart.cartProductList.filter((item)=>{ return productObj._id === item.product._id} )
-    console.log(cartProductIdOnShownProduct[0]._id)
-    
-    dispatch({ type: GET_REMOVE_PRODUCT_CART, payload: { _id: cartProductIdOnShownProduct[0]._id } });
+    const cartProductIdOnShownProduct = cart.cartProductList.filter((item) => {
+      return productObj._id === item.product._id;
+    });
+    console.log(cartProductIdOnShownProduct[0]._id);
+
+    dispatch({
+      type: GET_REMOVE_PRODUCT_CART,
+      payload: { _id: cartProductIdOnShownProduct[0]._id },
+    });
     // dispatch({ type: GET_ALLPRODUCTS_CART });
-  }
-
-
-
+  };
 
   return (
     <>
@@ -317,34 +313,70 @@ function ShowProduct() {
                   </Typography>
                 </Grid>{" "}
                 <Grid item>
-                  <Box display="flex" alignItems="center">{
-                     cart.productQuantityCount && cart.productQuantityCount === 1 ? 
-                      <Button
-                      className="btn btn-primary"
-                      variant="outlined"
-                      onClick={()=>handleRemoveProductInCart()}
-                      sx={{
-                        border: "1px solid red",
-                        color: "red",
-                        "&:hover": {
-                          bgcolor: red[500],
-                          color: "white",
-                          border: "none",
-                        },
-                      }}
-                    >
-                      <DeleteIcon/>
-                    </Button>
-                      : <Button
-                      className="btn btn-primary"
-                      variant="contained"
-                      onClick={decrement}
-                      disabled={!cart.productQuantityCount}
-                    >
-                      -
-                    </Button>
-                  }
-                   
+                  <Box display="flex" alignItems="center">
+                    {
+                      //  cart.productQuantityCount && cart.productQuantityCount === 1 ?
+
+                      (!(
+                        productObj.price *
+                        (cart.productQuantityCount
+                          ? cart.productQuantityCount
+                          : quntityCount)
+                      )
+                        ? 0
+                        : cart.productQuantityCount
+                        ? cart.productQuantityCount
+                        : quntityCount) &&
+                      (!(
+                        productObj.price *
+                        (cart.productQuantityCount
+                          ? cart.productQuantityCount
+                          : quntityCount)
+                      )
+                        ? 0
+                        : cart.productQuantityCount
+                        ? cart.productQuantityCount
+                        : quntityCount) === 1 ? (
+                        <Button
+                          className="btn btn-primary"
+                          variant="outlined"
+                          onClick={() => handleRemoveProductInCart()}
+                          sx={{
+                            border: "1px solid red",
+                            color: "red",
+                            "&:hover": {
+                              bgcolor: red[500],
+                              color: "white",
+                              border: "none",
+                            },
+                          }}
+                        >
+                          <DeleteIcon />
+                        </Button>
+                      ) : (
+                        <Button
+                          className="btn btn-primary"
+                          variant="contained"
+                          onClick={decrement}
+                          disabled={
+                            // !cart.productQuantityCount
+                            !(!(
+                              productObj.price *
+                              (cart.productQuantityCount
+                                ? cart.productQuantityCount
+                                : quntityCount)
+                            )
+                              ? 0
+                              : cart.productQuantityCount
+                              ? cart.productQuantityCount
+                              : quntityCount)
+                          }
+                        >
+                          -
+                        </Button>
+                      )
+                    }
+
                     <Typography
                       variant="body1"
                       sx={{
@@ -385,7 +417,9 @@ function ShowProduct() {
                   </button>
                 </Grid> */}
                 <Grid item>
-                  <Typography variant="h6">Country of Origin: CA</Typography>
+                  <Typography variant="h6">
+                    Country of Origin: CANADA
+                  </Typography>
                 </Grid>
                 <Grid item>
                   <Box sx={{ mr: 3 }}>
@@ -425,18 +459,25 @@ function ShowProduct() {
                       <Grid item>
                         <Avatar
                           sx={{ width: 42, height: 42, bgcolor: green[500] }}
-                          src={product.productObj.seller.profilePicture}
+                          src={
+                            product.productObj.seller &&
+                            product.productObj.seller.profilePicture
+                          }
                         />
                       </Grid>
                       <Grid item>
                         <Typography variant="body1">
                           <strong>Farmer:</strong>&nbsp;
-                          {product.productObj.seller.name}
+                          {product.productObj.seller
+                            ? product.productObj.seller.name
+                            : "Empty"}
                         </Typography>
                         <Typography variant="body1">
                           <strong>Location:</strong>
                           &nbsp;
-                          {`${product.productObj.seller.city}, ${product.productObj.seller.province}`}
+                          {product.productObj.seller
+                            ? `${product.productObj.seller.city}, ${product.productObj.seller.province}`
+                            : "Empty"}
                         </Typography>
                       </Grid>
                     </Grid>
