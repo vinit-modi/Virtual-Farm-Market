@@ -40,7 +40,7 @@ import {
   Stack,
 } from "@mui/material";
 import Dashboard from "../../pages/Dashboard/Dashboard";
-import { green, grey, red } from "@mui/material/colors";
+import { green, grey, orange, red } from "@mui/material/colors";
 import Payment from "../../pages/Payment/Payment";
 import { useEffect } from "react";
 import {
@@ -71,6 +71,7 @@ import { useRef } from "react";
 import PageNotFound from "../../pages/PageNotFound/PageNotFound";
 import VFMIconNoBG from "../../Assets/VFMIcon/VFM-Logo-NoBG.png";
 import VFMIcon from "../../Assets/VFMIcon/VFM-Logo.png";
+import UserAddressForm from "../../pages/UserAddressForm/UserAddressForm";
 
 const settings = ["Update Profile", "Change Password", `Logout`];
 const settingsIcons = [<EditIcon />, <ManageAccountsIcon />, <LogoutIcon />];
@@ -163,6 +164,12 @@ function UserHeader() {
   const handleAnchorForCart = (elementTarget) => {
     dispatch({ type: GET_ALLPRODUCTS_CART });
     setAnchorElCart(elementTarget);
+  };
+
+  const handleCheckout = () => {
+    //SEND CART DATA FOR CHECKOUT ...{{pending}}...
+    setAnchorElCart(null);
+    navigate("/user/addaddress");
   };
 
   useEffect(() => {
@@ -432,6 +439,18 @@ function UserHeader() {
                         )}
                       </Stack>
                     </Stack>
+                  </Box>
+                  <Box sx={{ display: "flex", justifyContent: "end" }}>
+                    <Button
+                      variant="contained"
+                      onClick={() => handleCheckout()}
+                      sx={{
+                        bgcolor: orange[400],
+                        "&:hover": { bgcolor: orange["A700"] },
+                      }}
+                    >
+                      CHECKOUT
+                    </Button>
                   </Box>
                 </Box>
               </Popover>
@@ -706,6 +725,15 @@ function UserHeader() {
             element={
               <ProtectedRoute userTypeAllowed="Customer">
                 <ShowProduct />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="addaddress"
+            element={
+              <ProtectedRoute userTypeAllowed="Customer">
+                <UserAddressForm />
               </ProtectedRoute>
             }
           />
