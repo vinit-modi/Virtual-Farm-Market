@@ -162,6 +162,7 @@ module.exports = {
 
   getPorductsByCategory: async (req, res) => {
     try {
+      let getUserLocation = await UserModel.findOne({ _id: req.userInfo._id });
       let getPorductsByCategory = await ProductModel.aggregate([
         { $match: { category: req.body.categoryName } },
         {
@@ -179,6 +180,7 @@ module.exports = {
             preserveNullAndEmptyArrays: true,
           },
         },
+        { $match: { location: getUserLocation.city } },
       ]);
       return res.status(200).json({
         status: "success",
