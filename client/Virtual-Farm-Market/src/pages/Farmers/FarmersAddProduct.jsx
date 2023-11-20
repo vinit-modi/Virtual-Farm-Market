@@ -26,6 +26,7 @@ import {
   GET_AUTH_LOGOUT,
   GET_CITY_LIST,
 } from "../../Redux/Reducers/authReducer";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const initialValues = {
   productName: "",
@@ -128,6 +129,7 @@ function FarmersAddProduct() {
             edge="end"
             variant="outlined"
             sx={{ "&:hover": { color: "white", bgcolor: "red" } }}
+            startIcon={<LogoutIcon/>}
           >
             Logout
           </Button>

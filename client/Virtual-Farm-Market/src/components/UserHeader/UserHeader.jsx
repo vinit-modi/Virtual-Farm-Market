@@ -373,88 +373,96 @@ function UserHeader() {
                   </IconButton>
                 </Tooltip>{" "}
               </Box>
-
-              <Popover
-                open={Boolean(anchorElCart)}
-                anchorEl={anchorElCart}
-                anchorOrigin={{
-                  vertical: isSmallScreen ? "top" : "bottom",
-                  horizontal: isSmallScreen ? "left" : "center",
-                }}
-                transformOrigin={{
-                  vertical: isSmallScreen ? "bottom" : "top",
-                  horizontal: isSmallScreen ? "left" : "right",
-                }}
-                onClose={handleClosePopover}
-              >
-                <Box sx={{ p: 2 }}>
-                  <Box
-                    sx={{
-                      width: isSmallScreen ? "100vw" : 400,
-                      height: isSmallScreen ? "100vh" : 700,
-                    }}
-                  >
-                    <Stack>
-                      <Stack sx={{ mb: 2 }}>
-                        {" "}
-                        <Box
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            height: 50,
-                          }}
-                        >
-                          <Typography
-                            variant="h5"
-                            sx={{
-                              display: "flex",
-                              justifyContent: "space-around",
-                              alignItems: "center",
-                              fontSize: 28,
-                              color: green["A700"],
-                              my: 2,
-                            }}
-                          >
-                            Cart List
-                          </Typography>
-                          <IconButton onClick={handleClosePopover}>
-                            <CloseIcon />
-                          </IconButton>
-                        </Box>{" "}
-                        <Divider />
-                        <Divider />
-                        <Divider />
-                        <Divider />
-                      </Stack>
-                      <Stack spacing={1}>
-                        {cart.cartProductList ? (
-                          cart.cartProductList.map((item, index) => (
-                            <Stack>
-                              <CartCard {...{ item }} />
-                            </Stack>
-                          ))
-                        ) : (
-                          <>{cartListSkeleton()}</>
-                        )}
-                      </Stack>
-                    </Stack>
-                  </Box>
-                  <Box sx={{ display: "flex", justifyContent: "end" }}>
-                    <Button
-                      variant="contained"
-                      onClick={() => handleCheckout()}
+              <Box sx={{ position: "relative" }}>
+                <Popover
+                  open={Boolean(anchorElCart)}
+                  anchorEl={anchorElCart}
+                  anchorOrigin={{
+                    vertical: isSmallScreen ? "top" : "bottom",
+                    horizontal: isSmallScreen ? "left" : "center",
+                  }}
+                  transformOrigin={{
+                    vertical: isSmallScreen ? "bottom" : "top",
+                    horizontal: isSmallScreen ? "left" : "right",
+                  }}
+                  onClose={handleClosePopover}
+                >
+                  <Box sx={{ p: 2 }}>
+                    <Box
                       sx={{
-                        bgcolor: orange['A400'],
-                        "&:hover": { bgcolor: orange["A700"] },
+                        width: isSmallScreen ? "100vw" : 400,
+                        height: isSmallScreen ? "100vh" : 700,
                       }}
                     >
-                      CHECKOUT
-                    </Button>
+                      <Stack>
+                        <Stack sx={{ mb: 2 }}>
+                          {" "}
+                          <Box
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              height: 50,
+                            }}
+                          >
+                            <Typography
+                              variant="h5"
+                              sx={{
+                                display: "flex",
+                                justifyContent: "space-around",
+                                alignItems: "center",
+                                fontSize: 28,
+                                color: green["A700"],
+                                my: 2,
+                              }}
+                            >
+                              Cart List
+                            </Typography>
+                            <IconButton onClick={handleClosePopover}>
+                              <CloseIcon />
+                            </IconButton>
+                          </Box>{" "}
+                          <Divider />
+                          <Divider />
+                          <Divider />
+                          <Divider />
+                        </Stack>
+                        <Stack spacing={1}>
+                          {cart.cartProductList ? (
+                            cart.cartProductList.map((item, index) => (
+                              <Stack>
+                                <CartCard {...{ item }} />
+                              </Stack>
+                            ))
+                          ) : (
+                            <>{cartListSkeleton()}</>
+                          )}
+                        </Stack>
+                      </Stack>
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "end",
+                        position: "fixed",
+                        top: "735px",
+                      }}
+                    >
+                      <Button
+                        variant="contained"
+                        onClick={() => handleCheckout()}
+                        sx={{
+                          bgcolor: orange["A400"],
+                          "&:hover": { bgcolor: orange["A700"] },
+                          left: 290,
+                        }}
+                      >
+                        CHECKOUT
+                      </Button>
+                    </Box>
                   </Box>
-                </Box>
-              </Popover>
-
+                </Popover>
+              </Box>
               {/* Notifications */}
               <Box sx={{ mr: 3 }}>
                 <Tooltip title="Notifications">

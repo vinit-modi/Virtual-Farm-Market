@@ -29,6 +29,7 @@ import {
   POST_SIGNIN_USER,
 } from "../../Redux/Reducers/authReducer";
 import { GET_ADMIN_LOGIN } from "../../Redux/Reducers/adminReducer";
+import { green, grey, orange, red } from "@mui/material/colors";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -121,124 +122,135 @@ export default function SignInSide() {
   }, [auth.message]);
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Grid container component="main" sx={{ height: "100vh" }}>
-        <CssBaseline />
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
-          sx={{
-            backgroundImage:
-              "url(https://source.unsplash.com/random?wallpapers)",
-            backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-          <Box
+    <>
+      <ThemeProvider theme={defaultTheme}>
+        <Grid container component="main" 
+        sx={{ height: "100vh", display:'flex', justifyContent:'center'}}
+        >
+          <CssBaseline />
+          {/* <Grid
+            item
+            xs={false}
+            sm={4}
+            md={7}
             sx={{
-              my: 8,
-              mx: 4,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
+              backgroundImage:
+                "url(https://source.unsplash.com/random?wallpapers)",
+              backgroundRepeat: "no-repeat",
+              backgroundColor: (t) =>
+                t.palette.mode === "light"
+                  ? t.palette.grey[50]
+                  : t.palette.grey[900],
+              backgroundSize: "cover",
+              backgroundPosition: "center",
             }}
+          /> */}
+          <Grid
+            item
+            // xs={12}
+            // sm={8}
+            // md={5}
+            // component={Paper}
+            // elevation={6}
+            // square
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              {currentPath === `/admin/login` ? `Admin Sign in` : `Sign in`}
-            </Typography>
-            <div className="m-4">
-              {auth.error && <Alert severity="error">{auth.error}</Alert>}
-            </div>
-            <div className="m-4">
-              {adminReducer.error && (
-                <Alert severity="error">{adminReducer.error}</Alert>
-              )}
-            </div>
-
-            <Formik
-              initialValues={{
-                email: "",
-                password: "",
-                // rememberMe: false,
-              }}
-              validationSchema={validationSchema}
-              onSubmit={(values, { setSubmitting }) => {
-                console.log(values);
-                const value = {
-                  email: values.email,
-                  password: values.password,
-                };
-                if (currentPath === `/admin/login`) {
-                  dispatch({ type: GET_ADMIN_LOGIN, payload: value });
-                } else {
-                  dispatch({ type: POST_SIGNIN_USER, payload: value });
-                }
+            <Box
+              sx={{
+                my: 8,
+                mx: 4,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
               }}
             >
-              {({ isSubmitting, values, handleChange }) => (
-                <Form>
-                  <Field
-                    as={TextField}
-                    margin="normal"
-                    variant="outlined"
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                    autoFocus
-                  />
-                  <ErrorMessage
-                    name="email"
-                    id="email"
-                    component="div"
-                    className="error text-danger"
-                  />
-                  <Field
-                    as={TextField}
-                    margin="normal"
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type={!isVisible ? `password` : `text`}
-                    id="password"
-                    autoComplete="current-password"
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={() => setIsVisible(!isVisible)}
-                            aria-label="password visibility"
-                            edge="end"
-                          >
-                            {isVisible ? (
-                              <VisibilityIcon />
-                            ) : (
-                              <VisibilityOffIcon />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                  <ErrorMessage
-                    name="password"
-                    id="password"
-                    component="div"
-                    className="error text-danger"
-                  />
-                  {/* {currentPath === `/admin/login` ? null : null
+              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                {currentPath === `/admin/login` ? `Admin Sign in` : `Sign in`}
+              </Typography>
+              <div className="m-4">
+                {auth.error && <Alert severity="error">{auth.error}</Alert>}
+              </div>
+              <div className="m-4">
+                {adminReducer.error && (
+                  <Alert severity="error">{adminReducer.error}</Alert>
+                )}
+              </div>
+
+              <Formik
+                initialValues={{
+                  email: "",
+                  password: "",
+                  // rememberMe: false,
+                }}
+                validationSchema={validationSchema}
+                onSubmit={(values, { setSubmitting }) => {
+                  console.log(values);
+                  const value = {
+                    email: values.email,
+                    password: values.password,
+                  };
+                  if (currentPath === `/admin/login`) {
+                    dispatch({ type: GET_ADMIN_LOGIN, payload: value });
+                  } else {
+                    dispatch({ type: POST_SIGNIN_USER, payload: value });
+                  }
+                }}
+              >
+                {({ isSubmitting, values, handleChange }) => (
+                  <Form>
+                    <Field
+                      as={TextField}
+                      margin="normal"
+                      variant="outlined"
+                      fullWidth
+                      id="email"
+                      label="Email Address"
+                      name="email"
+                      autoComplete="email"
+                      autoFocus
+                    />
+                    <ErrorMessage
+                      name="email"
+                      id="email"
+                      component="div"
+                      className="error text-danger"
+                    />
+                    <Field
+                      as={TextField}
+                      margin="normal"
+                      fullWidth
+                      name="password"
+                      label="Password"
+                      type={!isVisible ? `password` : `text`}
+                      id="password"
+                      autoComplete="current-password"
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              onClick={() => setIsVisible(!isVisible)}
+                              aria-label="password visibility"
+                              edge="end"
+                            >
+                              {isVisible ? (
+                                <VisibilityIcon />
+                              ) : (
+                                <VisibilityOffIcon />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                    <ErrorMessage
+                      name="password"
+                      id="password"
+                      component="div"
+                      className="error text-danger"
+                    />
+                    {/* {currentPath === `/admin/login` ? null : null
                   // (
                   //   <FormControlLabel
                   //     control={
@@ -253,50 +265,51 @@ export default function SignInSide() {
                   //   />
                   // )
                   } */}
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
-                    disabled={auth?.loading ? true : false}
-                  >
-                    {auth.loading ? (
-                      <>
-                        <Spinner
-                          as="span"
-                          animation="grow"
-                          size="sm"
-                          role="status"
-                          aria-hidden="true"
-                        />
-                        Loading...
-                      </>
-                    ) : (
-                      `Sign In`
-                    )}
-                  </Button>
-                </Form>
-              )}
-            </Formik>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      sx={{ mt: 3, mb: 2 }}
+                      disabled={auth?.loading ? true : false}
+                    >
+                      {auth.loading ? (
+                        <>
+                          <Spinner
+                            as="span"
+                            animation="grow"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                          />
+                          Loading...
+                        </>
+                      ) : (
+                        `Sign In`
+                      )}
+                    </Button>
+                  </Form>
+                )}
+              </Formik>
 
-            {currentPath === `/admin/login` ? null : (
-              <Grid container>
-                <Grid item xs>
-                  <NavLink to="/user/forgetpassword" variant="body2">
-                    Forgot password?
-                  </NavLink>
+              {currentPath === `/admin/login` ? null : (
+                <Grid container>
+                  <Grid item xs>
+                    <NavLink to="/user/forgetpassword" variant="body2">
+                      Forgot password?
+                    </NavLink>
+                  </Grid>
+                  <Grid item>
+                    Don't have an account? &nbsp;
+                    <Button onClick={() => handleSubmit()}>Sign Up</Button>
+                    {/* <NavLink to="/register" >{"Sign Up"}</NavLink> */}
+                  </Grid>
                 </Grid>
-                <Grid item>
-                  Don't have an account? &nbsp;
-                  <Button onClick={() => handleSubmit()}>Sign Up</Button>
-                  {/* <NavLink to="/register" >{"Sign Up"}</NavLink> */}
-                </Grid>
-              </Grid>
-            )}
-            <Copyright sx={{ mt: 5 }} />
-          </Box>
+              )}
+              <Copyright sx={{ mt: 5 }} />
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
-    </ThemeProvider>
+      </ThemeProvider>
+    </>
   );
 }

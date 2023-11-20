@@ -1,7 +1,7 @@
 import { Avatar, Skeleton, Stack, Typography } from "@mui/material";
 
 export const cartListSkeleton = () => {
- return [1, 2, 3, 4, 5, 6].map((i) => (
+  return [1, 2, 3, 4, 5, 6, 7].map((i) => (
     <Stack direction="row" sx={{ pb: 2 }} spacing={2}>
       <Stack>
         <Skeleton variant="rounded">
