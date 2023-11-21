@@ -19,7 +19,7 @@ import veg5Image from "./images/veg05.jpg";
 import veg6Image from "./images/veg06.jpg";
 import veg7Image from "./images/veg07.jpg";
 import veg8Image from "./images/veg08.jpg";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { Navigate, useNavigate } from "react-router-dom";
 
@@ -75,11 +75,11 @@ function LandingPage() {
         </div>
       </div>
       <div className="VFMban">
-        <img
+        {/* <img
           src={bannerImage}
           alt="banner"
           //   style={{ width: "100%", height: "100%" }}
-        />
+        /> */}
       </div>
       <div className="VFMcontent">
         <div className="VFMimg1">
@@ -98,19 +98,19 @@ function LandingPage() {
           </div>
         </div>
         <div className="p1">
-          <p>
+          <Typography color="black" variant="h5" sx={{ fontFamily: "cursive" }}>
             Our goal is to provide fresh and organic fruits and vegetables to
             the customer. And we provide both the options like the customer
             wants to pick up the order or wants orders to be delivered at the
             door.
-          </p>
+          </Typography>
         </div>
         <div className="p2">
-          <p>
+          <Typography variant="h5" color="black" sx={{ fontFamily: "cursive" }}>
             Our main motto is to connect farmers to local individuals according
             to geolocation so customers can connect to the nearest local
             farmers' market.
-          </p>
+          </Typography>
         </div>
         <div className="VFMimg2">
           <div className="slider-wrapper">
