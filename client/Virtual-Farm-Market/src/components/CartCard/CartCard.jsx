@@ -139,10 +139,13 @@ useEffect(()=>{
                 </ButtonGroup>
               </Stack>
               <Stack>
+                {
+                  product.price &&<>
+                
                 <Typography>Price:&nbsp;{product.price.toFixed(2)}</Typography>
                 <Typography>
                   Total:&nbsp;{(item.quantity * product.price).toFixed(2)}
-                </Typography>
+                </Typography></>}
                 <Button
                   onClick={() => handleRemoveCart()}
                   variant="outlined"
