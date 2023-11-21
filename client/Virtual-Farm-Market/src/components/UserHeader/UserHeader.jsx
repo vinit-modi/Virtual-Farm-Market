@@ -239,7 +239,7 @@ function UserHeader() {
               <Link
                 // noWrap
                 component="a"
-                href="#app-bar-with-responsive-menu"
+                href="#"
                 underline="none"
                 sx={{
                   mr: 2,
@@ -255,6 +255,9 @@ function UserHeader() {
               >
                 <img
                   src={VFMIcon}
+                  onClick={() => {
+                    navigate("/user/dashboard");
+                  }}
                   style={{
                     height: "50px",
                     width: "auto",
@@ -324,6 +327,9 @@ function UserHeader() {
                   >
                     <img
                       src={VFMIcon}
+                      onClick={() => {
+                        navigate("/user/dashboard");
+                      }}
                       style={{
                         height: "50px",
                         width: "auto",

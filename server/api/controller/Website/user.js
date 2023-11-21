@@ -51,6 +51,7 @@ module.exports = {
     let getUser = await UserModel.findOne({
       email: req.body.email,
       isEmailConfirmed: true,
+      userType: req.body.userType,
     });
     if (getUser) {
       res.json({

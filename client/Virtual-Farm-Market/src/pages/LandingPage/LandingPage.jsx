@@ -75,11 +75,15 @@ function LandingPage() {
         </div>
       </div>
       <div className="VFMban">
-        {/* <img
+        <img
           src={bannerImage}
           alt="banner"
-          //   style={{ width: "100%", height: "100%" }}
-        /> */}
+          style={{
+            width: "100%",
+            height: "60vh",
+            objectFit: "cover",
+          }}
+        />
       </div>
       <div className="VFMcontent">
         <div className="VFMimg1">
@@ -130,7 +134,10 @@ function LandingPage() {
         <br />
       </div>
       <footer className="footer">
-        <div className="footer-footer-container">
+        <div
+          className="footer-footer-container"
+          style={{ paddingLeft: "100px" }}
+        >
           <div className="grid">
             <div className="footer-logo">
               <img src={logoImage} alt="VFM Logo" />
