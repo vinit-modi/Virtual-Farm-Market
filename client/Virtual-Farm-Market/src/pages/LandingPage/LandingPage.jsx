@@ -1,43 +1,45 @@
-import React from "react";
-import "./Css/LandingPageStyle.css";
-import logoImage from "./images/VFM-Logo-NoBG.png";
-import bannerImage from "./images/banner.jpg";
-import fruit1Image from "./images/fruit1.jpg";
-import fruit2Image from "./images/fruit2.jpg";
-import fruit3Image from "./images/fruit3.jpg";
-import fruit4Image from "./images/fruit4.jpg";
-import fruit5Image from "./images/fruit5.jpg";
-import fruit6Image from "./images/fruit6.jpg";
-import fruit7Image from "./images/fruit7.jpg";
-import fruit8Image from "./images/fruit8.jpg";
-import veg1Image from "./images/veg01.jpg";
-import veg2Image from "./images/veg02.jpg";
-import veg3Image from "./images/veg03.jpg";
-import veg4Image from "./images/veg04.jpg";
-import veg5Image from "./images/veg05.jpg";
-import veg6Image from "./images/veg06.jpg";
-import veg7Image from "./images/veg07.jpg";
-import veg8Image from "./images/veg08.jpg";
+// Import necessary dependencies
+import React from 'react';
+import './Css/LandingPageStyle.css'; 
+import logoImage from './images/VFM-Logo-NoBG.png';
+import bannerImage from './images/banner.jpg';
+import fruit1Image from './images/fruit1.jpg';
+import fruit2Image from './images/fruit2.jpg';
+import fruit3Image from './images/fruit3.jpg';
+import fruit4Image from './images/fruit4.jpg';
+import fruit5Image from './images/fruit5.jpg';
+import fruit6Image from './images/fruit6.jpg';
+import fruit7Image from './images/fruit7.jpg';
+import fruit8Image from './images/fruit8.jpg';
+import veg1Image from './images/veg01.jpg';
+import veg2Image from './images/veg02.jpg';
+import veg3Image from './images/veg03.jpg';
+import veg4Image from './images/veg04.jpg';
+import veg5Image from './images/veg05.jpg';
+import veg6Image from './images/veg06.jpg';
+import veg7Image from './images/veg07.jpg';
+import veg8Image from './images/veg08.jpg';
 
+// Create a functional component
 function LandingPage() {
   return (
     <div>
-      <div className="container">
-        <div className="logo">
+      <div className="Landwrapper">
+        <div className="VFMlogo">
           <img src={logoImage} alt="logo" width="200px" />
         </div>
-        <div className="navbar">
+        <div className="VFMnav">
           <ul>
             <li>signUp</li>
             <li>Login</li>
           </ul>
         </div>
       </div>
-      <div className="banner">
+      <div className="VFMban">
         <img src={bannerImage} alt="banner" />
       </div>
-      <div className="content">
-        <div className="img1">
+      <div className="VFMcontent">
+        <div className="VFMimg1">
           <div className="slider-wrapper">
             <div className="slider slider-move">
               <img src={fruit1Image} alt="VFM" />
@@ -67,7 +69,7 @@ function LandingPage() {
             farmers' market.
           </p>
         </div>
-        <div className="img2">
+        <div className="VFMimg2">
           <div className="slider-wrapper">
             <div className="slider slider-move1">
               <img src={veg1Image} alt="VFM" />

@@ -1,20 +1,20 @@
-body {
+body{
   margin: 0;
   padding: 0;
   background-color: green;
 }
 
-.navbar ul li {
+.VFMnav ul li{
   list-style: none;
 }
 
-.container {
+.Landwrapper{
   display: grid;
-  grid-template-columns: 70% 30%;
+  grid-template-columns:  70% 30%;
   background-color: green;
 }
 
-.navbar ul {
+.VFMnav ul{
   display: grid;
   place-items: center;
   justify-content: space-evenly;
@@ -23,23 +23,24 @@ body {
   font-size: 25px;
 }
 
-.navbar a {
+.VFMnav a {
   background-color: red; /* Set your preferred background color */
   border: 2px solid red; /* Set your preferred border color and width */
 }
 
-.navbar a#login {
+.VFMnav a#login {
   background-color: red; /* Set your preferred background color */
   border: 2px solid red; /* Set your preferred border color and width */
 }
 
-.banner img {
+.VFMban img{
   width: 100%;
   height: 600px;
   margin-bottom: 30px;
 }
 
-.content {
+.VFMcontent{
+  
   place-items: center;
   margin: auto;
   width: 80%;
@@ -48,22 +49,24 @@ body {
   grid-gap: 20px 20px;
 }
 
-.content img {
+.VFMcontent img{
   width: 70%;
   display: grid;
   justify-content: space-evenly;
 }
 
+
+
 .p1,
 .p2 {
   text-align: center;
-  color: wheat;
+  color: blue;
   width: 80%;
 }
 
 /* Add these styles to your existing style.css */
 
-.img1 {
+.VFMimg1 {
   position: relative;
   overflow: hidden;
 }
@@ -90,68 +93,68 @@ body {
   animation: slide 15s linear infinite; /* Adjust the animation duration as needed */
 }
 
-.slider-move1 {
+.slider-move1{
   transform: translateX(-100%);
   animation: slide1 15s linear infinite;
 }
 
 @keyframes slide {
   0% {
-    transform: translateX(0);
+      transform: translateX(0);
   }
   20% {
-    transform: translateX(0);
+      transform: translateX(0);
   }
   25% {
-    transform: translateX(-100%);
+      transform: translateX(-100%);
   }
   45% {
-    transform: translateX(-100%);
+      transform: translateX(-100%);
   }
   50% {
-    transform: translateX(-200%);
+      transform: translateX(-200%);
   }
   70% {
-    transform: translateX(-200%);
+      transform: translateX(-200%);
   }
   75% {
-    transform: translateX(-300%);
+      transform: translateX(-300%);
   }
   95% {
-    transform: translateX(-300%);
+      transform: translateX(-300%);
   }
   100% {
-    transform: translateX(-400%);
+      transform: translateX(-400%);
   }
 }
 
 @keyframes slide1 {
   0% {
-    transform: translateX(-400%);
+      transform: translateX(-400%);
   }
   5% {
-    transform: translateX(-300%);
+      transform: translateX(-300%);
   }
   25% {
-    transform: translateX(-300%);
+      transform: translateX(-300%);
   }
   30% {
-    transform: translateX(-200%);
+      transform: translateX(-200%);
   }
   50% {
-    transform: translateX(-200%);
+      transform: translateX(-200%);
   }
   55% {
-    transform: translateX(-100%);
+      transform: translateX(-100%);
   }
   75% {
-    transform: translateX(-100%);
+      transform: translateX(-100%);
   }
   80% {
-    transform: translateX(0);
+      transform: translateX(0);
   }
   100% {
-    transform: translateX(0);
+      transform: translateX(0);
   }
 }
 
