@@ -81,7 +81,7 @@ function ProductCard({ item }) {
             />
           ) : (
             <CardHeader
-              sx={{ bgcolor: green[400], color: "white" }}
+              // sx={{ bgcolor: green[400], color: "white" }}
               avatar={
                 <Avatar
                   sx={{ bgcolor: red[500] }}

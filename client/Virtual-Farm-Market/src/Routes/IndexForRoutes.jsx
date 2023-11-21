@@ -25,6 +25,7 @@ import AdminHeader from "../components/AdminHeader/AdminHeader";
 import UserHeader from "../components/UserHeader/UserHeader";
 import FarmersAddProduct from "../pages/Farmers/FarmersAddProduct";
 import { useSelector } from "react-redux";
+import LandingPage from "../pages/LandingPage/LandingPage";
 
 function IndexForRoutes() {
   const auth = useSelector((state) => state.auth);
@@ -32,8 +33,30 @@ function IndexForRoutes() {
   return (
     <div>
       <Routes>
+        {/* LANDING */}
+        <Route
+          path="/"
+          element={
+            <PublicRoute>
+              <LandingPage />
+            </PublicRoute>
+          }
+        />
+
+        {/* CONFIRMEMAIL */}
+        <Route
+          path="/confirmemail"
+          exact
+          element={
+            <PublicRoute>
+              <ConfirmEmail />
+            </PublicRoute>
+          }
+        />
+
         {/* Page-NotFound */}
         <Route path="*" element={<PageNotFound />} />
+
         {/* ADMIN */}
         <Route path="/admin">
           <Route
@@ -47,18 +70,6 @@ function IndexForRoutes() {
           />
           <Route exact path="*" element={<AdminHeader />} />
         </Route>
-        {/* Admin-DONE */}
-
-        {/* CONFIRMEMAIL */}
-        <Route
-          path="/confirmemail"
-          exact
-          element={
-            <PublicRoute>
-              <ConfirmEmail />
-            </PublicRoute>
-          }
-        />
 
         {/* FARMER */}
         <Route exact path="/farmer">

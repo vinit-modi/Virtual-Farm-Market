@@ -204,8 +204,10 @@ export const authReducer = (state = authInitialState, action) => {
         ...state,
         token: null,
         userType: null,
-        userProfileImage:null,
-        _idOfLoggedIn:null
+        userProfileImage: null,
+        _idOfLoggedIn: null,
+        isEmailConfirmed: null,
+        userId: "",
       };
 
     default:

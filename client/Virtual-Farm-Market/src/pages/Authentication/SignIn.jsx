@@ -124,8 +124,10 @@ export default function SignInSide() {
   return (
     <>
       <ThemeProvider theme={defaultTheme}>
-        <Grid container component="main" 
-        sx={{ height: "100vh", display:'flex', justifyContent:'center'}}
+        <Grid
+          container
+          component="main"
+          sx={{ height: "100vh", display: "flex", justifyContent: "center" }}
         >
           <CssBaseline />
           {/* <Grid
@@ -161,6 +163,10 @@ export default function SignInSide() {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                // border:'2px solid black',
+                borderRadius: 4,
+                p: 3,
+                boxShadow: "0px 0px 5px rgba(19, 3, 3, 0.809)",
               }}
             >
               <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
@@ -169,15 +175,19 @@ export default function SignInSide() {
               <Typography component="h1" variant="h5">
                 {currentPath === `/admin/login` ? `Admin Sign in` : `Sign in`}
               </Typography>
-              <div className="m-4">
-                {auth.error && <Alert severity="error">{auth.error}</Alert>}
-              </div>
-              <div className="m-4">
-                {adminReducer.error && (
-                  <Alert severity="error">{adminReducer.error}</Alert>
-                )}
-              </div>
-
+              <div className="mb-4">
+              {(auth.error || adminReducer.error) && (
+                <>
+                  <div className="m-4">
+                    {auth.error && <Alert severity="error">{auth.error}</Alert>}
+                  </div>
+                  <div className="m-4">
+                    {adminReducer.error && (
+                      <Alert severity="error">{adminReducer.error}</Alert>
+                    )}
+                  </div>
+                </>
+              )}</div>
               <Formik
                 initialValues={{
                   email: "",

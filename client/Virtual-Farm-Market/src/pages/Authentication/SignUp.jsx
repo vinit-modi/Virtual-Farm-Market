@@ -121,7 +121,7 @@ export default function SignUp() {
       // "Email confirmed successfully."
     ) {
       if (auth.isEmailConfirmed) {
-        navigate("/login");
+        navigate("/user/login");
         dispatch({ type: CLEAR_MESSAGE_ERROR, payload: "message" });
       }
     }
@@ -130,7 +130,7 @@ export default function SignUp() {
   React.useEffect(() => {
     if (auth.message === "Email confirmed successfully.") {
       if (auth.isEmailConfirmed) {
-        navigate("/login");
+        navigate("/user/login");
         dispatch({ type: CLEAR_MESSAGE_ERROR, payload: "message" });
       }
     }
@@ -155,6 +155,9 @@ export default function SignUp() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            borderRadius: 4,
+            p: 3,
+            boxShadow: "0px 0px 5px rgba(19, 3, 3, 0.809)",
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "#c6ff00" }}>
@@ -162,26 +165,30 @@ export default function SignUp() {
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign up
-          </Typography>
-
-          <div className="m-4">
-            {auth.error && <Alert severity="error">{auth.error}</Alert>}
-          </div>
-          <div className="m-4">
-            {auth.message ===
-              `User created successfully. Check your email for confirmation.` && (
-              <Alert severity="success">
-                {auth.message} &nbsp;
-                <button
-                  className="btn btn-primary btn-sm"
-                  onClick={() => handleEmailClick()}
-                >
-                  Open Email
-                </button>
-              </Alert>
+          </Typography>{" "}
+          <div className="mb-4">
+            {(auth.error || auth.message) && (
+              <>
+                <div className="m-4">
+                  {auth.error && <Alert severity="error">{auth.error}</Alert>}
+                </div>
+                <div className="m-4">
+                  {auth.message ===
+                    `User created successfully. Check your email for confirmation.` && (
+                    <Alert severity="success">
+                      {auth.message} &nbsp;
+                      <button
+                        className="btn btn-primary btn-sm"
+                        onClick={() => handleEmailClick()}
+                      >
+                        Open Email
+                      </button>
+                    </Alert>
+                  )}
+                </div>
+              </>
             )}
           </div>
-
           <Formik
             initialValues={{
               firstName: "",
