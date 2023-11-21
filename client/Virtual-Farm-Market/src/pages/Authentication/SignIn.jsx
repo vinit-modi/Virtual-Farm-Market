@@ -30,6 +30,7 @@ import {
 } from "../../Redux/Reducers/authReducer";
 import { GET_ADMIN_LOGIN } from "../../Redux/Reducers/adminReducer";
 import { green, grey, orange, red } from "@mui/material/colors";
+import VFMLogoNoBG from "../../Assets/VFMIcon/VFM-Logo-NoBG.png";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -169,25 +170,31 @@ export default function SignInSide() {
                 boxShadow: "0px 0px 5px rgba(19, 3, 3, 0.809)",
               }}
             >
-              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+              {/* <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
                 <LockOutlinedIcon />
-              </Avatar>
+              </Avatar> */}
               <Typography component="h1" variant="h5">
                 {currentPath === `/admin/login` ? `Admin Sign in` : `Sign in`}
               </Typography>
+              <Box sx={{ mt: 4 }}>
+                <img src={VFMLogoNoBG} style={{ height: 80, width: "auto" }} />
+              </Box>
               <div className="mb-4">
-              {(auth.error || adminReducer.error) && (
-                <>
-                  <div className="m-4">
-                    {auth.error && <Alert severity="error">{auth.error}</Alert>}
-                  </div>
-                  <div className="m-4">
-                    {adminReducer.error && (
-                      <Alert severity="error">{adminReducer.error}</Alert>
-                    )}
-                  </div>
-                </>
-              )}</div>
+                {(auth.error || adminReducer.error) && (
+                  <>
+                    <div className="m-4">
+                      {auth.error && (
+                        <Alert severity="error">{auth.error}</Alert>
+                      )}
+                    </div>
+                    <div className="m-4">
+                      {adminReducer.error && (
+                        <Alert severity="error">{adminReducer.error}</Alert>
+                      )}
+                    </div>
+                  </>
+                )}
+              </div>
               <Formik
                 initialValues={{
                   email: "",

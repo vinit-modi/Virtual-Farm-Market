@@ -38,6 +38,8 @@ import OAuthGoogleLogin from "../../components/GoogleLoginButton/OAuthGoogleLogi
 import OAuthGoogleLogout from "../../components/GoogleLogoutButton/OAuthGoogleLogout";
 import { gapi } from "gapi-script";
 import { useEffect } from "react";
+import VFMLogoNoBG from "../../Assets/VFMIcon/VFM-Logo-NoBG.png";
+import { green } from "@mui/material/colors";
 
 // const clientId =
 //   "394386949405-3al49a6v8la0v3233o191h3gg8rlvdqr.apps.googleusercontent.com";
@@ -160,12 +162,12 @@ export default function SignUp() {
             boxShadow: "0px 0px 5px rgba(19, 3, 3, 0.809)",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "#c6ff00" }}>
-            <LockOutlinedIcon />
-          </Avatar>
           <Typography component="h1" variant="h5">
             Sign up
-          </Typography>{" "}
+          </Typography>
+          <Box sx={{ mt: 4 }}>
+            <img src={VFMLogoNoBG} style={{ height: 70, width: "auto" }} />
+          </Box>
           <div className="mb-4">
             {(auth.error || auth.message) && (
               <>
