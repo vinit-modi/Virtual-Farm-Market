@@ -1,42 +1,85 @@
 // Import necessary dependencies
-import React from 'react';
-import './Css/LandingPageStyle.css'; 
-import logoImage from './images/VFM-Logo-NoBG.png';
-import bannerImage from './images/banner.jpg';
-import fruit1Image from './images/fruit1.jpg';
-import fruit2Image from './images/fruit2.jpg';
-import fruit3Image from './images/fruit3.jpg';
-import fruit4Image from './images/fruit4.jpg';
-import fruit5Image from './images/fruit5.jpg';
-import fruit6Image from './images/fruit6.jpg';
-import fruit7Image from './images/fruit7.jpg';
-import fruit8Image from './images/fruit8.jpg';
-import veg1Image from './images/veg01.jpg';
-import veg2Image from './images/veg02.jpg';
-import veg3Image from './images/veg03.jpg';
-import veg4Image from './images/veg04.jpg';
-import veg5Image from './images/veg05.jpg';
-import veg6Image from './images/veg06.jpg';
-import veg7Image from './images/veg07.jpg';
-import veg8Image from './images/veg08.jpg';
+import React from "react";
+import "./Css/LandingPageStyle.css";
+import logoImage from "./images/VFM-Logo.png";
+import bannerImage from "./images/banner.jpg";
+import fruit1Image from "./images/fruit1.jpg";
+import fruit2Image from "./images/fruit2.jpg";
+import fruit3Image from "./images/fruit3.jpg";
+import fruit4Image from "./images/fruit4.jpg";
+import fruit5Image from "./images/fruit5.jpg";
+import fruit6Image from "./images/fruit6.jpg";
+import fruit7Image from "./images/fruit7.jpg";
+import fruit8Image from "./images/fruit8.jpg";
+import veg1Image from "./images/veg01.jpg";
+import veg2Image from "./images/veg02.jpg";
+import veg3Image from "./images/veg03.jpg";
+import veg4Image from "./images/veg04.jpg";
+import veg5Image from "./images/veg05.jpg";
+import veg6Image from "./images/veg06.jpg";
+import veg7Image from "./images/veg07.jpg";
+import veg8Image from "./images/veg08.jpg";
+import { Button } from "@mui/material";
+import { grey } from "@mui/material/colors";
+import { Navigate, useNavigate } from "react-router-dom";
 
 // Create a functional component
 function LandingPage() {
+  const navigate = useNavigate();
   return (
     <div>
       <div className="Landwrapper">
-        <div className="VFMlogo">
-          <img src={logoImage} alt="logo" width="200px" />
+        <div className="VFMlogo m-2">
+          <img
+            src={logoImage}
+            alt="logo"
+            width="200px"
+            style={{ borderRadius: 3 }}
+          />
         </div>
-        <div className="VFMnav">
-          <ul>
-            <li>signUp</li>
-            <li>Login</li>
-          </ul>
+        <div
+          className="VFMnav"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Button
+            variant="contained"
+            sx={{
+              mr: 3,
+              bgcolor: "white",
+              color: "green",
+              "&:hover": { bgcolor: grey[300] },
+            }}
+            onClick={() => {
+              navigate("/user/register");
+            }}
+          >
+            signUp
+          </Button>
+          <Button
+            variant="contained"
+            sx={{
+              bgcolor: "white",
+              color: "green",
+              "&:hover": { bgcolor: grey[300] },
+            }}
+            onClick={() => {
+              navigate("/user/login");
+            }}
+          >
+            Login
+          </Button>
         </div>
       </div>
       <div className="VFMban">
-        <img src={bannerImage} alt="banner" />
+        <img
+          src={bannerImage}
+          alt="banner"
+          //   style={{ width: "100%", height: "100%" }}
+        />
       </div>
       <div className="VFMcontent">
         <div className="VFMimg1">
@@ -84,6 +127,7 @@ function LandingPage() {
             </div>
           </div>
         </div>
+        <br />
       </div>
       <footer className="footer">
         <div className="footer-footer-container">
