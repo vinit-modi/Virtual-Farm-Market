@@ -2,6 +2,7 @@ const CardModel = require("../../../db/models/Card");
 const { validationResult } = require("express-validator");
 const { check } = require("express-validator");
 const encDec = require("../../../services/enDe");
+const AddressModel = require("../../../db/models/Address");
 
 module.exports = {
   addNewCard: async (req, res) => {
@@ -155,6 +156,43 @@ module.exports = {
           ...makeDefault.toObject(),
           cardNumber: encDec.decrypt(makeDefault.cardNumber),
         },
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
+
+  addNewAddress: async (req, res) => {
+    try {
+      const validationRules = [
+        check("fullName").notEmpty().withMessage("Full Name must be provided"),
+        check("phoneNumber")
+          .notEmpty()
+          .withMessage("Phone Number must be provided"),
+        check("address").notEmpty().withMessage("Address must be provided"),
+        check("city").notEmpty().withMessage("City must be provided"),
+        check("province").notEmpty().withMessage("Province must be provided"),
+        check("postalCode")
+          .notEmpty()
+          .withMessage("Postal Code must be provided"),
+      ];
+      await Promise.all(validationRules.map((rule) => rule.run(req)));
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ message: errors.array()[0].msg });
+      }
+
+      let addNewAddress = await AddressModel.create({
+        ...req.body,
+        userId: req.userInfo._id,
+      });
+      return res.status(200).json({
+        status: "success",
+        message: "Address added successfully.",
+        data: addNewAddress,
       });
     } catch (error) {
       return res.status(500).json({

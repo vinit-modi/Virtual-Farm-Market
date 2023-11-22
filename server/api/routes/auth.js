@@ -54,6 +54,7 @@ router.post("/addNewCard", PaymentController.addNewCard);
 router.get("/getAllSavedCards", PaymentController.getAllSavedCards);
 router.post("/deleteCard", PaymentController.deleteCard);
 router.post("/makeDefaultCard", PaymentController.makeDefaultCard);
+router.post("/addNewAddress", PaymentController.addNewAddress);
 
 router.get("/getAllNotification", NotificationController.getAllNotification);
 router.post("/getNotification", NotificationController.getNotification);
