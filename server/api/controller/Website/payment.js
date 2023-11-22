@@ -315,4 +315,20 @@ module.exports = {
       });
     }
   },
+
+  getAllAddress: async (req, res) => {
+    try {
+      let getAllAddress = await AddressModel.find({ userId: req.userInfo._id });
+      return res.status(200).json({
+        status: "success",
+        message: "All Saved address.",
+        data: getAllAddress,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
 };

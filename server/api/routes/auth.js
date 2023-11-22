@@ -58,6 +58,7 @@ router.post("/addNewAddress", PaymentController.addNewAddress);
 router.post("/editAddress", PaymentController.editAddress);
 router.post("/makeDefaultAddress", PaymentController.makeDefaultAddress);
 router.post("/deleteAddress", PaymentController.deleteAddress);
+router.get("/getAllAddress", PaymentController.getAllAddress);
 
 router.get("/getAllNotification", NotificationController.getAllNotification);
 router.post("/getNotification", NotificationController.getNotification);
