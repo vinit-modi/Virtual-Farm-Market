@@ -241,4 +241,43 @@ module.exports = {
       });
     }
   },
+
+  makeDefaultAddress: async (req, res) => {
+    try {
+      const validationRules = [
+        check("_id").notEmpty().withMessage("_id must be provided"),
+      ];
+      await Promise.all(validationRules.map((rule) => rule.run(req)));
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ message: errors.array()[0].msg });
+      }
+
+      const currentDefaultAddress = await AddressModel.findOne({
+        defaultAddress: true,
+        userId: req.userInfo._id,
+      });
+
+      if (currentDefaultAddress) {
+        await AddressModel.findByIdAndUpdate(currentDefaultAddress._id, {
+          defaultAddress: false,
+        });
+      }
+      const makeDefault = await AddressModel.findByIdAndUpdate(
+        req.body._id,
+        { defaultAddress: true },
+        { new: true }
+      );
+      return res.status(200).json({
+        status: "success",
+        message: "Address marked default successfully",
+        data: makeDefault,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
 };
