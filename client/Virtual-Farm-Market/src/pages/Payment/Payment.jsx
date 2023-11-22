@@ -21,12 +21,13 @@ import { Alert, AlertTitle, Box, Button, Tooltip } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { Spinner } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { blue, green, red } from "@mui/material/colors";
+import { blue, green, orange, red } from "@mui/material/colors";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
+import { useNavigate } from "react-router-dom";
 
 const validateYupSchema = Yup.object().shape({
   cardholderName: Yup.string()
@@ -45,8 +46,8 @@ const validateYupSchema = Yup.object().shape({
 
 function Payment() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const payment = useSelector((state) => state.payment);
-
   const [addNewCard, setAddNewCard] = useState(false);
 
   useEffect(() => {
@@ -66,6 +67,10 @@ function Payment() {
       type: GET_DELETE_CARD_PAYMENT,
       payload: { _id: id },
     });
+  }
+
+  function handleCheckout() {
+    navigate("/user/addaddress");
   }
 
   return (
@@ -100,14 +105,22 @@ function Payment() {
                 >
                   <Tooltip title="Add New Card">
                     <Button
+                      sx={{ mx: 2 }}
                       // sx={{
                       //   bgcolor: green["A700"],
                       // }}
-                      variant="contained"
+                      variant="outlined"
                       startIcon={addNewCard ? <RemoveIcon /> : <AddIcon />}
                       onClick={() => setAddNewCard(!addNewCard)}
                     >
                       ADD NEW CARD
+                    </Button>
+                    <Button
+                      variant="contained"
+                      onClick={() => handleCheckout()}
+                      sx={{ bgcolor: orange[500] }}
+                    >
+                      CHECKOUT
                     </Button>
                   </Tooltip>
                 </Box>
