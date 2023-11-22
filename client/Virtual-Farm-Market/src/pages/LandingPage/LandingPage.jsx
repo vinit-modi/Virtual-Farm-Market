@@ -1,4 +1,3 @@
-// Import necessary dependencies
 import React from "react";
 import "./Css/LandingPageStyle.css";
 import logoImage from "./images/VFM-Logo.png";
@@ -23,7 +22,6 @@ import { Button, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { Navigate, useNavigate } from "react-router-dom";
 
-// Create a functional component
 function LandingPage() {
   const navigate = useNavigate();
   return (
@@ -97,7 +95,6 @@ function LandingPage() {
               <img src={fruit6Image} alt="VFM" />
               <img src={fruit7Image} alt="VFM" />
               <img src={fruit8Image} alt="VFM" />
-              {/* Add other fruit images */}
             </div>
           </div>
         </div>
@@ -127,7 +124,6 @@ function LandingPage() {
               <img src={veg6Image} alt="VFM" />
               <img src={veg7Image} alt="VFM" />
               <img src={veg8Image} alt="VFM" />
-              {/* Add other vegetable images */}
             </div>
           </div>
         </div>
