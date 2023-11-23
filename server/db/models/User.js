@@ -19,6 +19,7 @@ const UserSchema = new mongoose.Schema({
   },
   isEmailConfirmed: { type: Boolean, default: false },
   emailConfirmationToken: { type: String, default: "" },
+  stripeCustomerId: { type: String, default: "" },
 });
 
 UserSchema.pre("save", function (next) {

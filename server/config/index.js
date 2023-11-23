@@ -10,4 +10,7 @@ module.exports = {
   jwtExpirationTime: 7 * 24 * 60 * 60,
 
   projectUrl: "http://localhost:3001/",
+
+  stripeSecretKey:
+    "sk_test_51OFWzBKJoJhLdZdMQ4MANmKCHeHooXwvoYttL0qUXELJ3wACpo3DvCBNvooamcmwbGBh5CzZK7gRRRqkhJP7RK4c00g5ud1T5X",
 };

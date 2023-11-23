@@ -21,6 +21,7 @@ const emailTemplatePath = path.join(
 const emailTemplate = fs.readFileSync(emailTemplatePath, "utf8");
 const notificationContent = require("../../../utils/notificationContent");
 const profilePictureUpload = upload("../uploads/profilePicture/");
+const stripe = require("stripe")(config.stripeSecretKey);
 
 module.exports = {
   signUp: async (req, res) => {
@@ -51,7 +52,6 @@ module.exports = {
     let getUser = await UserModel.findOne({
       email: req.body.email,
       isEmailConfirmed: true,
-      // userType: req.body.userType,
     });
     if (getUser) {
       res.json({
@@ -119,6 +119,19 @@ module.exports = {
         getUser.password
       );
       if (validPassword) {
+        if (!getUser.stripeCustomerId) {
+          const stripeCustomer = await stripe.customers.create({
+            email: req.body.email,
+            phone: getUser.phoneNumber,
+          });
+
+          await UserModel.findByIdAndUpdate(
+            { _id: getUser._id },
+            { stripeCustomerId: stripeCustomer.id },
+            { new: true }
+          );
+        }
+
         let jwtToken = {
           _id: getUser._id,
           email: req.body.email,
@@ -127,6 +140,7 @@ module.exports = {
         let accessToken = jwt.sign(jwtToken, config.secret, {
           expiresIn: config.jwtExpirationTime,
         });
+
         const getUpdatedUser = await UserModel.findByIdAndUpdate(
           { _id: getUser._id },
           { accessToken },
