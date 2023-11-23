@@ -63,6 +63,7 @@ router.post("/getAddress", PaymentController.getAddress);
 
 router.post("/stripeAddCard", PaymentController.stripeAddCard);
 router.get("/stripeGetAllCards", PaymentController.stripeGetAllCards);
+router.post("/stripeSpecificCard", PaymentController.stripeSpecificCard);
 
 router.get("/getAllNotification", NotificationController.getAllNotification);
 router.post("/getNotification", NotificationController.getNotification);

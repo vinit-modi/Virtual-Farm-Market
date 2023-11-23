@@ -421,4 +421,38 @@ module.exports = {
       });
     }
   },
+
+  stripeSpecificCard: async (req, res) => {
+    try {
+      const validationRules = [
+        check("cardId").notEmpty().withMessage("Card Id must be provided"),
+      ];
+
+      await Promise.all(validationRules.map((rule) => rule.run(req)));
+
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ message: errors.array()[0].msg });
+      }
+      const user = await UserModel.findOne({ _id: req.userInfo._id });
+
+      const card = await stripe.customers.retrieveSource(
+        user.stripeCustomerId,
+        req.body.cardId
+      );
+
+      return res.status(200).json({
+        status: "success",
+        message: "Specific card details.",
+        data: card,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
 };
