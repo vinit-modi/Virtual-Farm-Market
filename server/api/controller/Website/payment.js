@@ -399,4 +399,26 @@ module.exports = {
       });
     }
   },
+
+  stripeGetAllCards: async (req, res) => {
+    try {
+      const user = await UserModel.findOne({ _id: req.userInfo._id });
+
+      const cards = await stripe.customers.listSources(user.stripeCustomerId, {
+        object: "card",
+      });
+
+      return res.status(200).json({
+        status: "success",
+        message: "All saved cards",
+        data: cards,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
 };
