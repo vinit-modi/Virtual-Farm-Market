@@ -61,6 +61,9 @@ router.post("/deleteAddress", PaymentController.deleteAddress);
 router.get("/getAllAddress", PaymentController.getAllAddress);
 router.post("/getAddress", PaymentController.getAddress);
 
+router.post("/stripeAddCard", PaymentController.stripeAddCard);
+router.get("/stripeGetAllCards", PaymentController.stripeGetAllCards);
+
 router.get("/getAllNotification", NotificationController.getAllNotification);
 router.post("/getNotification", NotificationController.getNotification);
 router.post("/deleteNotification", NotificationController.deleteNotification);

@@ -3,6 +3,10 @@ const { validationResult } = require("express-validator");
 const { check } = require("express-validator");
 const encDec = require("../../../services/enDe");
 const AddressModel = require("../../../db/models/Address");
+const UserModel = require("../../../db/models/User");
+const config = require("../../../config/index");
+
+const stripe = require("stripe")(config.stripeSecretKey);
 
 module.exports = {
   addNewCard: async (req, res) => {
@@ -350,6 +354,45 @@ module.exports = {
         data: getAddress,
       });
     } catch (error) {
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
+
+  stripeAddCard: async (req, res) => {
+    try {
+      const validationRules = [
+        check("stripeToken")
+          .notEmpty()
+          .withMessage("Stripe token must be provided"),
+      ];
+
+      await Promise.all(validationRules.map((rule) => rule.run(req)));
+
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ message: errors.array()[0].msg });
+      }
+
+      const user = await UserModel.findOne({ _id: req.userInfo._id });
+
+      const source = await stripe.customers.createSource(
+        user.stripeCustomerId,
+        {
+          source: req.body.stripeToken,
+        }
+      );
+
+      return res.status(200).json({
+        status: "success",
+        message: "Card added successfully.",
+        data: source,
+      });
+    } catch (error) {
+      console.error(error);
       return res.status(500).json({
         status: "error",
         message: "Internal Server Error",
