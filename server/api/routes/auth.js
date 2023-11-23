@@ -64,6 +64,7 @@ router.post("/getAddress", PaymentController.getAddress);
 router.post("/stripeAddCard", PaymentController.stripeAddCard);
 router.get("/stripeGetAllCards", PaymentController.stripeGetAllCards);
 router.post("/stripeSpecificCard", PaymentController.stripeSpecificCard);
+router.post("/stripeMakeDefaultCard", PaymentController.stripeMakeDefaultCard);
 
 router.get("/getAllNotification", NotificationController.getAllNotification);
 router.post("/getNotification", NotificationController.getNotification);

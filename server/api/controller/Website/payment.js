@@ -408,13 +408,18 @@ module.exports = {
         object: "card",
       });
 
+      const isDefaultCard = (card) => user.defaultStripeCard === card.id;
+
+      const cardsWithDefaultFlag = cards.data.map((card) => ({
+        ...card,
+        isDefaultCard: isDefaultCard(card),
+      }));
       return res.status(200).json({
         status: "success",
         message: "All saved cards",
-        data: cards,
+        data: cardsWithDefaultFlag,
       });
     } catch (error) {
-      console.error(error);
       return res.status(500).json({
         status: "error",
         message: "Internal Server Error",
@@ -435,6 +440,7 @@ module.exports = {
       if (!errors.isEmpty()) {
         return res.status(422).json({ message: errors.array()[0].msg });
       }
+
       const user = await UserModel.findOne({ _id: req.userInfo._id });
 
       const card = await stripe.customers.retrieveSource(
@@ -442,13 +448,51 @@ module.exports = {
         req.body.cardId
       );
 
+      const isDefaultCard = user.defaultStripeCard === card.id;
+
       return res.status(200).json({
         status: "success",
         message: "Specific card details.",
-        data: card,
+        data: { ...card, isDefaultCard },
       });
     } catch (error) {
-      console.error(error);
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
+
+  stripeMakeDefaultCard: async (req, res) => {
+    try {
+      const validationRules = [
+        check("cardId").notEmpty().withMessage("Card Id must be provided"),
+      ];
+
+      await Promise.all(validationRules.map((rule) => rule.run(req)));
+
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ message: errors.array()[0].msg });
+      }
+      const user = await UserModel.findOne({ _id: req.userInfo._id });
+
+      await stripe.customers.update(user.stripeCustomerId, {
+        default_source: req.body.cardId,
+      });
+
+      await UserModel.findByIdAndUpdate(
+        { _id: user._id },
+        { defaultStripeCard: req.body.cardId },
+        { new: true }
+      );
+
+      return res.status(200).json({
+        status: "success",
+        message: "Default card updated successfully.",
+      });
+    } catch (error) {
       return res.status(500).json({
         status: "error",
         message: "Internal Server Error",
