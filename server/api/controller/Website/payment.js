@@ -5,6 +5,7 @@ const encDec = require("../../../services/enDe");
 const AddressModel = require("../../../db/models/Address");
 const UserModel = require("../../../db/models/User");
 const config = require("../../../config/index");
+const OrderModel = require("../../../db/models/Order");
 
 const stripe = require("stripe")(config.stripeSecretKey);
 
@@ -558,14 +559,23 @@ module.exports = {
         ...paymentIntentOptions,
       });
 
+      let generateOrderNumber = Date.now().toString().slice(-6);
+
+      let order = await OrderModel.create({
+        orderNumber: `ORD-${generateOrderNumber}`,
+        user: req.userInfo._id,
+        products: JSON.parse(req.body.products),
+        amount: req.body.amount,
+        paymentIntentId: paymentIntent.id,
+      });
+
       return res.status(200).json({
         status: "success",
-        message: "Payment successful.",
-        data: {
-          clientSecret: paymentIntent.client_secret,
-        },
+        message: "Order placed successfully",
+        data: order,
       });
     } catch (error) {
+      console.log(error);
       return res.status(500).json({
         status: "error",
         message: "Internal Server Error",
