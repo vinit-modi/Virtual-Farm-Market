@@ -19,6 +19,7 @@ const OrderSchema = new mongoose.Schema({
   ],
   amount: Number,
   paymentIntentId: String,
+  orderStatus: { type: String, default: "Placed" },
   createdAt: { type: String, default: "" },
   updatedAt: { type: String, default: "" },
 });
