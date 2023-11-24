@@ -248,7 +248,6 @@ module.exports = {
   updateProfile: async (req, res) => {
     profilePictureUpload.single("profilePicture")(req, res, async (err) => {
       if (err) {
-        console.log(err);
         return res.status(400).json({ message: "Error uploading file" });
       }
 
@@ -312,7 +311,6 @@ module.exports = {
         message: "Email confirmed successfully.",
       });
     } catch (error) {
-      console.error(error);
       res.status(500).json({ message: "Internal server error" });
     }
   },
@@ -376,7 +374,6 @@ module.exports = {
         data: getImage.profilePicture,
       });
     } catch (error) {
-      console.log(error);
       return res.status(500).json({
         status: "error",
         message: "Internal Server Error",

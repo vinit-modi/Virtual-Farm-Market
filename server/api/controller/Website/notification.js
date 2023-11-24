@@ -124,7 +124,6 @@ module.exports = {
         data: getCount,
       });
     } catch (error) {
-      console.log(error);
       return res.status(500).json({
         status: "error",
         message: "Internal Server Error",

@@ -13,7 +13,6 @@ module.exports = {
   getAllUnits: async (req, res) => {
     try {
       let getAllUnits = await UnitModel.find({});
-      console.log(getAllUnits);
       return res.status(200).json({
         status: "success",
         message: "All Units.",

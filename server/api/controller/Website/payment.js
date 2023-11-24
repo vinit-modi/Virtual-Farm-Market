@@ -238,7 +238,6 @@ module.exports = {
         data: updateAddress,
       });
     } catch (error) {
-      console.log(error);
       return res.status(500).json({
         status: "error",
         message: "Internal Server Error",
@@ -392,7 +391,6 @@ module.exports = {
         data: source,
       });
     } catch (error) {
-      console.error(error);
       return res.status(500).json({
         status: "error",
         message: "Internal Server Error",
@@ -527,7 +525,47 @@ module.exports = {
         message: "Card deleted successfully.",
       });
     } catch (error) {
-      console.error(error);
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
+
+  makePayment: async (req, res) => {
+    try {
+      const validationRules = [
+        check("amount").notEmpty().withMessage("Amount must be provided"),
+      ];
+
+      await Promise.all(validationRules.map((rule) => rule.run(req)));
+
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ message: errors.array()[0].msg });
+      }
+      const user = await UserModel.findOne({ _id: req.userInfo._id });
+
+      const paymentIntentOptions = req.body.cardId
+        ? { customer: user.stripeCustomerId, payment_method: req.body.cardId }
+        : { customer: user.stripeCustomerId };
+
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: Math.floor(req.body.amount * 100),
+        currency: "cad",
+        description: "Payment for your order",
+        ...paymentIntentOptions,
+      });
+
+      return res.status(200).json({
+        status: "success",
+        message: "Payment successful.",
+        data: {
+          clientSecret: paymentIntent.client_secret,
+        },
+      });
+    } catch (error) {
       return res.status(500).json({
         status: "error",
         message: "Internal Server Error",
