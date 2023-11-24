@@ -7,6 +7,7 @@ const AdCategoryController = require("../controller/Admin/adCategory");
 const AdFaqController = require("../controller/Admin/adFaq");
 const AdCmsController = require("../controller/Admin/adCms");
 const PaymentController = require("../controller/Website/payment");
+const AddressController = require("../controller/Website/address");
 const NotificationController = require("../controller/Website/notification");
 const ProductController = require("../controller/Website/product");
 const CartController = require("../controller/Website/cart");
@@ -54,12 +55,6 @@ router.post("/addNewCard", PaymentController.addNewCard);
 router.get("/getAllSavedCards", PaymentController.getAllSavedCards);
 router.post("/deleteCard", PaymentController.deleteCard);
 router.post("/makeDefaultCard", PaymentController.makeDefaultCard);
-router.post("/addNewAddress", PaymentController.addNewAddress);
-router.post("/editAddress", PaymentController.editAddress);
-router.post("/makeDefaultAddress", PaymentController.makeDefaultAddress);
-router.post("/deleteAddress", PaymentController.deleteAddress);
-router.get("/getAllAddress", PaymentController.getAllAddress);
-router.post("/getAddress", PaymentController.getAddress);
 
 router.post("/stripeAddCard", PaymentController.stripeAddCard);
 router.get("/stripeGetAllCards", PaymentController.stripeGetAllCards);
@@ -67,6 +62,13 @@ router.post("/stripeSpecificCard", PaymentController.stripeSpecificCard);
 router.post("/stripeMakeDefaultCard", PaymentController.stripeMakeDefaultCard);
 router.post("/stripeDeleteCard", PaymentController.stripeDeleteCard);
 router.post("/makePayment", PaymentController.makePayment);
+
+router.post("/addNewAddress", AddressController.addNewAddress);
+router.post("/editAddress", AddressController.editAddress);
+router.post("/makeDefaultAddress", AddressController.makeDefaultAddress);
+router.post("/deleteAddress", AddressController.deleteAddress);
+router.get("/getAllAddress", AddressController.getAllAddress);
+router.post("/getAddress", AddressController.getAddress);
 
 router.get("/getAllNotification", NotificationController.getAllNotification);
 router.post("/getNotification", NotificationController.getNotification);
