@@ -6,6 +6,8 @@ const AddressModel = require("../../../db/models/Address");
 const UserModel = require("../../../db/models/User");
 const config = require("../../../config/index");
 const OrderModel = require("../../../db/models/Order");
+const NotificationModel = require("../../../db/models/Notification");
+const sendEmail = require("../../../utils/sendEmail");
 
 const stripe = require("stripe")(config.stripeSecretKey);
 
@@ -568,6 +570,20 @@ module.exports = {
         amount: req.body.amount,
         paymentIntentId: paymentIntent.id,
       });
+
+      await NotificationModel.create({
+        userId: req.userInfo._id,
+        title: "Order Placed",
+        content: `Your order with order number ${order.orderNumber} has been successfully placed.`,
+      });
+
+      const mailOptions = {
+        from: config.email,
+        to: req.userInfo.email,
+        subject: "Order Placed",
+        text: `Your order with order number ${order.orderNumber} has been successfully placed.`,
+      };
+      sendEmail(req.userInfo.email, mailOptions);
 
       return res.status(200).json({
         status: "success",
