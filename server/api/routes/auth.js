@@ -11,6 +11,7 @@ const AddressController = require("../controller/Website/address");
 const NotificationController = require("../controller/Website/notification");
 const ProductController = require("../controller/Website/product");
 const CartController = require("../controller/Website/cart");
+const OrderController = require("../controller/Website/order");
 
 router.post("/adLogin", AdUserController.adLogin);
 router.post("/adGetAllUser", AdUserController.getAllUser);
@@ -88,5 +89,7 @@ router.post("/removeProduct", CartController.removeProduct);
 router.get("/getCartProducts", CartController.getCartProducts);
 router.get("/cartItemsCount", CartController.cartItemsCount);
 router.post("/decreaseQuantity", CartController.decreaseQuantity);
+
+router.get("/getAllOrders", OrderController.getAllOrders);
 
 module.exports = router;
