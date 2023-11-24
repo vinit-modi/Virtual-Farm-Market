@@ -91,5 +91,6 @@ router.get("/cartItemsCount", CartController.cartItemsCount);
 router.post("/decreaseQuantity", CartController.decreaseQuantity);
 
 router.get("/getAllOrders", OrderController.getAllOrders);
+router.post("/getSpecificOrder", OrderController.getSpecificOrder);
 
 module.exports = router;
