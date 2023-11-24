@@ -571,6 +571,23 @@ module.exports = {
         paymentIntentId: paymentIntent.id,
       });
 
+      for (const product of order.products) {
+        let getSellerEmail = await UserModel.findOne({ _id: product.seller });
+        await NotificationModel.create({
+          userId: product.seller,
+          title: "New Order Received",
+          content: `You have a new order with order number ${order.orderNumber}.`,
+        });
+
+        const mailOptions = {
+          from: config.email,
+          to: getSellerEmail.email,
+          subject: "New Order Received",
+          text: `You have a new order with order number ${order.orderNumber}.`,
+        };
+        sendEmail(product.seller, mailOptions);
+      }
+
       await NotificationModel.create({
         userId: req.userInfo._id,
         title: "Order Placed",
