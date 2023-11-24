@@ -102,8 +102,43 @@ module.exports = {
 
       return res.status(200).json({
         status: "success",
-        message: "All order.",
+        message: "Order details.",
         data: getAllOrders,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
+
+  updateOrderStatus: async (req, res) => {
+    try {
+      const validationRules = [
+        check("orderStatus")
+          .notEmpty()
+          .withMessage("Order Status must be provided"),
+        check("_id").notEmpty().withMessage("_id must be provided"),
+      ];
+      await Promise.all(validationRules.map((rule) => rule.run(req)));
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ message: errors.array()[0].msg });
+      }
+
+      let getOrder = await OrderModel.findById({ _id: req.body._id });
+      let updateOrderStatus = await OrderModel.findByIdAndUpdate(
+        { _id: req.body._id },
+        { orderStatus: req.body.orderStatus },
+        { new: true }
+      );
+
+      return res.status(200).json({
+        status: "success",
+        message: "All order.",
+        data: updateOrderStatus,
       });
     } catch (error) {
       console.log(error);
