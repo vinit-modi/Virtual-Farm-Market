@@ -476,6 +476,7 @@ module.exports = {
       if (!errors.isEmpty()) {
         return res.status(422).json({ message: errors.array()[0].msg });
       }
+
       const user = await UserModel.findOne({ _id: req.userInfo._id });
 
       await stripe.customers.update(user.stripeCustomerId, {
@@ -493,6 +494,40 @@ module.exports = {
         message: "Default card updated successfully.",
       });
     } catch (error) {
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
+
+  stripeDeleteCard: async (req, res) => {
+    try {
+      const validationRules = [
+        check("cardId").notEmpty().withMessage("Card Id must be provided"),
+      ];
+
+      await Promise.all(validationRules.map((rule) => rule.run(req)));
+
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ message: errors.array()[0].msg });
+      }
+
+      const user = await UserModel.findOne({ _id: req.userInfo._id });
+
+      await stripe.customers.deleteSource(
+        user.stripeCustomerId,
+        req.body.cardId
+      );
+
+      return res.status(200).json({
+        status: "success",
+        message: "Card deleted successfully.",
+      });
+    } catch (error) {
+      console.error(error);
       return res.status(500).json({
         status: "error",
         message: "Internal Server Error",
