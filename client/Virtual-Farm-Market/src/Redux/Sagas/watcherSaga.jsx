@@ -136,8 +136,16 @@ import {
   fetchGetRemoveProductToCart,
   fetchRemoveProductCart,
 } from "./handlers/cartHandler";
-import { GET_CATEGORY_LIST_FOR_PRODUCT_FARMER, GET_UNIT_LIST_FOR_PRODUCT_FARMER } from "../Reducers/Farmer/farmerReducer";
-import { fetchCategoryListForProductFarmer, fetchUnitListForProductFarmer } from "./handlers/Farmer/farmerHandler";
+import {
+  GET_CATEGORY_LIST_FOR_PRODUCT_FARMER,
+  GET_UNIT_LIST_FOR_PRODUCT_FARMER,
+} from "../Reducers/Farmer/farmerReducer";
+import {
+  fetchCategoryListForProductFarmer,
+  fetchUnitListForProductFarmer,
+} from "./handlers/Farmer/farmerHandler";
+import { GET_ADD_NEW_ADDRESS, GET_ALL_ADDRESS, GET_DELETE_ADDRESS, GET_EDIT_ADDRESS, GET_MAKE_DEFAULT_ADDRESS, GET_OBJECT_ADDRESS } from "../Reducers/addressReducer";
+import { fetchAddNewAddress, fetchAllAddress, fetchDeleteAddress, fetchEditAddress, fetchMakeDefaultAddress, fetchObjectAddress } from "./handlers/addressHandler";
 
 function* authStuff() {
   yield takeLatest(POST_SIGNUP_USER, fetchPostSignUpUser);
@@ -224,9 +232,24 @@ function* cart() {
   yield takeLatest(GET_REMOVE_PRODUCT_CART, fetchRemoveProductCart);
 }
 
-function* farmer(){
-  yield takeLatest(GET_CATEGORY_LIST_FOR_PRODUCT_FARMER,fetchCategoryListForProductFarmer)
-  yield takeLatest(GET_UNIT_LIST_FOR_PRODUCT_FARMER,fetchUnitListForProductFarmer)
+function* address() {
+  yield takeLatest(GET_ADD_NEW_ADDRESS, fetchAddNewAddress);
+  yield takeLatest(GET_ALL_ADDRESS, fetchAllAddress);
+  yield takeLatest(GET_DELETE_ADDRESS, fetchDeleteAddress);
+  yield takeLatest(GET_OBJECT_ADDRESS, fetchObjectAddress);
+  yield takeLatest(GET_EDIT_ADDRESS, fetchEditAddress);
+  yield takeLatest(GET_MAKE_DEFAULT_ADDRESS, fetchMakeDefaultAddress);
+}
+
+function* farmer() {
+  yield takeLatest(
+    GET_CATEGORY_LIST_FOR_PRODUCT_FARMER,
+    fetchCategoryListForProductFarmer
+  );
+  yield takeLatest(
+    GET_UNIT_LIST_FOR_PRODUCT_FARMER,
+    fetchUnitListForProductFarmer
+  );
 }
 
 const authSaga = [fork(authStuff)];
@@ -240,7 +263,8 @@ const paymentSaga = [fork(payment)];
 const notificationSaga = [fork(notification)];
 const productSaga = [fork(product)];
 const cartSaga = [fork(cart)];
-const farmerSaga = [fork(farmer)]
+const addressSaga = [fork(address)];
+const farmerSaga = [fork(farmer)];
 
 export default function* waterSaga() {
   yield all([
@@ -255,6 +279,7 @@ export default function* waterSaga() {
     ...notificationSaga,
     ...productSaga,
     ...cartSaga,
-    ...farmerSaga
+    ...addressSaga,
+    ...farmerSaga,
   ]);
 }

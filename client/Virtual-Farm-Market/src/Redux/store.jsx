@@ -28,6 +28,7 @@ import { userNotificationReducer } from "./Reducers/userNotificationReducer";
 import { productReducer } from "./Reducers/productReducer";
 import { cartReducer } from "./Reducers/cartReducer";
 import { farmerReducer } from "./Reducers/Farmer/farmerReducer";
+import { addressReducer } from "./Reducers/addressReducer";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -48,6 +49,7 @@ const rootReducer = combineReducers({
   notification: userNotificationReducer,
   product: productReducer,
   cart: cartReducer,
+  address:addressReducer,
   farmer: farmerReducer,
 });
 
