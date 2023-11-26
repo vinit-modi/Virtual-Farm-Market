@@ -72,6 +72,8 @@ import PageNotFound from "../../pages/PageNotFound/PageNotFound";
 import VFMIconNoBG from "../../Assets/VFMIcon/VFM-Logo-NoBG.png";
 import VFMIcon from "../../Assets/VFMIcon/VFM-Logo.png";
 import UserAddressForm from "../../pages/UserAddressForm/UserAddressForm";
+import DefaultCredentials from "../../pages/DefaultCredentials/DefaultCredentials";
+import PaymentGateway from "../../pages/PaymentGateway/PaymentGateway";
 
 const settings = ["Update Profile", "Change Password", `Logout`];
 const settingsIcons = [<EditIcon />, <ManageAccountsIcon />, <LogoutIcon />];
@@ -169,7 +171,7 @@ function UserHeader() {
   const handleCheckout = () => {
     //SEND CART DATA FOR CHECKOUT ...{{pending}}...
     setAnchorElCart(null);
-    navigate("/user/addaddress");
+    navigate("/user/defaultcreds");
   };
 
   useEffect(() => {
@@ -438,7 +440,7 @@ function UserHeader() {
                         <Stack spacing={1}>
                           {cart.cartProductList ? (
                             cart.cartProductList.map((item, index) => (
-                              <Stack>
+                              <Stack key={index}>
                                 <CartCard {...{ item }} />
                               </Stack>
                             ))
@@ -746,10 +748,28 @@ function UserHeader() {
           />
           <Route
             exact
+            path="defaultcreds"
+            element={
+              <ProtectedRoute userTypeAllowed="Customer">
+                <DefaultCredentials />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
             path="addaddress"
             element={
               <ProtectedRoute userTypeAllowed="Customer">
                 <UserAddressForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="paymentgateway"
+            element={
+              <ProtectedRoute userTypeAllowed="Customer">
+                <PaymentGateway />
               </ProtectedRoute>
             }
           />

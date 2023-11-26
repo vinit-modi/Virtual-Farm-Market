@@ -3,10 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import {
-  AppBar,
-  Toolbar,
   Typography,
-  IconButton,
   Box,
   TextField,
   Button,
@@ -15,37 +12,32 @@ import {
   Select,
   MenuItem,
   Alert,
-  AlertTitle,
-  Paper,
-  Stack,
-  Tooltip,
-  Icon,
-  Divider,
 } from "@mui/material";
 import { AddCircle } from "@mui/icons-material";
-import { Checkbox, FormControlLabel } from "@mui/material";
 import { useEffect } from "react";
 import {
   GET_CITY_LIST,
   GET_PROVINCE_LIST,
 } from "../../Redux/Reducers/authReducer";
 import { useNavigate } from "react-router-dom";
-import { blue, green } from "@mui/material/colors";
-import { GET_ALL_CARD_PAYMENT } from "../../Redux/Reducers/paymentReducer";
-import PaymentAlert from "../../components/PaymentAlert/PaymentAlert";
-import DefaultButton from "../../components/Buttons/DefaultButton";
 
-const initialValues = {
-  streetNumber: "",
-  homeAddress: "",
-  province: "",
-  city: "",
-  postalCode: "",
-  defaultAddress: false, //No Validation
-  accessCode: "", //No Validation //Can be null
-};
+import {
+  CLEAR_MESSAGE_ADDRESS,
+  GET_ADD_NEW_ADDRESS,
+  GET_EDIT_ADDRESS,
+} from "../../Redux/Reducers/addressReducer";
+import { toast } from "react-toastify";
+import EditIcon from "@mui/icons-material/Edit";
+import { green } from "@mui/material/colors";
 
 const validationSchema = Yup.object().shape({
+  fullName: Yup.string()
+    .typeError("Full name must be a string")
+    .test("not-number", "Full name cannot be a number", (value) => isNaN(value))
+    .required("Full name must be required"),
+  phoneNumber: Yup.string()
+    .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits")
+    .required("Phone number is required"),
   streetNumber: Yup.string()
     .matches(/^[0-9]+$/, "Street Number must contain only numbers")
     .required("Street Number is required"),
@@ -61,260 +53,282 @@ function UserAddressForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
-  const payment = useSelector((state) => state.payment);
+  const address = useSelector((state) => state.address);
+  const { addressObj } = address;
 
   useEffect(() => {
     dispatch({ type: GET_CITY_LIST });
     dispatch({ type: GET_PROVINCE_LIST });
-    dispatch({ type: GET_ALL_CARD_PAYMENT });
   }, []);
 
+  useEffect(() => {}, [navigate, dispatch]);
+
   useEffect(() => {
-    dispatch({ type: GET_ALL_CARD_PAYMENT });
-  }, [navigate, dispatch]);
+    if (address.message) {
+      toast.success(address.message);
+      dispatch({ type: CLEAR_MESSAGE_ADDRESS });
+      navigate("/user/defaultcreds");
+    }
+  }, [address.message]);
+
+  
 
   const handleSubmit = (values) => {
     const homeAddressCombined = values.streetNumber + ", " + values.homeAddress;
-    const finalValues = {
-      homeAddress: homeAddressCombined,
-      province: values.province,
-      city: values.city,
-      postalCode: values.postalCode,
-      defaultAddress: values.defaultAddress, //No Validation
-      accessCode: values.accessCode, //No Validation //Can be null
-    };
-    console.log(finalValues);
+    if (Object.entries(address.addressObj).length === 0) {
+      const finalValues = {
+        fullName: values.fullName,
+        phoneNumber: values.phoneNumber,
+        address: homeAddressCombined,
+        province: values.province,
+        city: values.city,
+        postalCode: values.postalCode,
+        // defaultAddress: values.defaultAddress, //No Validation
+        // accessCode: values.accessCode, //No Validation //Can be null
+      };
+      console.log(finalValues);
+      dispatch({ type: GET_ADD_NEW_ADDRESS, payload: finalValues });
+    } else {
+      const finalValues = {
+        _id: addressObj._id,
+        fullName: values.fullName,
+        phoneNumber: values.phoneNumber,
+        address: homeAddressCombined,
+        province: values.province,
+        city: values.city,
+        postalCode: values.postalCode,
+        // defaultAddress: values.defaultAddress, //No Validation
+        // accessCode: values.accessCode, //No Validation //Can be null
+      };
+      console.log(finalValues);
+      dispatch({ type: GET_EDIT_ADDRESS, payload: finalValues });
+    }
   };
 
-  const handleGoToPaymentPage = () => {
-    navigate("/user/payment");
-  };
-
-  const handleFinalPayment = () => {
-    console.log("Go to ganerate a bill");
-  };
+  const handleCancle = () =>{
+    navigate('/user/defaultcreds')
+  }
 
   return (
     <>
       <Container maxWidth="md">
         <Grid container direction="row">
           <Grid item>
-            <Container maxWidth="md" sx={{ mt: 4 }}>
-              <Box sx={{ mb: 4 }}>
-                <Typography variant="h4">Make payment</Typography>
-                <Box minWidth={450}>
-                  {payment.allCards.length ? (
-                    payment.allCards[0].isCardDefault ? (
-                      <Box>
-                        <Paper
-                          elevation={4}
-                          sx={{
-                            p: 3,
-                            mt: 4,
-                          }}
-                        >
-                          <Grid
-                            justifyContent={"space-between"}
-                            spacing={1}
-                            container
-                            direction="column"
-                          >
-                            <Grid item sx={{ textAlign: "right" }}>
-                              <DefaultButton />
-                            </Grid>
-                            <Grid item>
-                              <Typography>
-                                <strong> Holder Name:</strong>{" "}
-                                {payment.allCards[0].cardholderName}
-                              </Typography>
-                            </Grid>
-                            <Grid item>
-                              <Typography>
-                                <strong>Card Number:</strong> **** **** ****{" "}
-                                {payment.allCards[0].lastFourDigits}
-                              </Typography>
-                            </Grid>
-                            <Grid item>
-                              <Stack direction="row">
-                                <Stack>
-                                  <Typography>
-                                    <strong>Expiry date:</strong>{" "}
-                                    {payment.allCards[0].cardExpiration}
-                                  </Typography>
-                                </Stack>
-                                <Stack sx={{ ml: 4 }}>
-                                  <Typography>
-                                    <strong>CVV:</strong> ***
-                                  </Typography>
-                                </Stack>
-                              </Stack>
-                            </Grid>
-                            <Grid item>
-                              <Button
-                                variant="contained"
-                                sx={{
-                                  width: 130,
-                                  bgcolor: blue[600],
-                                  color: "white",
-                                  "&:hover": { bgcolor: blue[800] },
-                                  ml: 1,
-                                }}
-                                onClick={() => handleFinalPayment()}
-                              >
-                                PAYMENT
-                              </Button>
-                            </Grid>
-                          </Grid>
-                        </Paper>
-                      </Box>
-                    ) : (
-                      <PaymentAlert {...{ handleGoToPaymentPage }} />
-                    )
-                  ) : (
-                    <PaymentAlert {...{ handleGoToPaymentPage }} />
+            {address.loading ? null : (
+              <Container maxWidth="md" sx={{ mt: 4 }}>
+                <Box sx={{ mb: 4 }}>
+                  <Typography variant="h4" sx={{ mb: 2 }}>
+                    {Object.entries(addressObj) === 0
+                      ? `Add Address`
+                      : `Edit Address`}
+                  </Typography>
+
+                  {address.error && (
+                    <Alert severity="error">{address.error}</Alert>
                   )}
-                </Box>
-              </Box>
-            </Container>
-          </Grid>
 
-          <Grid item>
-            <Divider variant="fullWidth" orientation="horizontal" />
-            <Divider variant="fullWidth" orientation="horizontal" />
-            <Divider variant="fullWidth" orientation="horizontal" />
-
-            <Container maxWidth="md" sx={{ mt: 4 }}>
-              <Box sx={{ mb: 4 }}>
-                <Typography variant="h4" sx={{ mb: 2 }}>
-                  Add Address
-                </Typography>
-                <Formik
-                  initialValues={initialValues}
-                  validationSchema={validationSchema}
-                  onSubmit={handleSubmit}
-                >
-                  {(formik) => (
-                    <Form autoComplete="off">
-                      <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                          <Typography variant="h5" sx={{ ml: 1, mt: 2 }}>
-                            Address:
-                          </Typography>
-                          <Field
-                            as={TextField}
-                            fullWidth
-                            id="streetNumber"
-                            name="streetNumber"
-                            autoComplete="streetNumber"
-                            placeholder="Street Number"
-                          />
-                          {formik.touched.streetNumber &&
-                            Boolean(formik.errors.streetNumber) && (
-                              <Box sx={{ mb: 2 }}>
+                  <Formik
+                    initialValues={
+                      Object.entries(address.addressObj).length === 0
+                        ? {
+                            fullName: "",
+                            phoneNumber: "",
+                            streetNumber: "",
+                            homeAddress: "",
+                            province: "",
+                            city: "",
+                            postalCode: "",
+                            // defaultAddress: false, //No Validation
+                            // accessCode: "", //No Validation //Can be null
+                          }
+                        : {
+                            fullName: addressObj.fullName,
+                            phoneNumber: addressObj.phoneNumber,
+                            streetNumber: addressObj.address.slice(
+                              0,
+                              addressObj.address.indexOf(",")
+                            ),
+                            homeAddress: addressObj.address.slice(
+                              addressObj.address.indexOf(", ") + 2
+                            ),
+                            province: addressObj.province,
+                            city: addressObj.city,
+                            postalCode: addressObj.postalCode,
+                          }
+                    }
+                    validationSchema={validationSchema}
+                    onSubmit={handleSubmit}
+                  >
+                    {(formik) => (
+                      <Form autoComplete="off">
+                        <Grid container spacing={2}>
+                          <Grid item xs={12}>
+                            <Grid container spacing={1}>
+                              <Grid item xs={12} sm={8}>
+                                <Typography variant="h5" sx={{ ml: 1, mt: 2 }}>
+                                  Full Name:
+                                </Typography>
+                                <Field
+                                  as={TextField}
+                                  fullWidth
+                                  id="fullName"
+                                  name="fullName"
+                                  autoComplete="fullName"
+                                />
                                 <ErrorMessage
-                                  name="streetNumber"
-                                  id="streetNumber"
+                                  name="fullName"
+                                  id="fullName"
                                   component="div"
                                   className="error text-danger"
                                 />
-                              </Box>
-                            )}
-                          <Field
-                            as={TextField}
-                            fullWidth
-                            id="homeAddress"
-                            name="homeAddress"
-                            autoComplete="homeAddress"
-                            placeholder="Apt, Suite, Unit, Building"
-                          />
-                          <ErrorMessage
-                            name="homeAddress"
-                            id="homeAddress"
-                            component="div"
-                            className="error text-danger"
-                          />
-                        </Grid>
-
-                        <Grid item xs={12}>
-                          <Typography variant="h5" sx={{ ml: 1, mt: 2 }}>
-                            City:
-                          </Typography>
-
-                          <Field
-                            as={Select}
-                            fullWidth
-                            id="city"
-                            name="city"
-                            autoComplete="city"
-                          >
-                            {auth.cityList &&
-                              auth.cityList.map((item, index) => (
-                                <MenuItem value={item.name} key={item._id}>
-                                  {item.name}
-                                </MenuItem>
-                              ))}
-                          </Field>
-                          <ErrorMessage
-                            name="city"
-                            id="city"
-                            component="div"
-                            className="error text-danger"
-                          />
-                        </Grid>
-
-                        <Grid item xs={12}>
-                          <Grid container spacing={1}>
-                            <Grid item xs={12} sm={8}>
-                              <Typography variant="h5" sx={{ ml: 1, mt: 2 }}>
-                                Province/Territory:
-                              </Typography>
-                              <Field
-                                as={Select}
-                                fullWidth
-                                id="province"
-                                name="province"
-                                autoComplete="province"
-                              >
-                                {auth.provinceList &&
-                                  auth.provinceList.map((item, index) => (
-                                    <MenuItem value={item.name} key={item._id}>
-                                      {item.name}
-                                    </MenuItem>
-                                  ))}
-                              </Field>
-                              <ErrorMessage
-                                name="province"
-                                id="province"
-                                component="div"
-                                className="error text-danger"
-                              />
-                            </Grid>
-                            <Grid item xs={12} sm={4}>
-                              <Typography
-                                variant="h5"
-                                sx={{ mt: { xs: 3, sm: 2 } }}
-                              >
-                                Postal Code:
-                              </Typography>
-                              <Field
-                                as={TextField}
-                                fullWidth
-                                id="postalCode"
-                                name="postalCode"
-                                autoComplete="postalCode"
-                                placeholder="V2V 2V2 or V2V2V2"
-                              />
-                              <ErrorMessage
-                                name="postalCode"
-                                id="postalCode"
-                                component="div"
-                                className="error text-danger"
-                              />
+                              </Grid>
+                              <Grid item xs={12} sm={4}>
+                                <Typography
+                                  variant="h5"
+                                  sx={{ mt: { xs: 3, sm: 2 } }}
+                                >
+                                  Phone Number:
+                                </Typography>
+                                <Field
+                                  as={TextField}
+                                  fullWidth
+                                  id="phoneNumber"
+                                  name="phoneNumber"
+                                  autoComplete="phoneNumber"
+                                  placeholder="1234567890"
+                                />
+                                <ErrorMessage
+                                  name="phoneNumber"
+                                  id="phoneNumber"
+                                  component="div"
+                                  className="error text-danger"
+                                />
+                              </Grid>
                             </Grid>
                           </Grid>
-                        </Grid>
 
-                        <Grid item xs={12}>
+                          <Grid item xs={12}>
+                            <Typography variant="h5" sx={{ ml: 1, mt: 2 }}>
+                              Address:
+                            </Typography>
+                            <Field
+                              as={TextField}
+                              fullWidth
+                              id="streetNumber"
+                              name="streetNumber"
+                              autoComplete="streetNumber"
+                              placeholder="Street Number"
+                            />
+                            {formik.touched.streetNumber &&
+                              Boolean(formik.errors.streetNumber) && (
+                                <Box sx={{ mb: 2 }}>
+                                  <ErrorMessage
+                                    name="streetNumber"
+                                    id="streetNumber"
+                                    component="div"
+                                    className="error text-danger"
+                                  />
+                                </Box>
+                              )}
+                            <Field
+                              as={TextField}
+                              fullWidth
+                              id="homeAddress"
+                              name="homeAddress"
+                              autoComplete="homeAddress"
+                              placeholder="Apt, Suite, Unit, Building"
+                            />
+                            <ErrorMessage
+                              name="homeAddress"
+                              id="homeAddress"
+                              component="div"
+                              className="error text-danger"
+                            />
+                          </Grid>
+
+                          <Grid item xs={12}>
+                            <Typography variant="h5" sx={{ ml: 1, mt: 2 }}>
+                              City:
+                            </Typography>
+
+                            <Field
+                              as={Select}
+                              fullWidth
+                              id="city"
+                              name="city"
+                              autoComplete="city"
+                            >
+                              {auth.cityList &&
+                                auth.cityList.map((item, index) => (
+                                  <MenuItem value={item.name} key={item._id}>
+                                    {item.name}
+                                  </MenuItem>
+                                ))}
+                            </Field>
+                            <ErrorMessage
+                              name="city"
+                              id="city"
+                              component="div"
+                              className="error text-danger"
+                            />
+                          </Grid>
+
+                          <Grid item xs={12}>
+                            <Grid container spacing={1}>
+                              <Grid item xs={12} sm={8}>
+                                <Typography variant="h5" sx={{ ml: 1, mt: 2 }}>
+                                  Province/Territory:
+                                </Typography>
+                                <Field
+                                  as={Select}
+                                  fullWidth
+                                  id="province"
+                                  name="province"
+                                  autoComplete="province"
+                                >
+                                  {auth.provinceList &&
+                                    auth.provinceList.map((item, index) => (
+                                      <MenuItem
+                                        value={item.name}
+                                        key={item._id}
+                                      >
+                                        {item.name}
+                                      </MenuItem>
+                                    ))}
+                                </Field>
+                                <ErrorMessage
+                                  name="province"
+                                  id="province"
+                                  component="div"
+                                  className="error text-danger"
+                                />
+                              </Grid>
+                              <Grid item xs={12} sm={4}>
+                                <Typography
+                                  variant="h5"
+                                  sx={{ mt: { xs: 3, sm: 2 } }}
+                                >
+                                  Postal Code:
+                                </Typography>
+                                <Field
+                                  as={TextField}
+                                  fullWidth
+                                  id="postalCode"
+                                  name="postalCode"
+                                  autoComplete="postalCode"
+                                  placeholder="V2V 2V2 or V2V2V2"
+                                />
+                                <ErrorMessage
+                                  name="postalCode"
+                                  id="postalCode"
+                                  component="div"
+                                  className="error text-danger"
+                                />
+                              </Grid>
+                            </Grid>
+                          </Grid>
+
+                          {/* <Grid item xs={12}>
                           <Field
                             as={FormControlLabel}
                             control={
@@ -349,24 +363,44 @@ function UserAddressForm() {
                             name="accessCode"
                             autoComplete="accessCode"
                           />
-                        </Grid>
+                        </Grid> */}
 
-                        <Grid item xs={12}>
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            type="submit"
-                            startIcon={<AddCircle />}
+                          <Grid
+                            item
+                            xs={12}
+                            // sx={{ display: "flex", justifyContent: "center" }}
                           >
-                            Add Address
-                          </Button>
+                            <Button variant="contained" onClick={()=>handleCancle()} sx={{ mx: 2 }}>
+                              Cancle
+                            </Button>
+                            <Button
+                              variant="contained"
+                              sx={{
+                                bgcolor: green["A700"],
+                                "&:hover": { bgcolor: green["A400"] },
+                              }}
+                              type="submit"
+                              startIcon={
+                                Object.entries(address.addressObj).length ===
+                                0 ? (
+                                  <AddCircle />
+                                ) : (
+                                  <EditIcon />
+                                )
+                              }
+                            >
+                              {Object.entries(address.addressObj).length === 0
+                                ? `Add Address`
+                                : `Edit Address`}
+                            </Button>
+                          </Grid>
                         </Grid>
-                      </Grid>
-                    </Form>
-                  )}
-                </Formik>
-              </Box>
-            </Container>
+                      </Form>
+                    )}
+                  </Formik>
+                </Box>
+              </Container>
+            )}
           </Grid>
         </Grid>{" "}
       </Container>
