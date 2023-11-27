@@ -146,6 +146,8 @@ import {
 } from "./handlers/Farmer/farmerHandler";
 import { GET_ADD_NEW_ADDRESS, GET_ALL_ADDRESS, GET_DELETE_ADDRESS, GET_EDIT_ADDRESS, GET_MAKE_DEFAULT_ADDRESS, GET_OBJECT_ADDRESS } from "../Reducers/addressReducer";
 import { fetchAddNewAddress, fetchAllAddress, fetchDeleteAddress, fetchEditAddress, fetchMakeDefaultAddress, fetchObjectAddress } from "./handlers/addressHandler";
+import { GET_ADD_CARD_STRIPEPAYMENT, GET_ALL_CARD_STRIPEPAYMENT, GET_DELETE_CARD_STRIPEPAYMENT, GET_MAKE_DEFAULT_STRIPEPAYMENT } from "../Reducers/stripePaymentReducer";
+import { fetchAddCardStripePayment, fetchAllCardStripePayment, fetchDeleteCardStripePayment, fetchMakeDefaultCardStripePayment } from "./handlers/stripePaymentHandler";
 
 function* authStuff() {
   yield takeLatest(POST_SIGNUP_USER, fetchPostSignUpUser);
@@ -252,6 +254,13 @@ function* farmer() {
   );
 }
 
+function* stripePayment(){
+  yield takeLatest(GET_ADD_CARD_STRIPEPAYMENT, fetchAddCardStripePayment)
+  yield takeLatest(GET_ALL_CARD_STRIPEPAYMENT, fetchAllCardStripePayment)
+  yield takeLatest(GET_MAKE_DEFAULT_STRIPEPAYMENT, fetchMakeDefaultCardStripePayment)
+  yield takeLatest(GET_DELETE_CARD_STRIPEPAYMENT, fetchDeleteCardStripePayment)
+}
+
 const authSaga = [fork(authStuff)];
 const changePasswordSaga = [fork(changePassword)];
 const userDetailsSaga = [fork(userDetails)];
@@ -265,6 +274,7 @@ const productSaga = [fork(product)];
 const cartSaga = [fork(cart)];
 const addressSaga = [fork(address)];
 const farmerSaga = [fork(farmer)];
+const stripePaymentSaga = [fork(stripePayment)]
 
 export default function* waterSaga() {
   yield all([
@@ -281,5 +291,6 @@ export default function* waterSaga() {
     ...cartSaga,
     ...addressSaga,
     ...farmerSaga,
+    ...stripePaymentSaga
   ]);
 }
