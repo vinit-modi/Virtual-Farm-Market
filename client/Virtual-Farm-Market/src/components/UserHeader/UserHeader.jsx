@@ -74,6 +74,7 @@ import VFMIcon from "../../Assets/VFMIcon/VFM-Logo.png";
 import UserAddressForm from "../../pages/UserAddressForm/UserAddressForm";
 import DefaultCredentials from "../../pages/DefaultCredentials/DefaultCredentials";
 import PaymentGateway from "../../pages/PaymentGateway/PaymentGateway";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 const settings = ["Update Profile", "Change Password", `Logout`];
 const settingsIcons = [<EditIcon />, <ManageAccountsIcon />, <LogoutIcon />];
@@ -115,7 +116,7 @@ function UserHeader() {
     if (page === "Products") {
       navigate("/user/dashboard");
     } else if (page === "Payment") {
-      navigate("/user/payment");
+      navigate("/user/paymentgateway");
     } else if (page === "Blogs") {
       navigate("/user/blogs");
     } else if (page === "Terms & Conditions") {
@@ -232,7 +233,7 @@ function UserHeader() {
       <AppBar
         id="main"
         ref={mainEl}
-        position="static"
+        position="fixed"
         sx={{ bgcolor: green["A700"] }}
       >
         <Container maxWidth="xl">
@@ -461,10 +462,11 @@ function UserHeader() {
                       <Button
                         variant="contained"
                         onClick={() => handleCheckout()}
+                        startIcon={<ShoppingCartIcon />}
                         sx={{
-                          bgcolor: orange["A400"],
-                          "&:hover": { bgcolor: orange["A700"] },
-                          left: 290,
+                          bgcolor: orange["A700"],
+                          "&:hover": { bgcolor: orange["A400"] },
+                          left: 265,
                         }}
                       >
                         CHECKOUT
@@ -672,7 +674,7 @@ function UserHeader() {
       ) : (<Box sx={{
         m:2
       }}> */}
-      <Box sx={{ m: 1 }}>
+      <Box sx={{ margin: "80px 10px" }}>
         <Routes>
           <Route
             exact
