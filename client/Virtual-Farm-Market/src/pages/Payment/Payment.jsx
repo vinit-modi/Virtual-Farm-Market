@@ -70,7 +70,7 @@ function Payment() {
   }
 
   function handleCheckout() {
-    navigate("/user/addaddress");
+    navigate("/user/defaultcreds");
   }
 
   return (
@@ -86,13 +86,7 @@ function Payment() {
         <MDBRow className=" d-flex justify-content-center">
           <MDBCol md="10" lg="8" xl="5">
             <MDBCard className="rounded-3">
-              <MDBCardBody
-                className="p-4"
-                // style={{
-                //   backgroundImage:
-                //     "url(https://mdbcdn.b-cdn.net/img/Photos/Others/background3.webp)",
-                // }}
-              >
+              <MDBCardBody className="p-4">
                 <div className="text-center mb-4">
                   <h2>Payment</h2>
                 </div>
