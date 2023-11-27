@@ -26,6 +26,7 @@ import {
   GET_CART_ITEM_COUNT_CART,
 } from "../../Redux/Reducers/cartReducer";
 import { green } from "@mui/material/colors";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 function ProductCard({ item }) {
   const grey = {
@@ -51,16 +52,23 @@ function ProductCard({ item }) {
     navigate(`/user/showproduct`);
   }
 
+  function handleAddToCart(id) {
+    dispatch({
+      type: GET_ADD_PRODUCT_TO_CART,
+      payload: { _id: id },
+    });
+    setTimeout(() => {
+      dispatch({ type: GET_CART_ITEM_COUNT_CART });
+    }, 10);
+  }
+
   return (
     <>
       <Card
         sx={{
           maxWidth: 345,
-          //   bgcolor: "#d1c4e9",
-          // bgcolor: green[200],
+
           "&:hover": {
-            // bgcolor: green[300],
-            // color: "white",
             cursor: "pointer",
           },
         }}
@@ -68,7 +76,6 @@ function ProductCard({ item }) {
         <Box onClick={() => handleProductShow(item._id)}>
           {item.seller ? (
             <CardHeader
-              // sx={{ bgcolor: green[400], color: "white" }}
               avatar={
                 <Avatar
                   sx={{ bgcolor: red[500] }}
@@ -81,14 +88,7 @@ function ProductCard({ item }) {
             />
           ) : (
             <CardHeader
-              // sx={{ bgcolor: green[400], color: "white" }}
-              avatar={
-                <Avatar
-                  sx={{ bgcolor: red[500] }}
-                  aria-label="Empty"
-                  // src={item.seller.profilePicture}
-                />
-              }
+              avatar={<Avatar sx={{ bgcolor: red[500] }} aria-label="Empty" />}
               title="Empty"
               subheader="Empty"
             />
@@ -129,28 +129,10 @@ function ProductCard({ item }) {
             >
               Price: {item.price}
             </Typography>
-            {/* <Typography
-              variant="body2"
-              color="text.secondary"
-              sx={{
-                pt: 1,
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                display: "-webkit-box",
-                WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 2,
-                height: 48,
-              }}
-            >
-              {item.description}
-            </Typography> */}
+
             <Typography>
               Available at:&nbsp;
-              <span
-              //  style={{color:'white', backgroundColor:green[600], padding:3, borderRadius:4}}
-              >
-                {item.city}
-              </span>
+              <span>{item.city}</span>
             </Typography>
           </CardContent>
         </Box>
@@ -183,14 +165,9 @@ function ProductCard({ item }) {
                 "&:hover": { bgcolor: green[400] },
               }}
               onClick={() => {
-                dispatch({
-                  type: GET_ADD_PRODUCT_TO_CART,
-                  payload: { _id: item._id },
-                });
-                setTimeout(() => {
-                  dispatch({ type: GET_CART_ITEM_COUNT_CART });
-                }, 10);
+                handleAddToCart(item._id);
               }}
+              startIcon={item.quantityAvailable > 0 && <AddShoppingCartIcon />}
             >
               {item.quantityAvailable > 0 ? `ADD TO CART` : `OUT OF STOCK`}
             </Button>
