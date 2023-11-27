@@ -30,6 +30,7 @@ import { cartReducer } from "./Reducers/cartReducer";
 import { farmerReducer } from "./Reducers/Farmer/farmerReducer";
 import { addressReducer } from "./Reducers/addressReducer";
 import { stripePaymentReducer } from "./Reducers/stripePaymentReducer";
+import { orderReducer } from "./Reducers/OrderReducer";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -52,7 +53,8 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   address:addressReducer,
   farmer: farmerReducer,
-  stripePayment: stripePaymentReducer
+  stripePayment: stripePaymentReducer,
+  order:orderReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
