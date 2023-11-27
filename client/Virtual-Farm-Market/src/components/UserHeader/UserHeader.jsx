@@ -75,12 +75,14 @@ import UserAddressForm from "../../pages/UserAddressForm/UserAddressForm";
 import DefaultCredentials from "../../pages/DefaultCredentials/DefaultCredentials";
 import PaymentGateway from "../../pages/PaymentGateway/PaymentGateway";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import Order from "../../pages/Order/Order";
 
 const settings = ["Update Profile", "Change Password", `Logout`];
 const settingsIcons = [<EditIcon />, <ManageAccountsIcon />, <LogoutIcon />];
 const pages = [
   "Products",
   "Payment",
+  "Order",
   "Blogs",
   "Terms & Conditions",
   "Privacy Policy",
@@ -117,7 +119,11 @@ function UserHeader() {
       navigate("/user/dashboard");
     } else if (page === "Payment") {
       navigate("/user/paymentgateway");
-    } else if (page === "Blogs") {
+    }else if (page === "Order") {
+      navigate("/user/order");
+    }
+    
+    else if (page === "Blogs") {
       navigate("/user/blogs");
     } else if (page === "Terms & Conditions") {
       navigate("/user/termsandconditions");
@@ -772,6 +778,15 @@ function UserHeader() {
             element={
               <ProtectedRoute userTypeAllowed="Customer">
                 <PaymentGateway />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="order"
+            element={
+              <ProtectedRoute userTypeAllowed="Customer">
+                <Order />
               </ProtectedRoute>
             }
           />
