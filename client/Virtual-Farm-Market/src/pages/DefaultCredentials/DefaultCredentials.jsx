@@ -61,7 +61,11 @@ import {
   GET_ALL_NOTI,
   GET_COUNT_OF_NOTI,
 } from "../../Redux/Reducers/userNotificationReducer";
-import { CLEAR_CART_LIST_CART, GET_ALLPRODUCTS_CART, GET_CART_ITEM_COUNT_CART } from "../../Redux/Reducers/cartReducer";
+import {
+  CLEAR_CART_LIST_CART,
+  GET_ALLPRODUCTS_CART,
+  GET_CART_ITEM_COUNT_CART,
+} from "../../Redux/Reducers/cartReducer";
 
 const cardImages = {
   Visa,
@@ -111,9 +115,9 @@ function DefaultCredentials() {
       dispatch({ type: GET_COUNT_OF_NOTI });
       dispatch({ type: CLEAR_CART_LIST_CART });
       setCheckoutData(null);
-      //Cart empty
-      // try:- dispatch({type:GET_ALLPRODUCTS_CART})
-      dispatch({type:GET_CART_ITEM_COUNT_CART})
+
+      dispatch({ type: GET_ALLPRODUCTS_CART });
+      dispatch({ type: GET_CART_ITEM_COUNT_CART });
 
       dispatch({ type: CLEARE_MESSAGE_PAYMENT });
     }
