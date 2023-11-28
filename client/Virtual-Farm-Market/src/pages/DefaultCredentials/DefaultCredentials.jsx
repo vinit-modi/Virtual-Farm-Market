@@ -1,6 +1,7 @@
 import React from "react";
 import PaymentAlert from "../../components/Alert/PaymentAlert";
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -15,7 +16,11 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { GET_ALL_CARD_PAYMENT } from "../../Redux/Reducers/paymentReducer";
+import {
+  CLEARE_MESSAGE_PAYMENT,
+  GET_ALL_CARD_PAYMENT,
+  GET_MAKE_PAYMENT,
+} from "../../Redux/Reducers/paymentReducer";
 import DefaultButton from "../../components/Buttons/DefaultButton";
 import {
   blue,
@@ -50,6 +55,13 @@ import AmericanExpress from "../../Assets/card/americanexpress.png";
 import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import SendIcon from "@mui/icons-material/Send";
+import { useContext } from "react";
+import { CheckoutContext } from "../../Utils/CheckoutContext";
+import {
+  GET_ALL_NOTI,
+  GET_COUNT_OF_NOTI,
+} from "../../Redux/Reducers/userNotificationReducer";
+import { CLEAR_CART_LIST_CART, GET_ALLPRODUCTS_CART, GET_CART_ITEM_COUNT_CART } from "../../Redux/Reducers/cartReducer";
 
 const cardImages = {
   Visa,
@@ -68,6 +80,8 @@ function DefaultCredentials() {
   const payment = useSelector((state) => state.payment);
   const address = useSelector((state) => state.address);
   const stripePayment = useSelector((state) => state.stripePayment);
+
+  const { checkoutData, setCheckoutData } = useContext(CheckoutContext);
 
   useEffect(() => {
     //To clear address from edit addressObj of address.
@@ -90,6 +104,21 @@ function DefaultCredentials() {
     dispatch({ type: GET_ALL_ADDRESS });
   }, [address.message]);
 
+  useEffect(() => {
+    if (payment.message) {
+      toast.success(payment.message);
+      dispatch({ type: GET_ALL_NOTI });
+      dispatch({ type: GET_COUNT_OF_NOTI });
+      dispatch({ type: CLEAR_CART_LIST_CART });
+      setCheckoutData(null);
+      //Cart empty
+      // try:- dispatch({type:GET_ALLPRODUCTS_CART})
+      dispatch({type:GET_CART_ITEM_COUNT_CART})
+
+      dispatch({ type: CLEARE_MESSAGE_PAYMENT });
+    }
+  }, [payment.message]);
+
   const handleGoToPaymentPage = () => {
     navigate("/user/paymentgateway");
   };
@@ -110,11 +139,33 @@ function DefaultCredentials() {
   const handleMakeDefaultAddress = (id) => {
     dispatch({ type: GET_MAKE_DEFAULT_ADDRESS, payload: { _id: id } });
   };
+
+  const handleProceedToCheckout = () => {
+    console.log({
+      products: JSON.stringify(checkoutData.products),
+      amount: checkoutData.amount,
+    });
+    JSON.stringify(checkoutData)
+      ? dispatch({
+          type: GET_MAKE_PAYMENT,
+          payload: {
+            products: JSON.stringify(checkoutData.products),
+            amount: checkoutData.amount,
+          },
+        })
+      : navigate("/user/dashboard");
+  };
+
   return (
     <>
       <Container maxWidth="md">
-        {address.loading || stripePayment.loading ? (
-          <LinearProgress color="success" />
+        {address.loading || stripePayment.loading || payment.loading ? (
+          <>
+            <br />
+            <br />
+            <br />
+            <LinearProgress color="success" />
+          </>
         ) : (
           <Grid container direction="column">
             <Grid item>
@@ -127,12 +178,20 @@ function DefaultCredentials() {
                       "&:hover": { bgcolor: orange["A400"] },
                     }}
                     endIcon={<SendIcon />}
+                    onClick={() => handleProceedToCheckout()}
+                    disabled={!(checkoutData && checkoutData.amount)}
                   >
-                    Proceed to checkout
+                    Proceed to checkout (Total:{" "}
+                    {checkoutData ? checkoutData.amount : 0})
                   </Button>
                 </Box>
                 <Box>
                   <Typography variant="h4">Selected Payment Method:</Typography>
+                  <Box>
+                    {payment.error && (
+                      <Alert severity="error">{payment.error}</Alert>
+                    )}
+                  </Box>
                   <Box sx={{ display: "flex", justifyContent: "end" }}>
                     <Button
                       size="large"
@@ -273,7 +332,8 @@ function DefaultCredentials() {
                                   Phone number: {item.phoneNumber}
                                 </Typography>
                                 <Typography sx={{ mt: 2 }}>
-                                  <strong>Address :</strong> {item.address} {item.address2}
+                                  <strong>Address :</strong> {item.address}{" "}
+                                  {item.address2}
                                 </Typography>
                                 <Typography>
                                   <strong>City : </strong>
@@ -368,8 +428,10 @@ function DefaultCredentials() {
                       "&:hover": { bgcolor: orange["A400"] },
                     }}
                     endIcon={<SendIcon />}
+                    onClick={() => handleProceedToCheckout()}
+                    disabled={!(checkoutData && checkoutData.amount)}
                   >
-                    Proceed to checkout
+                    Proceed to checkout (Total: pendding)
                   </Button>
                 </Box>
               </Container>

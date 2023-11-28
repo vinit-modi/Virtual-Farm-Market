@@ -28,21 +28,21 @@ import {
 } from "../../Redux/Reducers/cartReducer";
 import { useEffect } from "react";
 import { GET_OBJECT_PRODUCT } from "../../Redux/Reducers/productReducer";
+import { useState } from "react";
 
-function CartCard({ item }) {
+function CartCard({ item, totalBillAmount }) {
   const { product, seller } = item;
   const dispatch = useDispatch();
-  const cart = useSelector(state => state.cart)
- 
+  const cart = useSelector((state) => state.cart);
 
   useEffect(() => {
     dispatch({ type: GET_ALLPRODUCTS_CART });
-    console.log(item.quantity);
   }, []);
 
   const handleAddQuantity = () => {
     dispatch({ type: GET_ADD_PRODUCT_TO_CART, payload: { _id: product._id } });
     dispatch({ type: CLEAR_CART_LIST_CART });
+
     setTimeout(() => {
       dispatch({ type: GET_ALLPRODUCTS_CART });
     }, 10);
@@ -68,13 +68,15 @@ function CartCard({ item }) {
     dispatch({ type: CLEAR_CART_LIST_CART });
 
     dispatch({ type: GET_CART_ITEM_COUNT_CART });
-
   };
- 
-useEffect(()=>{
-  dispatch({ type: GET_CART_ITEM_COUNT_CART });
-},[cart.message, product.message])
 
+  useEffect(() => {
+    dispatch({ type: GET_CART_ITEM_COUNT_CART });
+  }, [cart.message, product.message]);
+
+  useEffect(() => {
+    totalBillAmount();
+  }, [item.quantity, product.price]);
 
   return (
     <Box sx={{ borderBottom: "1px solid #ccc", padding: 2 }}>
@@ -139,13 +141,16 @@ useEffect(()=>{
                 </ButtonGroup>
               </Stack>
               <Stack>
-                {
-                  product.price &&<>
-                
-                <Typography>Price:&nbsp;{product.price.toFixed(2)}</Typography>
-                <Typography>
-                  Total:&nbsp;{(item.quantity * product.price).toFixed(2)}
-                </Typography></>}
+                {product.price && (
+                  <>
+                    <Typography>
+                      Price:&nbsp;{product.price.toFixed(2)}
+                    </Typography>
+                    <Typography>
+                      Total:&nbsp;{(item.quantity * product.price).toFixed(2)}
+                    </Typography>
+                  </>
+                )}
                 <Button
                   onClick={() => handleRemoveCart()}
                   variant="outlined"

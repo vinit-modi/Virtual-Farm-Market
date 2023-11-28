@@ -76,6 +76,10 @@ import DefaultCredentials from "../../pages/DefaultCredentials/DefaultCredential
 import PaymentGateway from "../../pages/PaymentGateway/PaymentGateway";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Order from "../../pages/Order/Order";
+import { useState } from "react";
+import { createContext } from "react";
+import { useContext } from "react";
+import { CheckoutContext } from "../../Utils/CheckoutContext";
 
 const settings = ["Update Profile", "Change Password", `Logout`];
 const settingsIcons = [<EditIcon />, <ManageAccountsIcon />, <LogoutIcon />];
@@ -96,6 +100,10 @@ function UserHeader() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [expandContentInNotification, setExpandContentInNotification] =
     React.useState(null);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [margin, setMargin] = useState("80px 10px");
+
+  const { setCheckoutData } = useContext(CheckoutContext);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -106,6 +114,22 @@ function UserHeader() {
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  useEffect(() => {
+    const handleResize = () => {
+      const screenWidth = window.innerWidth;
+      if (screenWidth <= 1244) {
+        setMargin("110px 10px");
+      } else {
+        setMargin("85px 10px");
+      }
+    };
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -162,9 +186,6 @@ function UserHeader() {
 
   const handleAllDeleteNotifications = () => {
     dispatch({ type: GET_ALL_DELETE_NOTI });
-
-    // dispatch({ type: GET_COUNT_OF_NOTI });
-    // dispatch({ type: GET_ALL_NOTI });
     handleClosePopover();
   };
 
@@ -174,10 +195,50 @@ function UserHeader() {
   };
 
   const handleCheckout = () => {
-    //SEND CART DATA FOR CHECKOUT ...{{pending}}...
+    const finalCheckout = {
+      products:
+        cart.cartProductList &&
+        cart.cartProductList.map((item, index) => ({
+          productId: item.product._id,
+          seller: item.seller._id,
+          name: item.product.name,
+          description: item.product.description,
+          category: item.product.category,
+          price: item.product.price,
+          unit: item.product.unit,
+          quantity: item.quantity,
+          images: item.product.images,
+        })),
+      amount: totalAmount,
+    };
+    setCheckoutData(finalCheckout);
     setAnchorElCart(null);
     navigate("/user/defaultcreds");
   };
+
+  const totalBillAmount = () => {
+    const amount =
+      cart.cartProductList &&
+      cart.cartProductList?.map((element) => {
+        return element.quantity * element.product.price;
+      });
+    if (amount) {
+      let sum = 0;
+      for (let i = 0; i < amount.length; i++) {
+        sum = sum + amount[i];
+      }
+      setTotalAmount(sum.toFixed(2));
+    }
+  };
+
+  useEffect(() => {
+    dispatch({ type: GET_USER_PROFILE_IMAGE });
+    dispatch({ type: GET_ALL_NOTI });
+    dispatch({ type: GET_COUNT_OF_NOTI });
+    dispatch({ type: GET_CART_ITEM_COUNT_CART });
+    dispatch({ type: GET_ALLPRODUCTS_CART });
+    totalBillAmount();
+  }, []);
 
   useEffect(() => {
     if (notification.message) {
@@ -186,14 +247,6 @@ function UserHeader() {
       dispatch({ type: CLEAR_MESSAGE_NOTI });
     }
   }, [notification.message]);
-
-  useEffect(() => {
-    dispatch({ type: GET_USER_PROFILE_IMAGE });
-    dispatch({ type: GET_ALL_NOTI });
-    dispatch({ type: GET_COUNT_OF_NOTI });
-    dispatch({ type: GET_CART_ITEM_COUNT_CART });
-    dispatch({ type: GET_ALLPRODUCTS_CART });
-  }, []);
 
   useEffect(() => {
     // dispatch({ type: GET_USER_PROFILE_IMAGE });
@@ -217,6 +270,7 @@ function UserHeader() {
 
       dispatch({ type: CLEAR_MESSAGE_CART });
     }
+    totalBillAmount();
   }, [cart.message, dispatch]);
 
   useEffect(() => {
@@ -447,7 +501,7 @@ function UserHeader() {
                           {cart.cartProductList ? (
                             cart.cartProductList.map((item, index) => (
                               <Stack key={index}>
-                                <CartCard {...{ item }} />
+                                <CartCard {...{ item, totalBillAmount }} />
                               </Stack>
                             ))
                           ) : (
@@ -471,10 +525,11 @@ function UserHeader() {
                         sx={{
                           bgcolor: orange["A700"],
                           "&:hover": { bgcolor: orange["A400"] },
-                          left: 265,
+                          left: 210,
                         }}
+                        disabled={!cart.cartProductList.length}
                       >
-                        CHECKOUT
+                        CHECKOUT ({totalAmount})
                       </Button>
                     </Box>
                   </Box>
@@ -679,7 +734,7 @@ function UserHeader() {
       ) : (<Box sx={{
         m:2
       }}> */}
-      <Box sx={{ margin: "80px 10px" }}>
+      <Box sx={{ margin }}>
         <Routes>
           <Route
             exact
@@ -749,7 +804,7 @@ function UserHeader() {
             path="showproduct"
             element={
               <ProtectedRoute userTypeAllowed="Customer">
-                <ShowProduct />
+                <ShowProduct {...{ totalBillAmount }} />
               </ProtectedRoute>
             }
           />

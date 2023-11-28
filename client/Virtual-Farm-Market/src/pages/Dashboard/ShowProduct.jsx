@@ -30,7 +30,7 @@ import { CLEAR_OBJECT_PRODUCT } from "../../Redux/Reducers/productReducer";
 import EmptyFoodImage from "../../Assets/EmptyProduct/EmptyFoodImage.jpg";
 import { CheckCircle } from "@mui/icons-material";
 
-function ShowProduct() {
+function ShowProduct({ totalBillAmount }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -84,7 +84,7 @@ function ShowProduct() {
     });
     dispatch({ type: GET_ALLPRODUCTS_CART });
     dispatch({ type: GET_CART_ITEM_COUNT_CART });
-    // countQuntities();
+    totalBillAmount();
   };
 
   const decrement = () => {
@@ -94,7 +94,7 @@ function ShowProduct() {
     });
     dispatch({ type: GET_ALLPRODUCTS_CART });
     dispatch({ type: GET_CART_ITEM_COUNT_CART });
-    // countQuntities();
+    totalBillAmount();
   };
 
   function countQuntities() {
@@ -112,12 +112,14 @@ function ShowProduct() {
       payload: { _id: productObj._id },
     });
     dispatch({ type: GET_CART_ITEM_COUNT_CART });
+    totalBillAmount();
   };
 
   useEffect(() => {
     dispatch({ type: GET_ALLPRODUCTS_CART });
     // dispatch({ type: GET_CART_ITEM_COUNT_CART });
     countQuntities();
+    totalBillAmount();
     return () => {
       //   dispatch({ type: CLEAR_OBJECT_PRODUCT });
       dispatch({ type: CLEAR_PRODUCT_COUNT_TO_CART });
@@ -128,6 +130,7 @@ function ShowProduct() {
     // dispatch({ type: GET_ALLPRODUCTS_CART });
 
     countQuntities();
+    totalBillAmount();
   }, [cart.cartProductList, product]);
 
   useEffect(() => {
@@ -147,6 +150,7 @@ function ShowProduct() {
       type: GET_REMOVE_PRODUCT_CART,
       payload: { _id: cartProductIdOnShownProduct[0]._id },
     });
+    totalBillAmount();
     // dispatch({ type: GET_ALLPRODUCTS_CART });
   };
 
