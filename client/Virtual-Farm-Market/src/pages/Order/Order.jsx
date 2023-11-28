@@ -21,6 +21,7 @@ function Order() {
   return (
     <>
       <Container maxWidth="md">
+        <Typography variant="h4">Orders</Typography>
         {order.loading ? (
           <LinearProgress color="success" />
         ) : (
@@ -28,7 +29,7 @@ function Order() {
             {order.error && <Alert severity="error">{order.error}</Alert>}
             {order.orderList.length ? (
               order.orderList.map((order, index) => (
-                <OrderCard {...{ order }} key={order._id} />
+                <OrderCard {...{ order }} key={index} />
               ))
             ) : (
               <>

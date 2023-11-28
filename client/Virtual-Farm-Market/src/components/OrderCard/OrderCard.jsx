@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./OrderCard.css";
 import Typography from "@mui/material/Typography";
 import { Box, Stack, Tooltip, IconButton } from "@mui/material";
@@ -6,6 +6,18 @@ import { green, orange } from "@mui/material/colors";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
 
 function OrderCard({ order }) {
+  const date = new Date(order.createdAt);
+  const [orederTime, setOrderTime] = useState();
+
+  useEffect(() => {
+    const formattedTime = date.toLocaleDateString(undefined, {
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    });
+    setOrderTime(formattedTime);
+  }, []);
+
   const handleCopy = () => {
     const el = document.createElement("textarea");
     el.value = `ORDER ID - ${order.orderNumber}`;
@@ -22,10 +34,11 @@ function OrderCard({ order }) {
           <div className="course-preview">
             <Box
               sx={{
-                height: 100,
-                width: 100,
+                height: 140,
+                width: 140,
                 position: "relative",
                 overflow: "hidden",
+                borderRadius:2
               }}
             >
               <img
@@ -41,7 +54,6 @@ function OrderCard({ order }) {
                 }}
               />
             </Box>
-           
           </div>
           <div className="course-info">
             <Stack
@@ -73,6 +85,10 @@ function OrderCard({ order }) {
                 </Typography>
                 <Typography sx={{ fontSize: 20 }}>
                   Price: {order.products.price}
+                </Typography>
+                <br />
+                <Typography variant="body1">
+                  Order Time: {orederTime}
                 </Typography>
               </Stack>
               <Stack>
