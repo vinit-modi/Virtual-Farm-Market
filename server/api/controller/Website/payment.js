@@ -2,7 +2,7 @@ const CardModel = require("../../../db/models/Card");
 const { validationResult } = require("express-validator");
 const { check } = require("express-validator");
 const encDec = require("../../../services/enDe");
-const AddressModel = require("../../../db/models/Address");
+const CartModel = require("../../../db/models/Cart");
 const UserModel = require("../../../db/models/User");
 const config = require("../../../config/index");
 const OrderModel = require("../../../db/models/Order");
@@ -410,6 +410,8 @@ module.exports = {
         text: `Your order with order number ${order.orderNumber} has been successfully placed.`,
       };
       sendEmail(req.userInfo.email, mailOptions);
+
+      await CartModel.deleteMany({ user: req.userInfo._id });
 
       return res.status(200).json({
         status: "success",
