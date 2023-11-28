@@ -119,11 +119,9 @@ function UserHeader() {
       navigate("/user/dashboard");
     } else if (page === "Payment") {
       navigate("/user/paymentgateway");
-    }else if (page === "Order") {
+    } else if (page === "Order") {
       navigate("/user/order");
-    }
-    
-    else if (page === "Blogs") {
+    } else if (page === "Blogs") {
       navigate("/user/blogs");
     } else if (page === "Terms & Conditions") {
       navigate("/user/termsandconditions");
@@ -258,7 +256,7 @@ function UserHeader() {
                   letterSpacing: ".3rem",
                   color: "inherit",
                   textDecoration: "none",
-                  display: "flex",
+                  // display: "flex",
                   alignItems: "center",
                 }}
               >
@@ -330,12 +328,12 @@ function UserHeader() {
                       letterSpacing: ".3rem",
                       color: "inherit",
                       textDecoration: "none",
-                      display: "flex",
+                      // display: "flex",
                       alignItems: "center",
                     }}
                   >
                     <img
-                    alternative='projectIcon'
+                      alternative="projectIcon"
                       src={VFMIcon}
                       onClick={() => {
                         navigate("/user/dashboard");

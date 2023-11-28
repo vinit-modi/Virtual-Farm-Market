@@ -2,7 +2,7 @@ import React from "react";
 import "./AddsHorizontal.css";
 import img1 from "../../Assets/adds/10001.png";
 import img2 from "../../Assets/adds/10002.png";
-import img3 from "../../Assets/adds/10003.jpg";
+import img3 from "../../Assets/adds/uber.jpg";
 
 function AddsHorizontal() {
   return (
@@ -17,8 +17,13 @@ function AddsHorizontal() {
           </a>
         </div>
         <div className="media-elementd">
-          <a href="https://www.costco.ca/" target="_blank">
-            <img src={img2} alt="img2" className="responsive-img" />
+          <a href="https://www.ubereats.com/ca" target="_blank">
+            <img
+              src={img3}
+              alt="img3"
+              className="responsive-img"
+              style={{ marginLeft: 20, borderRadius: 10, width: "90%" }}
+            />
           </a>
         </div>
       </div>

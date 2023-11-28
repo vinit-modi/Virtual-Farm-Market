@@ -155,13 +155,16 @@ module.exports = {
 
   getAllAddress: async (req, res) => {
     try {
-      let getAllAddress = await AddressModel.find({ userId: req.userInfo._id });
+      let getAllAddress = await AddressModel.find({
+        userId: req.userInfo._id,
+      }).sort({ defaultAddress: -1 });
       return res.status(200).json({
         status: "success",
         message: "All Saved address.",
         data: getAllAddress,
       });
     } catch (error) {
+      clg;
       return res.status(500).json({
         status: "error",
         message: "Internal Server Error",
