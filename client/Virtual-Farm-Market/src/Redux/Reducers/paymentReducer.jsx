@@ -10,6 +10,8 @@ export const GET_DELETE_CARD_PAYMENT = "GET_DELETE_CARD_PAYMENT";
 export const SET_DELETE_CARD_PAYMENT = "SET_DELETE_CARD_PAYMENT";
 export const GET_MAKE_DEFAULT_CARD_PAYMENT = "GET_MAKE_DEFAULT_CARD_PAYMENT";
 export const SET_MAKE_DEFAULT_CARD_PAYMENT = "SET_MAKE_DEFAULT_CARD_PAYMENT";
+export const GET_MAKE_PAYMENT = "GET_MAKE_PAYMENT";
+export const SET_MAKE_PAYMENT = "SET_MAKE_PAYMENT";
 
 export const makeRequestPayment = () => {
   return {
@@ -36,6 +38,10 @@ export const setDeleteCardPayment = (payload) => ({
 });
 export const setMakeDefaultCardPayment = (payload) => ({
   type: SET_MAKE_DEFAULT_CARD_PAYMENT,
+  payload,
+});
+export const setMakePayment = (payload) => ({
+  type: SET_MAKE_PAYMENT,
   payload,
 });
 
@@ -88,6 +94,13 @@ export const paymentReducer = (state = initialState, action) => {
         message: action.payload,
       };
     case SET_MAKE_DEFAULT_CARD_PAYMENT:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        message: action.payload,
+      };
+    case SET_MAKE_PAYMENT:
       return {
         ...state,
         loading: false,

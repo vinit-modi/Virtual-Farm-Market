@@ -56,7 +56,7 @@ const initialState = {
   message: null,
   productQuantityCount: null,
   TotalCartQuantityCount: null,
-  cartProductList: [],
+  cartProductList: null,
 };
 
 export const cartReducer = (state = initialState, action) => {
@@ -115,7 +115,7 @@ export const cartReducer = (state = initialState, action) => {
     case CLEAR_CART_LIST_CART:
       return {
         ...state,
-        cartProductList: null,
+        cartProductList: [],
       };
 
     case SET_REMOVE_PRODUCT_CART:

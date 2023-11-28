@@ -87,12 +87,14 @@ import {
   GET_ALL_CARD_PAYMENT,
   GET_DELETE_CARD_PAYMENT,
   GET_MAKE_DEFAULT_CARD_PAYMENT,
+  GET_MAKE_PAYMENT,
 } from "../Reducers/paymentReducer";
 import {
   fetchAddNewCardPayment,
   fetchAllCardPayment,
   fetchDeleteCardPayment,
   fetchMakeDefaultCardPayment,
+  fetchMakePayment,
 } from "./handlers/paymentHandler";
 import {
   GET_ALL_DELETE_NOTI,
@@ -232,6 +234,7 @@ function* payment() {
   yield takeLatest(GET_ALL_CARD_PAYMENT, fetchAllCardPayment);
   yield takeLatest(GET_DELETE_CARD_PAYMENT, fetchDeleteCardPayment);
   yield takeLatest(GET_MAKE_DEFAULT_CARD_PAYMENT, fetchMakeDefaultCardPayment);
+  yield takeLatest(GET_MAKE_PAYMENT, fetchMakePayment);
 }
 
 function* notification() {

@@ -6,12 +6,14 @@ import {
   setAllCardPayment,
   setDeleteCardPayment,
   setMakeDefaultCardPayment,
+  setMakePayment,
 } from "../../Reducers/paymentReducer";
 import {
   requestAddNewCardPayment,
   requestAllCardPayment,
   requestDeleteCardPayment,
   requestMakeDefaultCardPayment,
+  requestMakePayment,
 } from "../requests/paymentRequest";
 
 export function* fetchAddNewCardPayment({ payload }) {
@@ -62,6 +64,20 @@ export function* fetchMakeDefaultCardPayment({payload}) {
     const response = yield call(requestMakeDefaultCardPayment,payload);
     if (response.status === 200) {
       yield put(setMakeDefaultCardPayment(response.data.message));
+    } else {
+      yield put(failRequestPayment(response.data.message));
+    }
+  } catch (error) {
+    yield put(failRequestPayment(error.message));
+  }
+}
+
+export function* fetchMakePayment({payload}) {
+  try {
+    yield put(makeRequestPayment());
+    const response = yield call(requestMakePayment,payload);
+    if (response.status === 200) {
+      yield put(setMakePayment(response.data.message));
     } else {
       yield put(failRequestPayment(response.data.message));
     }

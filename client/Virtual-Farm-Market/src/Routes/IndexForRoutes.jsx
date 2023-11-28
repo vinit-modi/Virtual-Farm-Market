@@ -26,6 +26,7 @@ import UserHeader from "../components/UserHeader/UserHeader";
 import FarmersAddProduct from "../pages/Farmers/FarmersAddProduct";
 import { useSelector } from "react-redux";
 import LandingPage from "../pages/LandingPage/LandingPage";
+import { CheckoutProvider } from "../Utils/CheckoutContext";
 
 function IndexForRoutes() {
   const auth = useSelector((state) => state.auth);
@@ -129,7 +130,15 @@ function IndexForRoutes() {
               </PublicRoute>
             }
           />
-          <Route exact path="*" element={<UserHeader />} />
+          <Route
+            exact
+            path="*"
+            element={
+              <CheckoutProvider>
+                <UserHeader />
+              </CheckoutProvider>
+            }
+          />
         </Route>
         {/* User-Done */}
       </Routes>

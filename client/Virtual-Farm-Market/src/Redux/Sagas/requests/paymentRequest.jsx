@@ -19,3 +19,8 @@ export async function requestMakeDefaultCardPayment(payload) {
   const response = await Axios.post(`/api/makeDefaultCard`,payload);
   return response;
 }
+
+export async function requestMakePayment(payload) {
+  const response = await Axios.post(`/api/makePayment`,payload);
+  return response;
+}
