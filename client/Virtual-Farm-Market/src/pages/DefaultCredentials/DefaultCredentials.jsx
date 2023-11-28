@@ -273,7 +273,7 @@ function DefaultCredentials() {
                                   Phone number: {item.phoneNumber}
                                 </Typography>
                                 <Typography sx={{ mt: 2 }}>
-                                  <strong>Address :</strong> {item.address}
+                                  <strong>Address :</strong> {item.address} {item.address2}
                                 </Typography>
                                 <Typography>
                                   <strong>City : </strong>
