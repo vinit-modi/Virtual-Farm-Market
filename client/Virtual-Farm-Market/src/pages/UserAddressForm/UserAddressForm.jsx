@@ -39,7 +39,7 @@ const validationSchema = Yup.object().shape({
     .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits")
     .required("Phone number is required"),
   streetNumber: Yup.string()
-    .matches(/^[0-9]+$/, "Street Number must contain only numbers")
+  //   .matches(/^[0-9]+$/, "Street Number must contain only numbers")
     .required("Street Number is required"),
   homeAddress: Yup.string().required("Street Name is required"),
   city: Yup.string().required("City is required"),
@@ -74,12 +74,13 @@ function UserAddressForm() {
   
 
   const handleSubmit = (values) => {
-    const homeAddressCombined = values.streetNumber + ", " + values.homeAddress;
+   
     if (Object.entries(address.addressObj).length === 0) {
       const finalValues = {
         fullName: values.fullName,
         phoneNumber: values.phoneNumber,
-        address: homeAddressCombined,
+        address: values.streetNumber,
+        address2: values.homeAddress,
         province: values.province,
         city: values.city,
         postalCode: values.postalCode,
@@ -144,13 +145,8 @@ function UserAddressForm() {
                         : {
                             fullName: addressObj.fullName,
                             phoneNumber: addressObj.phoneNumber,
-                            streetNumber: addressObj.address.slice(
-                              0,
-                              addressObj.address.indexOf(",")
-                            ),
-                            homeAddress: addressObj.address.slice(
-                              addressObj.address.indexOf(", ") + 2
-                            ),
+                            streetNumber: addressObj.address,
+                            homeAddress: addressObj.address2,
                             province: addressObj.province,
                             city: addressObj.city,
                             postalCode: addressObj.postalCode,
