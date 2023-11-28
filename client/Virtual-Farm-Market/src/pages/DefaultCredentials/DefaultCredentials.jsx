@@ -120,6 +120,8 @@ function DefaultCredentials() {
       dispatch({ type: GET_CART_ITEM_COUNT_CART });
 
       dispatch({ type: CLEARE_MESSAGE_PAYMENT });
+
+      navigate("/user/paymentsuccess");
     }
   }, [payment.message]);
 

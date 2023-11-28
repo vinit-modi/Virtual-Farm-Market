@@ -44,10 +44,10 @@ export function* fetchAllCardPayment() {
   }
 }
 
-export function* fetchDeleteCardPayment({payload}) {
+export function* fetchDeleteCardPayment({ payload }) {
   try {
     yield put(makeRequestPayment());
-    const response = yield call(requestDeleteCardPayment,payload);
+    const response = yield call(requestDeleteCardPayment, payload);
     if (response.status === 200) {
       yield put(setDeleteCardPayment(response.data.message));
     } else {
@@ -58,10 +58,10 @@ export function* fetchDeleteCardPayment({payload}) {
   }
 }
 
-export function* fetchMakeDefaultCardPayment({payload}) {
+export function* fetchMakeDefaultCardPayment({ payload }) {
   try {
     yield put(makeRequestPayment());
-    const response = yield call(requestMakeDefaultCardPayment,payload);
+    const response = yield call(requestMakeDefaultCardPayment, payload);
     if (response.status === 200) {
       yield put(setMakeDefaultCardPayment(response.data.message));
     } else {
@@ -72,12 +72,17 @@ export function* fetchMakeDefaultCardPayment({payload}) {
   }
 }
 
-export function* fetchMakePayment({payload}) {
+export function* fetchMakePayment({ payload }) {
   try {
     yield put(makeRequestPayment());
-    const response = yield call(requestMakePayment,payload);
+    const response = yield call(requestMakePayment, payload);
     if (response.status === 200) {
-      yield put(setMakePayment(response.data.message));
+      yield put(
+        setMakePayment({
+          message: response.data.message,
+          paymentSuccess: response.data.data,
+        })
+      );
     } else {
       yield put(failRequestPayment(response.data.message));
     }

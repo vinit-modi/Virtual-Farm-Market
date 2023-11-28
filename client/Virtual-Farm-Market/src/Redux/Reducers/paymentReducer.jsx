@@ -50,6 +50,7 @@ const initialState = {
   error: null,
   message: null,
   allCards: null,
+  paymentSuccess: null,
 };
 
 export const paymentReducer = (state = initialState, action) => {
@@ -105,7 +106,8 @@ export const paymentReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         error: null,
-        message: action.payload,
+        message: action.payload.message,
+        paymentSuccess: action.payload.paymentSuccess,
       };
     default:
       return state;

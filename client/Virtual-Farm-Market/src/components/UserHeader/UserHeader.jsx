@@ -80,6 +80,7 @@ import { useState } from "react";
 import { createContext } from "react";
 import { useContext } from "react";
 import { CheckoutContext } from "../../Utils/CheckoutContext";
+import PaymentSuccess from "../../pages/PaymentSuccess/PaymentSuccess";
 
 const settings = ["Update Profile", "Change Password", `Logout`];
 const settingsIcons = [<EditIcon />, <ManageAccountsIcon />, <LogoutIcon />];
@@ -841,6 +842,15 @@ function UserHeader() {
             element={
               <ProtectedRoute userTypeAllowed="Customer">
                 <Order />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path="paymentsuccess"
+            element={
+              <ProtectedRoute userTypeAllowed="Customer">
+                <PaymentSuccess />
               </ProtectedRoute>
             }
           />
