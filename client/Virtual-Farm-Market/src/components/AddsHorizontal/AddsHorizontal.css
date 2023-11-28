@@ -1,5 +1,5 @@
-@import "https://unpkg.com/open-props";
-@import "https://unpkg.com/open-props/normalize.min.css";
+/* @import "https://unpkg.com/open-props";
+@import "https://unpkg.com/open-props/normalize.min.css"; */
 
 .media-scroller {
   --_spacer: var(--size-1);
@@ -35,12 +35,11 @@
 }
 
 .media-element > img {
-    inline-size: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    max-width: 100%;
-  }
-  
+  inline-size: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  max-width: 100%;
+}
 
 .snaps-inline {
   scroll-snap-type: inline mandatory;
@@ -82,4 +81,26 @@
 .section-title {
   padding-inline-start: var(--size-6);
   margin-block: var(--size-9) var(--size-3);
+}
+
+/* AddsHorizontal.css */
+
+.responsive-img {
+  height: 140px;
+  width: auto;
+  max-width: 100%; /* Ensures image does not exceed its container */
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .responsive-img {
+    height: 100px; /* Adjust height for smaller screens */
+  }
+}
+
+/* Media query for even smaller screens, adjust as needed */
+@media (max-width: 480px) {
+  .responsive-img {
+    height: 80px; /* Further adjust height for smaller screens */
+  }
 }
