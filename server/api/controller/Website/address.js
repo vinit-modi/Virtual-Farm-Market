@@ -11,6 +11,9 @@ module.exports = {
           .notEmpty()
           .withMessage("Phone Number must be provided"),
         check("address").notEmpty().withMessage("Address must be provided"),
+        check("address2")
+          .notEmpty()
+          .withMessage("Apt, Suit Number must be provided"),
         check("city").notEmpty().withMessage("City must be provided"),
         check("province").notEmpty().withMessage("Province must be provided"),
         check("postalCode")
@@ -49,6 +52,9 @@ module.exports = {
           .notEmpty()
           .withMessage("Phone Number must be provided"),
         check("address").notEmpty().withMessage("Address must be provided"),
+        check("address2")
+          .notEmpty()
+          .withMessage("Apt, Suit Number must be provided"),
         check("city").notEmpty().withMessage("City must be provided"),
         check("province").notEmpty().withMessage("Province must be provided"),
         check("postalCode")
