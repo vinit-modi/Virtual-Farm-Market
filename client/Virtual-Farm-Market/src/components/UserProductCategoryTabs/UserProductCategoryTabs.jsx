@@ -20,6 +20,7 @@ import {
   GET_PRODUCTS_BY_CATEGORY_PRODUCT,
 } from "../../Redux/Reducers/productReducer";
 import { grey } from "@mui/material/colors";
+import AddsHorizontal from "../AddsHorizontal/AddsHorizontal";
 
 export default function UserProductCategoryTabs({ product }) {
   const BoxStyle = {
@@ -82,6 +83,7 @@ export default function UserProductCategoryTabs({ product }) {
       </TabsList>
 
       <TabPanel value={"All Product"}>
+          <AddsHorizontal/>
         <Grid container spacing={3}>
           {productList.length ? (
             productList.map((item, index) => (
