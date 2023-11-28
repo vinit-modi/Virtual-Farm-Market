@@ -5,6 +5,7 @@ const AddressSchema = new mongoose.Schema({
   fullName: String,
   phoneNumber: String,
   address: String,
+  address2: String,
   city: String,
   province: String,
   postalCode: String,
