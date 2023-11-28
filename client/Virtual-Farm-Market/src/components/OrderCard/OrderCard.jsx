@@ -1,82 +1,107 @@
 import React from "react";
 import "./OrderCard.css";
+import Typography from "@mui/material/Typography";
+import { Box, Stack, Tooltip, IconButton } from "@mui/material";
+import { green, orange } from "@mui/material/colors";
+import FileCopyIcon from "@mui/icons-material/FileCopy";
 
-function OrderCard() {
+function OrderCard({ order }) {
+  const handleCopy = () => {
+    const el = document.createElement("textarea");
+    el.value = `ORDER ID - ${order.orderNumber}`;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand("copy");
+    document.body.removeChild(el);
+  };
+
   return (
     <div>
-      <div class="courses-container">
-        <div class="course">
-          <div class="course-preview">
-            <h6>Course</h6>
-            <h2>JavaScript Fundamentals</h2>
-            <a href="#">
-              View all chapters <i class="fas fa-chevron-right"></i>
-            </a>
+      <div className="courses-container">
+        <div className="course">
+          <div className="course-preview">
+            <Box
+              sx={{
+                height: 100,
+                width: 100,
+                position: "relative",
+                overflow: "hidden",
+              }}
+            >
+              <img
+                alt={order.products.name}
+                src={order.products.images[0]}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                }}
+              />
+            </Box>
+           
           </div>
-          <div class="course-info">
-            <div class="progress-container">
-              <div class="progress"></div>
-              <span class="progress-text">6/9 Challenges</span>
-            </div>
-            <h6>Chapter 4</h6>
-            <h2>Callbacks & Closures</h2>
-            
+          <div className="course-info">
+            <Stack
+              direction="row"
+              sx={{ display: "flex", justifyContent: "space-between" }}
+            >
+              <Stack>
+                {" "}
+                <Box display="flex" alignItems="center">
+                  <h6>
+                    <Typography
+                      onClick={handleCopy}
+                      style={{ cursor: "pointer", marginRight: "8px" }}
+                    >
+                      ORDER ID - {order.orderNumber}
+                    </Typography>
+                  </h6>
+                  <IconButton
+                    aria-label="copy"
+                    onClick={handleCopy}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <FileCopyIcon />
+                  </IconButton>
+                </Box>
+                <Typography variant="h4">{order.products.name}</Typography>
+                <Typography sx={{ fontSize: 20 }}>
+                  Quantity: {order.products.quantity}
+                </Typography>
+                <Typography sx={{ fontSize: 20 }}>
+                  Price: {order.products.price}
+                </Typography>
+              </Stack>
+              <Stack>
+                <Tooltip title="Status">
+                  <Typography
+                    variant="body1"
+                    sx={
+                      order.orderStatus &&
+                      order.orderStatus.toUpperCase() === "DELIVERED"
+                        ? {
+                            color: green["A700"],
+                            fontWeight: "bold",
+                          }
+                        : {
+                            color: orange[800],
+                            fontWeight: "bold",
+                          }
+                    }
+                  >
+                    {order.orderStatus.toUpperCase()}
+                  </Typography>
+                </Tooltip>
+              </Stack>
+            </Stack>
           </div>
         </div>
       </div>
 
-      <div class="social-panel-container">
-        <div class="social-panel">
-          <p>
-            Created with <i class="fa fa-heart"></i> by
-            <a target="_blank" href="https://florin-pop.com">
-              Florin Pop
-            </a>
-          </p>
-          <button class="close-btn">
-            <i class="fas fa-times"></i>
-          </button>
-          <h4>Get in touch on</h4>
-          <ul>
-            <li>
-              <a href="https://www.patreon.com/florinpop17" target="_blank">
-                <i class="fab fa-discord"></i>
-              </a>
-            </li>
-            <li>
-              <a href="https://twitter.com/florinpop1705" target="_blank">
-                <i class="fab fa-twitter"></i>
-              </a>
-            </li>
-            <li>
-              <a href="https://linkedin.com/in/florinpop17" target="_blank">
-                <i class="fab fa-linkedin"></i>
-              </a>
-            </li>
-            <li>
-              <a href="https://facebook.com/florinpop17" target="_blank">
-                <i class="fab fa-facebook"></i>
-              </a>
-            </li>
-            <li>
-              <a href="https://instagram.com/florinpop17" target="_blank">
-                <i class="fab fa-instagram"></i>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <button class="floating-btn">Get in Touch</button>
-
-      <div class="floating-text">
-        Part of{" "}
-        <a
-          href="https://florin-pop.com/blog/2019/09/100-days-100-projects"
-          target="_blank"
-        >
-          #100Days100Projects
-        </a>
-      </div>
+      {/* <button className="floating-btn">Get in Touch</button> */}
     </div>
   );
 }

@@ -3,21 +3,43 @@ import OrderCard from "../../components/OrderCard/OrderCard";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_ALL_ORDER } from "../../Redux/Reducers/OrderReducer";
+import { Alert, Container, LinearProgress, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function Order() {
-    const dispatch = useDispatch()
-    const order = useSelector(state=>state.order)
-    
-    useEffect(() => {
-        dispatch({type:GET_ALL_ORDER})
-        return ()=>{
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const order = useSelector((state) => state.order);
 
-        }
-    }, []);
+  useEffect(() => {
+    dispatch({ type: GET_ALL_ORDER });
+    return () => {};
+  }, []);
+
+  useEffect(() => {}, [dispatch, navigate]);
 
   return (
     <>
-      <OrderCard />
+      <Container maxWidth="md">
+        {order.loading ? (
+          <LinearProgress color="success" />
+        ) : (
+          <>
+            {order.error && <Alert severity="error">{order.error}</Alert>}
+            {order.orderList.length ? (
+              order.orderList.map((order, index) => (
+                <OrderCard {...{ order }} key={order._id} />
+              ))
+            ) : (
+              <>
+                <Typography variant="h3" p={5} textAlign={"center"}>
+                  NO Order Found
+                </Typography>
+              </>
+            )}
+          </>
+        )}
+      </Container>
     </>
   );
 }
