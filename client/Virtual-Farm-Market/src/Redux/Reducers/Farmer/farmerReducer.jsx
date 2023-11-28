@@ -65,6 +65,13 @@ export const farmerReducer = (state = initialState, action) => {
         error: null,
         unitList: action.payload,
       };
+      case SET_CATEGORY_LIST_FOR_PRODUCT_FARMER:
+        return {
+          ...state,
+          loading:false,
+          error:null,
+          categoryList:action.payload
+        }
 
     default:
       return state;

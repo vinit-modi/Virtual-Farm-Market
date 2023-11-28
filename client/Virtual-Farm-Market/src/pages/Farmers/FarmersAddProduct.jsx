@@ -26,7 +26,7 @@ import {
   GET_AUTH_LOGOUT,
   GET_CITY_LIST,
 } from "../../Redux/Reducers/authReducer";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const initialValues = {
   productName: "",
@@ -91,7 +91,6 @@ function FarmersAddProduct() {
 
   useEffect(() => {
     dispatch({ type: GET_CATEGORY_LIST_FOR_PRODUCT_FARMER });
-
     dispatch({ type: GET_UNIT_LIST_FOR_PRODUCT_FARMER });
     dispatch({ type: GET_CITY_LIST });
   }, []);
@@ -129,7 +128,7 @@ function FarmersAddProduct() {
             edge="end"
             variant="outlined"
             sx={{ "&:hover": { color: "white", bgcolor: "red" } }}
-            startIcon={<LogoutIcon/>}
+            startIcon={<LogoutIcon />}
           >
             Logout
           </Button>

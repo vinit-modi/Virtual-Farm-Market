@@ -20,7 +20,7 @@ function OrderCard() {
             </div>
             <h6>Chapter 4</h6>
             <h2>Callbacks & Closures</h2>
-            <button class="btn">Continue</button>
+            
           </div>
         </div>
       </div>

@@ -335,6 +335,7 @@ function UserHeader() {
                     }}
                   >
                     <img
+                    alternative='projectIcon'
                       src={VFMIcon}
                       onClick={() => {
                         navigate("/user/dashboard");
