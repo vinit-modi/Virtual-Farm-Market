@@ -151,6 +151,8 @@ function DefaultCredentials() {
     console.log({
       products: JSON.stringify(checkoutData.products),
       amount: checkoutData.amount,
+      userAddress:
+        address.addressList[0].defaultAddress && address.addressList[0]._id,
     });
     JSON.stringify(checkoutData)
       ? dispatch({
@@ -158,6 +160,9 @@ function DefaultCredentials() {
           payload: {
             products: JSON.stringify(checkoutData.products),
             amount: checkoutData.amount,
+            userAddress:
+              address.addressList[0].defaultAddress &&
+              address.addressList[0]._id,
           },
         })
       : navigate("/user/dashboard");
@@ -217,7 +222,7 @@ function DefaultCredentials() {
                     </Button>
                   </Box>
                   <Box minWidth={450}>
-                    {(stripePayment.cardList.length !== 0) &&
+                    {stripePayment.cardList.length !== 0 &&
                       !stripePayment.cardList[0]?.isDefaultCard && (
                         <Alert severity="error" sx={{ m: 2 }}>
                           Select card as a default:-{" "}

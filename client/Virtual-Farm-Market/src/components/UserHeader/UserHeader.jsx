@@ -840,7 +840,7 @@ function UserHeader() {
             path="paymentsuccess"
             element={
               <ProtectedRoute userTypeAllowed="Customer">
-                <PaymentSuccess {...{ setTotalAmount}} />
+                <PaymentSuccess {...{ setTotalAmount }} />
               </ProtectedRoute>
             }
           />
