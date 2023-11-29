@@ -4,12 +4,21 @@ import Typography from "@mui/material/Typography";
 import { Box, Stack, Tooltip, IconButton } from "@mui/material";
 import { green, orange } from "@mui/material/colors";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
+import { useRef } from "react";
 
 function OrderCard({ order }) {
   const date = new Date(order.createdAt);
   const [orederTime, setOrderTime] = useState();
+  const componentRef = useRef(null);
 
   useEffect(() => {
+    if (componentRef.current) {
+      window.scrollTo({
+        top: componentRef.current.offsetTop,
+        behavior: "smooth",
+      });
+    }
+
     const formattedTime = date.toLocaleDateString(undefined, {
       hour: "numeric",
       minute: "numeric",
@@ -17,7 +26,7 @@ function OrderCard({ order }) {
     });
     setOrderTime(formattedTime);
   }, []);
-
+  
   const handleCopy = () => {
     const el = document.createElement("textarea");
     el.value = `ORDER ID - ${order.orderNumber}`;
@@ -29,7 +38,7 @@ function OrderCard({ order }) {
 
   return (
     <div>
-      <div className="courses-container">
+      <div ref={componentRef} className="courses-container">
         <div className="course">
           <div className="course-preview">
             <Box
@@ -38,7 +47,7 @@ function OrderCard({ order }) {
                 width: 140,
                 position: "relative",
                 overflow: "hidden",
-                borderRadius:2
+                borderRadius: 2,
               }}
             >
               <img
