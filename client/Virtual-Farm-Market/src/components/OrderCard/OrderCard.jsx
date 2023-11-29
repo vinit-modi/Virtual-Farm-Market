@@ -1,22 +1,36 @@
 import React, { useEffect, useState } from "react";
 import "./OrderCard.css";
 import Typography from "@mui/material/Typography";
-import { Box, Stack, Tooltip, IconButton } from "@mui/material";
+import {
+  Box,
+  Stack,
+  Tooltip,
+  IconButton,
+  Grid,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import { green, orange } from "@mui/material/colors";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
 import { useRef } from "react";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import { useDispatch } from "react-redux";
+import { GET_UPDATE_STATUS_ORDER_FARMER } from "../../Redux/Reducers/Farmer/farmerReducer";
 
-function OrderCard({ order }) {
+function OrderCard({ order, userType }) {
   const date = new Date(order.createdAt);
   const [orederTime, setOrderTime] = useState();
   const componentRef = useRef(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (componentRef.current) {
-      window.scrollTo({
-        top: componentRef.current.offsetTop,
-        behavior: "smooth",
-      });
+    if (userType !== "Farmer") {
+      if (componentRef.current) {
+        window.scrollTo({
+          top: componentRef.current.offsetTop,
+          behavior: "smooth",
+        });
+      }
     }
 
     const formattedTime = date.toLocaleDateString(undefined, {
@@ -26,7 +40,7 @@ function OrderCard({ order }) {
     });
     setOrderTime(formattedTime);
   }, []);
-  
+
   const handleCopy = () => {
     const el = document.createElement("textarea");
     el.value = `ORDER ID - ${order.orderNumber}`;
@@ -120,6 +134,55 @@ function OrderCard({ order }) {
                     {order.orderStatus.toUpperCase()}
                   </Typography>
                 </Tooltip>
+                {userType === "Farmer" && (
+                  <Formik
+                    initialValues={{
+                      orderStatus: order.orderStatus || "Placed",
+                    }}
+                    // validationSchema={validationSchema}
+                    onSubmit={(values) => {
+                      const finalOrderStatusObj = {
+                        _id: order._id,
+                        orderStatus: values.orderStatus,
+                      };
+
+                      dispatch({
+                        type: GET_UPDATE_STATUS_ORDER_FARMER,
+                        payload: finalOrderStatusObj,
+                      });
+                    }}
+                  >
+                    {({ values, handleSubmit, setFieldValue }) => (
+                      <Form>
+                        <Grid container spacing={2}>
+                          <Grid item xs={12}>
+                            <strong style={{ fontSize: 20 }}>Status:</strong>{" "}
+                            <Field
+                              as={Select}
+                              id="orderStatus"
+                              name="orderStatus"
+                              autoComplete="orderStatus"
+                              sx={{ mt: 2 }}
+                              onChange={(e) => {
+                                setFieldValue("orderStatus", e.target.value);
+                                handleSubmit();
+                              }}
+                            >
+                              <MenuItem value="Placed">Placed</MenuItem>
+                              <MenuItem value="Delivered">Delivered</MenuItem>
+                            </Field>
+                            <ErrorMessage
+                              name="orderStatus"
+                              id="orderStatus"
+                              component="div"
+                              className="error text-danger"
+                            />
+                          </Grid>
+                        </Grid>
+                      </Form>
+                    )}
+                  </Formik>
+                )}
               </Stack>
             </Stack>
           </div>
