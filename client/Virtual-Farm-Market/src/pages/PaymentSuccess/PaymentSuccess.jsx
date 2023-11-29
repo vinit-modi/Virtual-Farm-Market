@@ -3,13 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "./PaymentSuccess.css";
 import { Box, Button } from "@mui/material";
-import { green } from "@mui/material/colors";
+import { green, orange } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 
-function PaymentSuccess() {
+function PaymentSuccess({ setTotalAmount }) {
   const payment = useSelector((state) => state.payment);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setTotalAmount(0);
+  }, []);
 
   useEffect(() => {
     if (payment.message) {
@@ -20,6 +24,10 @@ function PaymentSuccess() {
 
   const handleMakeShopping = () => {
     navigate("/user/dashboard");
+  };
+
+  const handleMyOrderList = () => {
+    navigate("/user/order");
   };
 
   return (
@@ -46,7 +54,13 @@ function PaymentSuccess() {
           <div className="jagged-edge"></div>
         </div>
       </div>
-      <Box sx={{ textAlign: "center" }}>
+      <Box
+        sx={{
+          textAlign: "center",
+          display: "flex",
+          justifyContent: "space-evenly",
+        }}
+      >
         <Button
           variant="contained"
           sx={{
@@ -57,7 +71,19 @@ function PaymentSuccess() {
           }}
           onClick={() => handleMakeShopping()}
         >
-          Make shopping continue
+          continue shopping
+        </Button>
+        <Button
+          variant="contained"
+          sx={{
+            bgcolor: orange["A700"],
+            color: "white",
+            border: "none",
+            "&:hover": { bgcolor: orange[500], color: "white", border: "none" },
+          }}
+          onClick={() => handleMyOrderList()}
+        >
+          My orders
         </Button>
       </Box>
     </div>
