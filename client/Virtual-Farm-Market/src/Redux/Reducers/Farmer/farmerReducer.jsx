@@ -10,6 +10,10 @@ export const GET_UNIT_LIST_FOR_PRODUCT_FARMER =
   "GET_UNIT_LIST_FOR_PRODUCT_FARMER";
 export const SET_UNIT_LIST_FOR_PRODUCT_FARMER =
   "SET_UNIT_LIST_FOR_PRODUCT_FARMER";
+export const GET_ALL_ORDER_FARMER = "GET_ALL_ORDER_FARMER";
+export const SET_ALL_ORDER_FARMER = "SET_ALL_ORDER_FARMER";
+export const GET_UPDATE_STATUS_ORDER_FARMER = "GET_UPDATE_STATUS_ORDER_FARMER";
+export const SET_UPDATE_STATUS_ORDER_FARMER = "SET_UPDATE_STATUS_ORDER_FARMER";
 
 export const makeRequestFarmer = () => {
   return {
@@ -30,13 +34,22 @@ export const setUnitListForProductFarmer = (payload) => ({
   type: SET_UNIT_LIST_FOR_PRODUCT_FARMER,
   payload,
 });
+export const setAllOrderFarmer = (payload) => ({
+  type: SET_ALL_ORDER_FARMER,
+  payload,
+});
+export const setUpdateStatusOrderFarmer = (payload) => ({
+  type: SET_UPDATE_STATUS_ORDER_FARMER,
+  payload,
+});
 
 const initialState = {
   loading: false,
   error: null,
   message: null,
   categoryList: [],
-  unitList:[]
+  unitList: [],
+  orderList: [],
 };
 
 export const farmerReducer = (state = initialState, action) => {
@@ -65,13 +78,28 @@ export const farmerReducer = (state = initialState, action) => {
         error: null,
         unitList: action.payload,
       };
-      case SET_CATEGORY_LIST_FOR_PRODUCT_FARMER:
-        return {
-          ...state,
-          loading:false,
-          error:null,
-          categoryList:action.payload
-        }
+    case SET_CATEGORY_LIST_FOR_PRODUCT_FARMER:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        categoryList: action.payload,
+      };
+    case SET_ALL_ORDER_FARMER:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        orderList: action.payload,
+      };
+
+    case SET_UPDATE_STATUS_ORDER_FARMER:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        message: action.payload,
+      };
 
     default:
       return state;
