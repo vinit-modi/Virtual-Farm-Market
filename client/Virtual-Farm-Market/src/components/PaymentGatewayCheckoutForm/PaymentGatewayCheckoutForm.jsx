@@ -469,7 +469,16 @@ function PaymentGatewayCheckoutForm() {
                                       </div>
                                       <div className="d-flex justify-content-end">
                                         {card.isDefaultCard ? null : (
-                                          <Tooltip title="Default Card For Payment">
+                                          <Tooltip
+                                            title="Default Card For Payment"
+                                            open={
+                                              stripePayment.cardList.length !==
+                                                0 &&
+                                              !stripePayment.cardList[0]
+                                                ?.isDefaultCard
+                                            }
+                                            arrow
+                                          >
                                             <Button
                                               disableElevation
                                               variant="contained"

@@ -11,6 +11,7 @@ import {
   LinearProgress,
   Paper,
   Stack,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -185,7 +186,13 @@ function DefaultCredentials() {
                     }}
                     endIcon={<SendIcon />}
                     onClick={() => handleProceedToCheckout()}
-                    disabled={!(checkoutData && checkoutData.amount)}
+                    disabled={
+                      !(checkoutData && checkoutData.amount) ||
+                      !stripePayment.cardList.length ||
+                      !address.addressList.length ||
+                      !address.addressList[0]?.defaultAddress ||
+                      !stripePayment.cardList[0]?.isDefaultCard
+                    }
                   >
                     Proceed to checkout (Total:{" "}
                     {checkoutData ? checkoutData.amount : 0})
@@ -210,6 +217,15 @@ function DefaultCredentials() {
                     </Button>
                   </Box>
                   <Box minWidth={450}>
+                    {(stripePayment.cardList.length !== 0) &&
+                      !stripePayment.cardList[0]?.isDefaultCard && (
+                        <Alert severity="error" sx={{ m: 2 }}>
+                          Select card as a default:-{" "}
+                          <Button onClick={() => handleGoToPaymentPage()}>
+                            Select Default Card
+                          </Button>
+                        </Alert>
+                      )}
                     {stripePayment.cardList.length ? (
                       stripePayment.cardList[0].isDefaultCard ? (
                         <Box>
@@ -327,7 +343,7 @@ function DefaultCredentials() {
                       </Box>
 
                       {address.addressList.map((item, index) => (
-                        <Card sx={{ p: 2, mb: 2 }} elevation={3}>
+                        <Card sx={{ p: 2, mb: 2 }} elevation={3} key={index}>
                           <Grid container>
                             <Grid item xs={10}>
                               <Box>
@@ -367,22 +383,34 @@ function DefaultCredentials() {
                                     justifyContent: "end",
                                   }}
                                 >
-                                  <Button
-                                    disableElevation
-                                    variant="outlined"
-                                    onClick={() =>
-                                      handleMakeDefaultAddress(item._id)
+                                  <Tooltip
+                                    title="Make Dafault"
+                                    open={
+                                      !(
+                                        address.addressList[0].defaultAddress &&
+                                        address.addressList[0].defaultAddress
+                                      )
                                     }
-                                    sx={{
-                                      border: "none",
-                                      "&:hover": {
-                                        bgcolor: green[500],
-                                        color: "white",
-                                      },
-                                    }}
+                                    arrow
                                   >
-                                    <BookmarkAddIcon />
-                                  </Button>
+                                    <Button
+                                      disableElevation
+                                      variant="outlined"
+                                      onClick={() =>
+                                        handleMakeDefaultAddress(item._id)
+                                      }
+                                      sx={{
+                                        border: "none",
+                                        "&:hover": {
+                                          bgcolor: green[500],
+                                          color: "white",
+                                          border: "none",
+                                        },
+                                      }}
+                                    >
+                                      <BookmarkAddIcon />
+                                    </Button>{" "}
+                                  </Tooltip>
                                 </Box>
                               )}
                             </Grid>
@@ -435,9 +463,16 @@ function DefaultCredentials() {
                     }}
                     endIcon={<SendIcon />}
                     onClick={() => handleProceedToCheckout()}
-                    disabled={!(checkoutData && checkoutData.amount)}
+                    disabled={
+                      !(checkoutData && checkoutData.amount) ||
+                      !stripePayment.cardList.length ||
+                      !address.addressList.length ||
+                      !address.addressList[0]?.defaultAddress ||
+                      !stripePayment.cardList[0]?.isDefaultCard
+                    }
                   >
-                    Proceed to checkout (Total: pendding)
+                    Proceed to checkout (Total:{" "}
+                    {checkoutData ? checkoutData.amount : 0})
                   </Button>
                 </Box>
               </Container>
