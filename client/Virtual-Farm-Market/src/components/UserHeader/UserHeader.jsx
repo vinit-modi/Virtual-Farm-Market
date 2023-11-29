@@ -88,7 +88,6 @@ const pages = [
   "Products",
   "Payment",
   "Order",
-  "Blogs",
   "Terms & Conditions",
   "Privacy Policy",
 ];
@@ -146,8 +145,6 @@ function UserHeader() {
       navigate("/user/paymentgateway");
     } else if (page === "Order") {
       navigate("/user/order");
-    } else if (page === "Blogs") {
-      navigate("/user/blogs");
     } else if (page === "Terms & Conditions") {
       navigate("/user/termsandconditions");
     } else if (page === "Privacy Policy") {
@@ -728,13 +725,6 @@ function UserHeader() {
         </Container>
       </AppBar>
 
-      {/* {auth.loading ? (
-        <Box>
-          <LinearProgress color="success" />
-        </Box>
-      ) : (<Box sx={{
-        m:2
-      }}> */}
       <Box sx={{ margin }}>
         <Routes>
           <Route
@@ -850,15 +840,13 @@ function UserHeader() {
             path="paymentsuccess"
             element={
               <ProtectedRoute userTypeAllowed="Customer">
-                <PaymentSuccess />
+                <PaymentSuccess {...{ setTotalAmount}} />
               </ProtectedRoute>
             }
           />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Box>
-      {/* </Box>
-      )} */}
     </>
   );
 }

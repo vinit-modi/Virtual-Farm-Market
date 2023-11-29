@@ -25,7 +25,10 @@ import { useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useDispatch, useSelector } from "react-redux";
-import { CLEAR_MESSAGE_ERROR_CHANGE_PASSWORD, GET_CHANGE_PASSWORD } from "../../Redux/Reducers/handlePasswordReducer";
+import {
+  CLEAR_MESSAGE_ERROR_CHANGE_PASSWORD,
+  GET_CHANGE_PASSWORD,
+} from "../../Redux/Reducers/handlePasswordReducer";
 
 const ChangePasswordSchema = Yup.object().shape({
   oldPassword: Yup.string().required("Old Password is required"),
@@ -50,13 +53,15 @@ function ChangePassword() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(()=>{
-    if(setPassword.message){
-      dispatch({type:CLEAR_MESSAGE_ERROR_CHANGE_PASSWORD,payload:'message'})
-      navigate('/user/dashboard')
-
+  useEffect(() => {
+    if (setPassword.message) {
+      dispatch({
+        type: CLEAR_MESSAGE_ERROR_CHANGE_PASSWORD,
+        payload: "message",
+      });
+      navigate("/user/dashboard");
     }
-  },[setPassword.message])
+  }, [setPassword.message]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -206,18 +211,6 @@ function ChangePassword() {
               >
                 {isSubmitting ? "Submitting..." : "Change Password"}
               </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="/forgetpassword" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <NavLink to="/register">
-                    {"Don't have an account? Sign Up"}
-                  </NavLink>
-                </Grid>
-              </Grid>
             </Form>
           )}
         </Formik>

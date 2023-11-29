@@ -1,4 +1,11 @@
-import { Avatar, Button, Grid, TextField, Typography } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Container,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Alert, InputLabel, MenuItem, Select } from "@mui/material";
 import { Box } from "@mui/system";
 import { ErrorMessage, Field, Form, Formik } from "formik";
@@ -21,13 +28,18 @@ import FileDownloadDoneIcon from "@mui/icons-material/FileDownloadDone";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { store } from "../../Redux/store";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { green } from "@mui/material/colors";
 
 const validationSchema = Yup.object({
-  name: Yup.string().matches(/^[^\d]+$/, 'Name should not contain digits').required("Name is required"),
-  phoneNumber: Yup.string().matches(/^\d{10}$/, "Phone number should contain only 10 digits.").required("Phone number is required"),
+  name: Yup.string()
+    .matches(/^[^\d]+$/, "Name should not contain digits")
+    .required("Name is required"),
+  phoneNumber: Yup.string()
+    .matches(/^\d{10}$/, "Phone number should contain only 10 digits.")
+    .required("Phone number is required"),
   city: Yup.string().required("City is required"),
   province: Yup.string().required("Province is required"),
-
 });
 
 function UpdateUserProfile() {
@@ -58,6 +70,11 @@ function UpdateUserProfile() {
     setProfile([{ pview }]);
     setImageCrop(false);
   };
+
+  const handleBack = () => {
+    navigate("/user/dashboard");
+  };
+
   useEffect(() => {
     const value = {
       _id: param_id,
@@ -74,7 +91,6 @@ function UpdateUserProfile() {
     }
   }, [userDetails.message]);
 
-
   useEffect(() => {
     if (auth.cityList || auth.provinceList) {
       setProvinceList(auth.provinceList);
@@ -83,38 +99,35 @@ function UpdateUserProfile() {
   }, [auth.cityList || auth.provinceList]);
 
   return (
-    <div>
+    <Container maxWidth="md">
+ 
+     
       <Grid
         spacing={2}
         container
         direction="column"
         justifyContent="space-between"
         alignItems="center"
-      >
+      > <Typography sx={{ml:3,mt:3}} component="h1" variant="h4">
+        Edit Profile
+      </Typography>
         <Box
           sx={{
-            my: 8,
+          
             mx: 4,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "#c6ff00" }}>
-            <EditIcon sx={{ color: "blue" }} />
-          </Avatar>
-
-          <Typography component="h1" variant="h5">
-            Edit Profile
-          </Typography>
           <div className="m-4">
             {userDetails.error === `Request failed with status code 500` ? (
-              <Alert severity="error">
+              <Alert severity="error" sx={{my:2}}>
                 Selected User does not exist or Network issue
               </Alert>
             ) : (
               userDetails.error && (
-                <Alert severity="error">{userDetails.error}</Alert>
+                <Alert severity="error" sx={{my:2}}>{userDetails.error}</Alert>
               )
             )}
           </div>
@@ -305,12 +318,25 @@ function UpdateUserProfile() {
                   />
                 </Grid>
 
-                <Grid>
+                <Grid sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Button
+                    variant="contained"
+                    onClick={() => handleBack()}
+                    startIcon={<ArrowBackIcon />}
+                    sx={{ mt: 2, mb: 2 }}
+                  >
+                    Back
+                  </Button>
                   <Button
                     type="submit"
-                    fullWidth
                     variant="contained"
-                    sx={{ mt: 2, mb: 2 }}
+                    sx={{
+                      mt: 2,
+                      mb: 2,
+                      ml: 2,
+                      width: "24%",
+                      bgcolor: green["A700"],
+                    }}
                   >
                     <FileDownloadDoneIcon />
                     Save
@@ -321,7 +347,7 @@ function UpdateUserProfile() {
           </Formik>
         </Box>
       </Grid>
-    </div>
+    </Container>
   );
 }
 
