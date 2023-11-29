@@ -27,6 +27,8 @@ import {
   GET_CITY_LIST,
 } from "../../Redux/Reducers/authReducer";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { green } from "@mui/material/colors";
+import { useNavigate } from "react-router-dom";
 
 const initialValues = {
   productName: "",
@@ -86,6 +88,7 @@ const validationSchema = Yup.object().shape({
 
 function FarmersAddProduct() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const farmer = useSelector((state) => state.farmer);
   const auth = useSelector((state) => state.auth);
 
@@ -110,31 +113,9 @@ function FarmersAddProduct() {
     //Send finalProduct to BE
   };
 
-  const handleLogout = () => {
-    console.log("logout");
-    dispatch({ type: GET_AUTH_LOGOUT });
-  };
   return (
     <>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Farmer Dashboard
-          </Typography>
-
-          <Button
-            color="inherit"
-            onClick={handleLogout}
-            edge="end"
-            variant="outlined"
-            sx={{ "&:hover": { color: "white", bgcolor: "red" } }}
-            startIcon={<LogoutIcon />}
-          >
-            Logout
-          </Button>
-        </Toolbar>
-      </AppBar>
-      <Container maxWidth="md" sx={{ mt: 4 }}>
+      <Container maxWidth="md" sx={{ mt: 15 }}>
         <Box sx={{ mb: 4 }}>
           <Typography variant="h4" sx={{ mb: 2 }}>
             Add Product

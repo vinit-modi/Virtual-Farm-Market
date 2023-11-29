@@ -27,6 +27,8 @@ import FarmersAddProduct from "../pages/Farmers/FarmersAddProduct";
 import { useSelector } from "react-redux";
 import LandingPage from "../pages/LandingPage/LandingPage";
 import { CheckoutProvider } from "../Utils/CheckoutContext";
+import FarmersDelivery from "../pages/Farmers/FarmersDelivery";
+import FarmerRoute from "../pages/Farmers/FarmerRoute";
 
 function IndexForRoutes() {
   const auth = useSelector((state) => state.auth);
@@ -74,19 +76,7 @@ function IndexForRoutes() {
 
         {/* FARMER */}
         <Route exact path="/farmer">
-          <Route
-            exact
-            path="addproduct"
-            element={
-              <ProtectedRoute
-                path="/farmer/addproduct"
-                userTypeAllowed="Farmer"
-              >
-                <FarmersAddProduct />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="*" element={<PageNotFound />} />
+          <Route exact path="*" element={<FarmerRoute />} />
         </Route>
 
         {/* USER */}
