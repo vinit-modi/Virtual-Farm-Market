@@ -91,6 +91,7 @@ router.get("/cartItemsCount", CartController.cartItemsCount);
 router.post("/decreaseQuantity", CartController.decreaseQuantity);
 
 router.get("/getAllOrders", OrderController.getAllOrders);
+router.get("/getAllOrdersForFarmer", OrderController.getAllOrdersForFarmer);
 router.post("/getSpecificOrder", OrderController.getSpecificOrder);
 router.post("/updateOrderStatus", OrderController.updateOrderStatus);
 

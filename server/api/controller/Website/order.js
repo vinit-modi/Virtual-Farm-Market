@@ -50,7 +50,37 @@ module.exports = {
         data: getAllOrders,
       });
     } catch (error) {
-      console.log(error);
+      return res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
+  },
+
+  getAllOrdersForFarmer: async (req, res) => {
+    try {
+      const userId = new mongoose.Types.ObjectId(req.userInfo._id);
+      let getAllOrders = await OrderModel.aggregate([
+        {
+          $unwind: {
+            path: "$products",
+            includeArrayIndex: "string",
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+        {
+          $match: {
+            "products.seller": userId,
+          },
+        },
+      ]);
+
+      return res.status(200).json({
+        status: "success",
+        message: "All order.",
+        data: getAllOrders,
+      });
+    } catch (error) {
       return res.status(500).json({
         status: "error",
         message: "Internal Server Error",

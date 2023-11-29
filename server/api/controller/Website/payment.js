@@ -378,6 +378,7 @@ module.exports = {
         products: JSON.parse(req.body.products),
         amount: req.body.amount,
         paymentIntentId: paymentIntent.id,
+        userAddressId: req.body.userAddressId,
       });
 
       for (const product of order.products) {
