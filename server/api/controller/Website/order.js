@@ -73,6 +73,21 @@ module.exports = {
             "products.seller": userId,
           },
         },
+        {
+          $lookup: {
+            from: "addresses",
+            localField: "userAddress",
+            foreignField: "_id",
+            as: "userAddress",
+          },
+        },
+        {
+          $unwind: {
+            path: "$userAddress",
+            includeArrayIndex: "string",
+            preserveNullAndEmptyArrays: true,
+          },
+        },
       ]);
 
       return res.status(200).json({

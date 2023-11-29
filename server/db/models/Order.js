@@ -20,7 +20,7 @@ const OrderSchema = new mongoose.Schema({
   amount: Number,
   paymentIntentId: String,
   orderStatus: { type: String, default: "Placed" },
-  userAddressId: { type: mongoose.Schema.Types.ObjectId, ref: "address" },
+  userAddress: { type: mongoose.Schema.Types.ObjectId, ref: "address" },
   createdAt: { type: String, default: "" },
   updatedAt: { type: String, default: "" },
 });
