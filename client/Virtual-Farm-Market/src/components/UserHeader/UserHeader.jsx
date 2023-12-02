@@ -452,8 +452,7 @@ function UserHeader() {
                     horizontal: isSmallScreen ? "left" : "right",
                   }}
                   onClose={handleClosePopover}
-                  // sx={{ bgcolor:'red', border:'5px solid green'}}
-                  // sx={{ bgcolor:'red', border:'5px solid green'}}
+                
                 >
                   <Box sx={{ p: 2 }}>
                     <Box

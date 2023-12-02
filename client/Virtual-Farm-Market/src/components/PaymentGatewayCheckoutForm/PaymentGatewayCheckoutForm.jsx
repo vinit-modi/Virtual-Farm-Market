@@ -161,17 +161,17 @@ function PaymentGatewayCheckoutForm() {
   }
   return (
     <>
+      {stripePayment.loading && <LinearProgress color="success" />}
       <MDBContainer
         className="py-5"
         fluid
         style={{
+          minHeight: 900,
           backgroundImage:
             "url(https://mdbcdn.b-cdn.net/img/Photos/Others/background3.webp)",
         }}
       >
-        {stripePayment.loading ? (
-          <LinearProgress color="success" />
-        ) : (
+        {stripePayment.loading ? null : (
           <MDBRow className=" d-flex justify-content-center">
             <MDBCol md="10" lg="8" xl="5">
               <MDBCard className="rounded-3">
