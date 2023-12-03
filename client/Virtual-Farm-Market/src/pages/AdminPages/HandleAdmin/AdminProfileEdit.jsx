@@ -35,12 +35,12 @@ function AdminProfileEdit() {
   const dispatch = useDispatch();
 
   const handleBackBtn = () => {
-    navigate(`/admin/dashboard`);
+    navigate(`/admin/user`);
   };
 
   useEffect(() => {
     if (adminReducer.message === `Admin profile updated successfully`) {
-      navigate("/admin/dashboard");
+      navigate("/admin/user");
       
     }
   }, [adminReducer.message]);

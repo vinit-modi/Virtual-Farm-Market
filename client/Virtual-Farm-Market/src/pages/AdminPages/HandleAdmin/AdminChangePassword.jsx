@@ -41,14 +41,14 @@ function AdminChangePassword() {
   const adminReducer = useSelector((state) => state.adminReducer);
 
   const handleBackBtn = () => {
-    navigate(`/admin/dashboard`);
+    navigate(`/admin/user`);
   };
 
   useEffect(() => {
     if (adminReducer.message === `Password changed successfully`) {
       //Toast 'Password changed successfully'
       dispatch({type: CLEAR_MESSAGE_ADMIN})
-      navigate(`/admin/dashboard`);
+      navigate(`/admin/user`);
     }
   }, [adminReducer.message]);
 

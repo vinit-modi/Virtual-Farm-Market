@@ -13,7 +13,6 @@ import UpdateUserProfile from "../pages/UpdateProfile/UpdateUserProfile";
 import ConfirmEmail from "../pages/Authentication/ConfirmEmail";
 import AdminUserList from "../pages/AdminPages/AdminUserList";
 import AdminCategories from "../pages/AdminPages/AdminCategories";
-import AdminDashboard from "../pages/AdminPages/AdminDashboard";
 import AdminPrivacyPolicy from "../pages/AdminPages/AdminPrivacyPolicy";
 import AdminTermsAndCondition from "../pages/AdminPages/AdminTermsAndCondition";
 import AdminProtectedRoute from "../auth/authAdmin/AdminProtectedRoute";

@@ -34,7 +34,6 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import AdminProtectedRoute from "../../auth/authAdmin/AdminProtectedRoute";
 import AdminUserList from "../../pages/AdminPages/AdminUserList";
 import AdminCategories from "../../pages/AdminPages/AdminCategories";
-import AdminDashboard from "../../pages/AdminPages/AdminDashboard";
 import AdminPrivacyPolicy from "../../pages/AdminPages/AdminPrivacyPolicy";
 import AdminTermsAndCondition from "../../pages/AdminPages/AdminTermsAndCondition";
 import AdminProfileEdit from "../../pages/AdminPages/HandleAdmin/AdminProfileEdit";
@@ -51,13 +50,7 @@ import QuizIcon from "@mui/icons-material/Quiz";
 import AdminFaqs from "../../pages/AdminPages/AdminFaqs";
 import PageNotFound from "../../pages/PageNotFound/PageNotFound";
 
-const icons = [
-  <RecentActorsIcon />,
-  <DashboardIcon />,
-  <AccountCircleIcon />,
-  <QuizIcon />,
-  // <PolicyIcon />,
-];
+const icons = [<RecentActorsIcon />, <AccountCircleIcon />, <QuizIcon />];
 
 const drawerWidth = 240;
 
@@ -180,6 +173,7 @@ export default function AdminHeader() {
   React.useEffect(() => {
     if (adminReducer.message === `Admin profile updated successfully`) {
       //Toast
+
       dispatch({ type: CLEAR_MESSAGE_ADMIN });
     }
   }, [adminReducer.message]);
@@ -271,45 +265,39 @@ export default function AdminHeader() {
         </DrawerHeader>
         <Divider />
         <List>
-          {["Dashboard", "User list", "Categories", "FAQs"].map(
-            (text, index) => {
-              let urlPath;
-              if (text === `Dashboard`) urlPath = `dashboard`;
-              else if (text === `User list`) urlPath = `user`;
-              else if (text === `Categories`) urlPath = `categories`;
-              else if (text === `FAQs`) urlPath = `faqs`;
-              return (
-                <ListItem
-                  key={text}
-                  onClick={() => navigate(`/admin/${urlPath}`)}
-                  disablePadding
-                  sx={{ display: "block" }}
+          {["User list", "Categories", "FAQs"].map((text, index) => {
+            let urlPath;
+            if (text === `User list`) urlPath = `user`;
+            else if (text === `Categories`) urlPath = `categories`;
+            else if (text === `FAQs`) urlPath = `faqs`;
+            return (
+              <ListItem
+                key={text}
+                onClick={() => navigate(`/admin/${urlPath}`)}
+                disablePadding
+                sx={{ display: "block" }}
+              >
+                <ListItemButton
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                  }}
                 >
-                  <ListItemButton
+                  <ListItemIcon
                     sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
                     }}
                   >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {icons[index]}
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={text}
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              );
-            }
-          )}
+                    {icons[index]}
+                  </ListItemIcon>
+                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
 
           <ListItem disablePadding sx={{ display: "block" }}>
             <ListItemButton
@@ -409,15 +397,6 @@ export default function AdminHeader() {
 
             <Route
               exact
-              path="dashboard"
-              element={
-                <AdminProtectedRoute>
-                  <AdminDashboard />
-                </AdminProtectedRoute>
-              }
-            />
-            <Route
-              exact
               path="privacypolicy"
               element={
                 <AdminProtectedRoute>
@@ -464,8 +443,7 @@ export default function AdminHeader() {
                 </AdminProtectedRoute>
               }
             />
-                    <Route path="*" element={<PageNotFound />} />
-
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
         )}
       </Box>
