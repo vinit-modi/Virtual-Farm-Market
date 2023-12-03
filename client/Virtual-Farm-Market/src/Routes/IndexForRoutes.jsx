@@ -25,9 +25,10 @@ import UserHeader from "../components/UserHeader/UserHeader";
 import FarmersAddProduct from "../pages/Farmers/FarmersAddProduct";
 import { useSelector } from "react-redux";
 import LandingPage from "../pages/LandingPage/LandingPage";
-import { CheckoutProvider } from "../Utils/CheckoutContext";
+import { CheckoutProvider } from "../Utils/ContextAPIs/CheckoutContext";
 import FarmersDelivery from "../pages/Farmers/FarmersDelivery";
 import FarmerRoute from "../pages/Farmers/FarmerRoute";
+import SearchInputContext from "../Utils/ContextAPIs/SearchInputContext";
 
 function IndexForRoutes() {
   const auth = useSelector((state) => state.auth);
@@ -79,6 +80,7 @@ function IndexForRoutes() {
         </Route>
 
         {/* USER */}
+
         <Route exact path="/user">
           <Route
             exact
@@ -124,11 +126,14 @@ function IndexForRoutes() {
             path="*"
             element={
               <CheckoutProvider>
-                <UserHeader />
+                <SearchInputContext>
+                  <UserHeader />
+                </SearchInputContext>
               </CheckoutProvider>
             }
           />
         </Route>
+
         {/* User-Done */}
       </Routes>
     </div>

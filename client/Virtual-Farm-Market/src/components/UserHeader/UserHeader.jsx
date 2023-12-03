@@ -23,7 +23,6 @@ import {
   GET_AUTH_LOGOUT,
   GET_USER_PROFILE_IMAGE,
 } from "../../Redux/Reducers/authReducer";
-import StorefrontIcon from "@mui/icons-material/Storefront";
 import Badge from "@mui/material/Badge";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import EditIcon from "@mui/icons-material/Edit";
@@ -35,8 +34,6 @@ import {
   Link,
   List,
   Popover,
-  Slide,
-  Snackbar,
   Stack,
 } from "@mui/material";
 import Dashboard from "../../pages/Dashboard/Dashboard";
@@ -64,12 +61,10 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import CloseIcon from "@mui/icons-material/Close";
 import CartCard from "../CartCard/CartCard";
-import Skeleton from "@mui/material/Skeleton";
 import { cartListSkeleton } from "../Skeletons/Skeleton";
 import { toast } from "react-toastify";
 import { useRef } from "react";
 import PageNotFound from "../../pages/PageNotFound/PageNotFound";
-import VFMIconNoBG from "../../Assets/VFMIcon/VFM-Logo-NoBG.png";
 import VFMIcon from "../../Assets/VFMIcon/VFM-Logo.png";
 import UserAddressForm from "../../pages/UserAddressForm/UserAddressForm";
 import DefaultCredentials from "../../pages/DefaultCredentials/DefaultCredentials";
@@ -77,10 +72,10 @@ import PaymentGateway from "../../pages/PaymentGateway/PaymentGateway";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Order from "../../pages/Order/Order";
 import { useState } from "react";
-import { createContext } from "react";
 import { useContext } from "react";
-import { CheckoutContext } from "../../Utils/CheckoutContext";
+import { CheckoutContext } from "../../Utils/ContextAPIs/CheckoutContext";
 import PaymentSuccess from "../../pages/PaymentSuccess/PaymentSuccess";
+import SearchProductInput from "../SearchProductInput/SearchProductInput";
 
 const settings = ["Update Profile", "Change Password", `Logout`];
 const settingsIcons = [<EditIcon />, <ManageAccountsIcon />, <LogoutIcon />];
@@ -118,7 +113,7 @@ function UserHeader() {
   useEffect(() => {
     const handleResize = () => {
       const screenWidth = window.innerWidth;
-      if (screenWidth <= 1244) {
+      if (screenWidth <= 1338) {
         setMargin("110px 10px");
       } else {
         setMargin("85px 10px");
@@ -415,6 +410,10 @@ function UserHeader() {
                   {page}
                 </Button>
               ))}
+            </Box>
+
+            <Box>
+              <SearchProductInput />
             </Box>
 
             <Box sx={{ flexGrow: 0, display: "flex", flexDirection: "row" }}>

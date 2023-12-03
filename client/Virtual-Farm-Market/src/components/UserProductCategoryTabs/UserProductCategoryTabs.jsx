@@ -5,13 +5,7 @@ import { TabsList as BaseTabsList } from "@mui/base/TabsList";
 import { TabPanel as BaseTabPanel } from "@mui/base/TabPanel";
 import { buttonClasses } from "@mui/base/Button";
 import { Tab as BaseTab, tabClasses } from "@mui/base/Tab";
-import {
-  Box,
-  CircularProgress,
-  Grid,
-  LinearProgress,
-  Typography,
-} from "@mui/material";
+import { Box, Grid, LinearProgress, Typography } from "@mui/material";
 import ProductCard from "./ProductCard";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -19,10 +13,14 @@ import {
   GET_ALL_PRODUCTS,
   GET_PRODUCTS_BY_CATEGORY_PRODUCT,
 } from "../../Redux/Reducers/productReducer";
-import { grey } from "@mui/material/colors";
 import AddsHorizontal from "../AddsHorizontal/AddsHorizontal";
+import { SearchInputContexts } from "../../Utils/ContextAPIs/SearchInputContext";
 
 export default function UserProductCategoryTabs({ product }) {
+  const [productListFilter, setProductListFilter] = React.useState([]);
+
+  const { searchInput } = React.useContext(SearchInputContexts);
+
   const BoxStyle = {
     fontFamily: "IBM Plex Sans, sans-serif",
     color: "white",
@@ -58,6 +56,19 @@ export default function UserProductCategoryTabs({ product }) {
     }
   };
 
+  useEffect(() => {
+    setProductListFilter(productList);
+  }, [productList]);
+
+  useEffect(() => {
+    const productListAfterFilter = productList.filter((item) =>
+      item.name.toLowerCase().includes(searchInput && searchInput.toLowerCase())
+    );
+    setProductListFilter(
+      productListAfterFilter ? productListAfterFilter : productList
+    );
+  }, [searchInput]);
+
   return (
     <Tabs defaultValue={"All Product"}>
       <TabsList>
@@ -82,57 +93,65 @@ export default function UserProductCategoryTabs({ product }) {
         )}
       </TabsList>
 
-      <TabPanel value={"All Product"}>
-          <AddsHorizontal/>
-        <Grid container spacing={3}>
-          {productList.length ? (
-            productList.map((item, index) => (
-              <Grid item xs={6} sm={4} md={3} lg={2} key={item._id}>
-                <Box sx={{ borderRadius: 1 }} >
-                  <ProductCard {...{ item }} />
-                </Box>
-              </Grid>
-            ))
-          ) : (
-            <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
-              {categoryList.length ? (
-                <Typography variant="body1">
-                  Products are currently not available for this category
-                </Typography>
-              ) : (
-                <LinearProgress color="success" />
-              )}
-            </Box>
-          )}
-        </Grid>
-      </TabPanel>
-      {categoryList.length ? (
+      {product.loading ? (
+        <LinearProgress color="success" />
+      ) : (
         <>
-          {" "}
-          {categoryList.map((category, index) => (
-            <TabPanel value={category.name}>
-              <Grid container spacing={3}>
-                {productList.length ? (
-                  productList.map((item, index) => (
-                    <Grid item xs={6} sm={4} md={3} lg={2} key={item._id}>
-                      <Box sx={{ borderRadius: 1 }}  >
-                        <ProductCard {...{ item }} />
-                      </Box>
-                    </Grid>
-                  ))
-                ) : (
-                  <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
+          <TabPanel value={"All Product"}>
+            <AddsHorizontal />
+            <Grid container spacing={3}>
+              {productListFilter.length ? (
+                productListFilter.map((item, index) => (
+                  <Grid item xs={6} sm={4} md={3} lg={2} key={item._id}>
+                    <Box sx={{ borderRadius: 1 }}>
+                      <ProductCard {...{ item }} />
+                    </Box>
+                  </Grid>
+                ))
+              ) : (
+                <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
+                  {categoryList.length ? (
                     <Typography variant="body1">
                       Products are currently not available for this category
                     </Typography>
-                  </Box>
-                )}
-              </Grid>
-            </TabPanel>
-          ))}
+                  ) : (
+                    <LinearProgress color="success" />
+                  )}
+                </Box>
+              )}
+            </Grid>
+          </TabPanel>
+          {categoryList.length ? (
+            <>
+              {" "}
+              {categoryList.map((category, index) => (
+                <TabPanel value={category.name}>
+                  <Grid container spacing={3}>
+                    {productListFilter.length ? (
+                      productListFilter.map((item, index) => (
+                        <Grid item xs={6} sm={4} md={3} lg={2} key={item._id}>
+                          <Box sx={{ borderRadius: 1 }}>
+                            <ProductCard {...{ item }} />
+                          </Box>
+                        </Grid>
+                      ))
+                    ) : (
+                      <Box
+                        sx={{ display: "flex", justifyContent: "center", p: 2 }}
+                      >
+                        <Typography variant="body1">
+                          Products are currently not available for this category
+                        </Typography>
+                      </Box>
+                    )}
+                  </Grid>
+                </TabPanel>
+              ))}
+            </>
+          ) : (
+            <LinearProgress color="success" />
+          )}
         </>
-      ) : (
-        <LinearProgress color="success" />
       )}
     </Tabs>
   );

@@ -57,7 +57,7 @@ import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import SendIcon from "@mui/icons-material/Send";
 import { useContext } from "react";
-import { CheckoutContext } from "../../Utils/CheckoutContext";
+import { CheckoutContext } from "../../Utils/ContextAPIs/CheckoutContext";
 import {
   GET_ALL_NOTI,
   GET_COUNT_OF_NOTI,
