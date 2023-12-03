@@ -452,7 +452,6 @@ function UserHeader() {
                     horizontal: isSmallScreen ? "left" : "right",
                   }}
                   onClose={handleClosePopover}
-                
                 >
                   <Box sx={{ p: 2 }}>
                     <Box
@@ -821,7 +820,7 @@ function UserHeader() {
             path="paymentgateway"
             element={
               <ProtectedRoute userTypeAllowed="Customer">
-                <PaymentGateway />
+                <PaymentGateway {...{ handleCheckout }} />
               </ProtectedRoute>
             }
           />

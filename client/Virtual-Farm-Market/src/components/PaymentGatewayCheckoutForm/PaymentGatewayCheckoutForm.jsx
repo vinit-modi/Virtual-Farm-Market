@@ -81,7 +81,7 @@ const cardImages = {
 //     .matches(/^\d{3}$/, "3 Digits"),
 // });
 
-function PaymentGatewayCheckoutForm() {
+function PaymentGatewayCheckoutForm({ handleCheckouts }) {
   const [addNewCard, setAddNewCard] = useState(false);
 
   const dispatch = useDispatch();
@@ -158,6 +158,7 @@ function PaymentGatewayCheckoutForm() {
 
   function handleCheckout() {
     navigate("/user/defaultcreds");
+    handleCheckouts();
   }
   return (
     <>

@@ -38,8 +38,7 @@ const validationSchema = Yup.object().shape({
   phoneNumber: Yup.string()
     .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits")
     .required("Phone number is required"),
-  streetNumber: Yup.string()
-    .required("Street Number is required"),
+  streetNumber: Yup.string().required("Street Number is required"),
   homeAddress: Yup.string().required("Street Name is required"),
   city: Yup.string().required("City is required"),
   province: Yup.string().required("Province is required"),
@@ -70,10 +69,7 @@ function UserAddressForm() {
     }
   }, [address.message]);
 
-  
-
   const handleSubmit = (values) => {
-   
     if (Object.entries(address.addressObj).length === 0) {
       const finalValues = {
         fullName: values.fullName,
@@ -106,9 +102,9 @@ function UserAddressForm() {
     }
   };
 
-  const handleCancle = () =>{
-    navigate('/user/defaultcreds')
-  }
+  const handleCancle = () => {
+    navigate("/user/defaultcreds");
+  };
 
   return (
     <>
@@ -119,7 +115,7 @@ function UserAddressForm() {
               <Container maxWidth="md" sx={{ mt: 4 }}>
                 <Box sx={{ mb: 4 }}>
                   <Typography variant="h4" sx={{ mb: 2 }}>
-                    {Object.entries(addressObj) === 0
+                    {Object.entries(addressObj).length === 0
                       ? `Add Address`
                       : `Edit Address`}
                   </Typography>
@@ -324,49 +320,16 @@ function UserAddressForm() {
                             </Grid>
                           </Grid>
 
-                          {/* <Grid item xs={12}>
-                          <Field
-                            as={FormControlLabel}
-                            control={
-                              <Field
-                                as={Checkbox}
-                                name="defaultAddress"
-                                color="primary"
-                              />
-                            }
-                            label="Make this my default address"
-                          />
-                        </Grid>
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-
-                        <Grid item xs={12}>
-                          <Typography variant="h4">
-                            Add delivery instructions (optional)
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={8}>
-                          <Typography variant="h6">
-                            Do we need a security code or a call box number to
-                            access this building?
-                          </Typography>
-                          <Field
-                            as={TextField}
-                            fullWidth
-                            id="accessCode"
-                            name="accessCode"
-                            autoComplete="accessCode"
-                          />
-                        </Grid> */}
-
                           <Grid
                             item
                             xs={12}
                             // sx={{ display: "flex", justifyContent: "center" }}
                           >
-                            <Button variant="contained" onClick={()=>handleCancle()} sx={{ mx: 2 }}>
+                            <Button
+                              variant="contained"
+                              onClick={() => handleCancle()}
+                              sx={{ mx: 2 }}
+                            >
                               Cancle
                             </Button>
                             <Button
