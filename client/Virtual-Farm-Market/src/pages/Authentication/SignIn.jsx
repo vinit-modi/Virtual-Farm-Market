@@ -136,7 +136,6 @@ export default function SignInSide() {
                 boxShadow: "0px 0px 5px rgba(19, 3, 3, 0.809)",
               }}
             >
-
               <Box sx={{ mt: 4 }}>
                 <img src={VFMLogoNoBG} style={{ height: 80, width: "auto" }} />
               </Box>
@@ -177,16 +176,13 @@ export default function SignInSide() {
                         {(auth.error || adminReducer.error) && (
                           <>
                             <div className="m-4">
-                              {auth.error && (
+                              {auth.error ? (
                                 <Alert severity="error">{auth.error}</Alert>
-                              )}
-                            </div>
-                            <div className="m-4">
-                              {adminReducer.error && (
+                              ) : adminReducer.error ? (
                                 <Alert severity="error">
                                   {adminReducer.error}
                                 </Alert>
-                              )}
+                              ) : null}
                             </div>
                           </>
                         )}
