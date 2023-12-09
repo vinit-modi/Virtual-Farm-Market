@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import UICms from "../../components/UICms/UICms";
 
 const PAGE_KEY = `privacy`;

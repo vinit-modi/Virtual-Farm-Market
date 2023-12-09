@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import "./UsersideFaqsUI.css"; // Updated path to the CSS file
-import { Box, Button, CircularProgress, colors } from "@mui/material";
+import { Button, CircularProgress, colors } from "@mui/material";
 import { red, yellow } from "@mui/material/colors";
-import Spinner from "react-bootstrap/Spinner";
 
 function UsersideFaqsUI(props) {
   const { faqs } = props;
@@ -52,37 +51,36 @@ function UsersideFaqsUI(props) {
               </div>
               {props.updateKey && (
                 <>
-                <div className="d-flex justify-content-end me-2" >
-
-                  <Button
-                    variant="contained"
-                    disableElevationa 
-                    sx={{
-                      color: "white",
-                      bgcolor: yellow[900],
-                      "&:hover": {
-                        bgcolor: yellow[800],
-                      },
-                    }}
-                    onClick={() => props.handleUpdate(faq._id)}
-                    >
-                    Update
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    color="error"
-                    sx={{
-                      marginLeft:1,
-                      "&:hover": {
+                  <div className="d-flex justify-content-end me-2">
+                    <Button
+                      variant="contained"
+                      disableElevationa
+                      sx={{
                         color: "white",
-                        bgcolor: red[500],
-                      },
-                    }}
-                    onClick={() => props.handleDelete(faq._id)}
+                        bgcolor: yellow[900],
+                        "&:hover": {
+                          bgcolor: yellow[800],
+                        },
+                      }}
+                      onClick={() => props.handleUpdate(faq._id)}
                     >
-                    Delete
-                  </Button>
-                    </div>
+                      Update
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      sx={{
+                        marginLeft: 1,
+                        "&:hover": {
+                          color: "white",
+                          bgcolor: red[500],
+                        },
+                      }}
+                      onClick={() => props.handleDelete(faq._id)}
+                    >
+                      Delete
+                    </Button>
+                  </div>
                 </>
               )}
             </div>

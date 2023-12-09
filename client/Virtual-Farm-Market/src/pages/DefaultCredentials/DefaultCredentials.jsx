@@ -6,7 +6,6 @@ import {
   Button,
   Card,
   Container,
-  Divider,
   Grid,
   LinearProgress,
   Paper,
@@ -23,15 +22,7 @@ import {
   GET_MAKE_PAYMENT,
 } from "../../Redux/Reducers/paymentReducer";
 import DefaultButton from "../../components/Buttons/DefaultButton";
-import {
-  blue,
-  blueGrey,
-  green,
-  lightGreen,
-  orange,
-  purple,
-  red,
-} from "@mui/material/colors";
+import { green, orange, red } from "@mui/material/colors";
 import {
   CLEAR_MESSAGE_ADDRESS,
   CLEAR_OBJECT_ADDRESS,
@@ -54,7 +45,6 @@ import UnionPay from "../../Assets/card/unionpay.png";
 import DinersClub from "../../Assets/card/dinersclub.png";
 import AmericanExpress from "../../Assets/card/americanexpress.png";
 import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
-import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import SendIcon from "@mui/icons-material/Send";
 import { useContext } from "react";
 import { CheckoutContext } from "../../Utils/ContextAPIs/CheckoutContext";

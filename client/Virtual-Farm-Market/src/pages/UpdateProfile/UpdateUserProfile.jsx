@@ -1,11 +1,4 @@
-import {
-  Avatar,
-  Button,
-  Container,
-  Grid,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Container, Grid, TextField, Typography } from "@mui/material";
 import { Alert, InputLabel, MenuItem, Select } from "@mui/material";
 import { Box } from "@mui/system";
 import { ErrorMessage, Field, Form, Formik } from "formik";
@@ -15,19 +8,15 @@ import {
   GET_CITY_LIST,
   GET_PROVINCE_LIST,
 } from "../../Redux/Reducers/authReducer";
-import EditIcon from "@mui/icons-material/Edit";
 import {
-  CLEAR_MESSAGE_USERREDUCER,
   GET_UPDATED_USER_DETAIL,
   GET_USER,
 } from "../../Redux/Reducers/userReducer";
 import { Dialog } from "primereact/dialog";
 import AvatarEdit from "react-avatar-edit";
-import profileEmptyImage from "../../Assets/profileEmptyImage.png";
 import FileDownloadDoneIcon from "@mui/icons-material/FileDownloadDone";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { store } from "../../Redux/store";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { green } from "@mui/material/colors";
 
@@ -100,20 +89,19 @@ function UpdateUserProfile() {
 
   return (
     <Container maxWidth="md">
- 
-     
       <Grid
         spacing={2}
         container
         direction="column"
         justifyContent="space-between"
         alignItems="center"
-      > <Typography sx={{ml:3,mt:3}} component="h1" variant="h4">
-        Edit Profile
-      </Typography>
+      >
+        {" "}
+        <Typography sx={{ ml: 3, mt: 3 }} component="h1" variant="h4">
+          Edit Profile
+        </Typography>
         <Box
           sx={{
-          
             mx: 4,
             display: "flex",
             flexDirection: "column",
@@ -122,12 +110,14 @@ function UpdateUserProfile() {
         >
           <div className="m-4">
             {userDetails.error === `Request failed with status code 500` ? (
-              <Alert severity="error" sx={{my:2}}>
+              <Alert severity="error" sx={{ my: 2 }}>
                 Selected User does not exist or Network issue
               </Alert>
             ) : (
               userDetails.error && (
-                <Alert severity="error" sx={{my:2}}>{userDetails.error}</Alert>
+                <Alert severity="error" sx={{ my: 2 }}>
+                  {userDetails.error}
+                </Alert>
               )
             )}
           </div>

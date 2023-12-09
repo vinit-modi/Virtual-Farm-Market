@@ -2,7 +2,6 @@ import {
   Avatar,
   Box,
   Button,
-  ButtonGroup,
   Divider,
   Grid,
   LinearProgress,
@@ -26,7 +25,6 @@ import {
   GET_REMOVE_PRODUCT_CART,
   GET_REMOVE_PRODUCT_TO_CART,
 } from "../../Redux/Reducers/cartReducer";
-import { CLEAR_OBJECT_PRODUCT } from "../../Redux/Reducers/productReducer";
 import EmptyFoodImage from "../../Assets/EmptyProduct/EmptyFoodImage.jpg";
 import { CheckCircle } from "@mui/icons-material";
 

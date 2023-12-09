@@ -1,19 +1,12 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Alert, Container, IconButton, InputAdornment } from "@mui/material";
@@ -22,14 +15,11 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import Spinner from "react-bootstrap/esm/Spinner";
-import { toast } from "react-toastify";
-import { persistor } from "../../Redux/store";
 import {
   CLEAR_MESSAGE_ERROR,
   POST_SIGNIN_USER,
 } from "../../Redux/Reducers/authReducer";
 import { GET_ADMIN_LOGIN } from "../../Redux/Reducers/adminReducer";
-import { green, grey, orange, red } from "@mui/material/colors";
 import VFMLogoNoBG from "../../Assets/VFMIcon/VFM-Logo-NoBG.png";
 import Carousel from "../../components/Carousel/Carousel";
 

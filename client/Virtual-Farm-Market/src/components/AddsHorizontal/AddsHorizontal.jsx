@@ -1,7 +1,6 @@
 import React from "react";
 import "./AddsHorizontal.css";
 import img1 from "../../Assets/adds/10001.png";
-import img2 from "../../Assets/adds/10002.png";
 import img3 from "../../Assets/adds/uber.jpg";
 
 function AddsHorizontal() {

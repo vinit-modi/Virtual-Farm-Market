@@ -6,7 +6,6 @@ import {
   GET_CMS_FOR_USER,
 } from "../../../Redux/Reducers/cmsReducer";
 import "./TermsAndConditons.css";
-import { Typography } from "@mui/material";
 import CmsLayout from "../../../components/CmsLayout/CmsLayout";
 
 const PAGE_KEY = "terms";

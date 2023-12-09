@@ -1,38 +1,21 @@
 import React from "react";
-import { Route, Routes, Router } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import PageNotFound from "../pages/PageNotFound/PageNotFound";
 import SignInSide from "../pages/Authentication/SignIn";
 import SignUp from "../pages/Authentication/SignUp";
 import ResetPassword from "../pages/Authentication/ResetPassword";
-import ChangePassword from "../pages/Authentication/ChangePassword";
 import ForgetPassword from "../pages/Authentication/ForgetPassword";
-import Dashboard from "../pages/Dashboard/Dashboard";
 import PublicRoute from "../auth/PublicRoute";
-import ProtectedRoute from "../auth/ProtectedRoute";
-import UpdateUserProfile from "../pages/UpdateProfile/UpdateUserProfile";
 import ConfirmEmail from "../pages/Authentication/ConfirmEmail";
-import AdminUserList from "../pages/AdminPages/AdminUserList";
-import AdminCategories from "../pages/AdminPages/AdminCategories";
-import AdminPrivacyPolicy from "../pages/AdminPages/AdminPrivacyPolicy";
-import AdminTermsAndCondition from "../pages/AdminPages/AdminTermsAndCondition";
-import AdminProtectedRoute from "../auth/authAdmin/AdminProtectedRoute";
-import FaqsUser from "../pages/Faqs/FaqsUser";
-import TermsAndConditions from "../pages/Cms/TermsAndConditions/TermsAndConditions";
-import PrivacyPolicy from "../pages/Cms/PrivacyPolicy/PrivacyPolicy";
 import AdminPublicRoute from "../auth/authAdmin/AdminPublicRoute";
 import AdminHeader from "../components/AdminHeader/AdminHeader";
 import UserHeader from "../components/UserHeader/UserHeader";
-import FarmersAddProduct from "../pages/Farmers/FarmersAddProduct";
-import { useSelector } from "react-redux";
 import LandingPage from "../pages/LandingPage/LandingPage";
 import { CheckoutProvider } from "../Utils/ContextAPIs/CheckoutContext";
-import FarmersDelivery from "../pages/Farmers/FarmersDelivery";
 import FarmerRoute from "../pages/Farmers/FarmerRoute";
 import SearchInputContext from "../Utils/ContextAPIs/SearchInputContext";
 
 function IndexForRoutes() {
-  const auth = useSelector((state) => state.auth);
-
   return (
     <div>
       <Routes>

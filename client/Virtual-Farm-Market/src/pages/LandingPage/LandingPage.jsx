@@ -20,7 +20,7 @@ import veg7Image from "./images/veg07.jpg";
 import veg8Image from "./images/veg08.jpg";
 import { Button, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function LandingPage() {
   const navigate = useNavigate();

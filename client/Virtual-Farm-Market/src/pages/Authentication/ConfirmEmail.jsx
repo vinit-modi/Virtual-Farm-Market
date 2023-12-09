@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  NavLink,
-  useFetcher,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Container, Typography, Button, Alert } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -13,7 +8,6 @@ import {
 } from "../../Redux/Reducers/authReducer";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-import { persistor } from "../../Redux/store";
 
 function ConfirmEmail() {
   const dispatch = useDispatch();
@@ -37,22 +31,22 @@ function ConfirmEmail() {
     dispatch({ type: CLEAR_MESSAGE_ERROR, payload: "message" });
     navigate(`/user/login`);
   };
-  
+
   useEffect(() => {
     dispatch({ type: CLEAR_MESSAGE_ERROR, payload: "message" });
     dispatch({ type: CLEAR_MESSAGE_ERROR, payload: "error" });
   }, []);
 
   useEffect(() => {
-    if (
-      auth.message === `Email confirmed successfully.`
-    ) {
+    if (auth.message === `Email confirmed successfully.`) {
       setConfirmed(true);
     }
   }, [auth.message]);
 
   useEffect(() => {
-    if (auth.error) {setConfirmed(false);}
+    if (auth.error) {
+      setConfirmed(false);
+    }
   }, [auth.error]);
 
   console.log(confirmed);

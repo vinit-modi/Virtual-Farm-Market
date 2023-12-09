@@ -1,13 +1,8 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -29,17 +24,11 @@ import Spinner from "react-bootstrap/Spinner";
 import { persistor } from "../../Redux/store";
 import {
   CLEAR_MESSAGE_ERROR,
-  GET_ALL_USERS,
   GET_CITY_LIST,
   GET_PROVINCE_LIST,
   POST_SIGNUP_USER,
 } from "../../Redux/Reducers/authReducer";
-import OAuthGoogleLogin from "../../components/GoogleLoginButton/OAuthGoogleLogin";
-import OAuthGoogleLogout from "../../components/GoogleLogoutButton/OAuthGoogleLogout";
-import { gapi } from "gapi-script";
-import { useEffect } from "react";
 import VFMLogoNoBG from "../../Assets/VFMIcon/VFM-Logo-NoBG.png";
-import { green } from "@mui/material/colors";
 import Carousel from "../../components/Carousel/Carousel";
 
 const validationSchema = Yup.object().shape({

@@ -12,7 +12,6 @@ import {
   Link,
 } from "@mui/material";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link as RouterLink } from "react-router-dom";
 
 const useStyles = styled("div")({

@@ -20,14 +20,13 @@ import {
   gridClasses,
 } from "@mui/material";
 import moment from "moment";
-import { blue, green, grey, red } from "@mui/material/colors";
+import { grey, red } from "@mui/material/colors";
 import UserActions from "../../components/DataGridEditButton/UserActions";
 import { toast } from "react-toastify";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 import RemoveIcon from "@mui/icons-material/Remove";
-// import { Button } from "react-bootstrap";
 
 function AdminCategories() {
   const navigate = useNavigate();

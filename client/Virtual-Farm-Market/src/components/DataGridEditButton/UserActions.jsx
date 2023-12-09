@@ -3,12 +3,7 @@ import { Check, Save } from "@mui/icons-material";
 import { Box, CircularProgress, Fab } from "@mui/material";
 import { green } from "@mui/material/colors";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  CATEGORIES_CLEARE_MESSAGE,
-  GET_ALL_CATEGORIES,
-  GET_EDIT_CATEGORIES,
-} from "../../Redux/Reducers/adminCategoriesReducer";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { GET_EDIT_CATEGORIES } from "../../Redux/Reducers/adminCategoriesReducer";
 import RunningWithErrorsIcon from "@mui/icons-material/RunningWithErrors";
 
 function UserActions({ paramFormattedValue, params, rowId, setRowId }) {

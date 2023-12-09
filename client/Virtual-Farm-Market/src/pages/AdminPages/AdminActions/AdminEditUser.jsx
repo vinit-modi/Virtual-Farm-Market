@@ -5,7 +5,7 @@ import {
   GET_ADMIN_USER_EDIT_OBJECT,
 } from "../../../Redux/Reducers/adminReducer";
 import { useDispatch, useSelector } from "react-redux";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
 import {
   TextField,
@@ -19,14 +19,9 @@ import {
   CircularProgress,
 } from "@mui/material";
 
-import { Avatar, Typography } from "@mui/material";
-import { Alert } from "@mui/material";
-import { Box } from "@mui/system";
-import EditIcon from "@mui/icons-material/Edit";
 import { Dialog } from "primereact/dialog";
 import AvatarEdit from "react-avatar-edit";
 import profileEmptyImage from "../../../Assets/profileEmptyImage.png";
-import FileDownloadDoneIcon from "@mui/icons-material/FileDownloadDone";
 import {
   GET_CITY_LIST,
   GET_PROVINCE_LIST,

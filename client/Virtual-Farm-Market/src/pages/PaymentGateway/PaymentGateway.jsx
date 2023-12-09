@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Elements } from "@stripe/react-stripe-js";
 import PaymentGatewayCheckoutForm from "../../components/PaymentGatewayCheckoutForm/PaymentGatewayCheckoutForm";
 import { loadStripe } from "@stripe/stripe-js";

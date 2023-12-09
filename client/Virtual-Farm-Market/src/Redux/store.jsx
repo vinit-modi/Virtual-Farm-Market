@@ -17,6 +17,7 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
+
 import { handlePasswordReducer } from "./Reducers/handlePasswordReducer";
 import { userReducer } from "./Reducers/userReducer";
 import { adminReducer } from "./Reducers/adminReducer";
@@ -51,10 +52,10 @@ const rootReducer = combineReducers({
   notification: userNotificationReducer,
   product: productReducer,
   cart: cartReducer,
-  address:addressReducer,
+  address: addressReducer,
   farmer: farmerReducer,
   stripePayment: stripePaymentReducer,
-  order:orderReducer
+  order: orderReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

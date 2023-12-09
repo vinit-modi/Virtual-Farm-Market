@@ -3,16 +3,12 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Avatar,
   ButtonGroup,
-  CircularProgress,
   LinearProgress,
   Paper,
-  Slide,
-  Snackbar,
   Stack,
 } from "@mui/material";
 import EmptyFoodImage from "../../Assets/EmptyProduct/EmptyFoodImage.jpg";
@@ -28,7 +24,6 @@ import {
 } from "../../Redux/Reducers/cartReducer";
 import { useEffect } from "react";
 import { GET_OBJECT_PRODUCT } from "../../Redux/Reducers/productReducer";
-import { useState } from "react";
 
 function CartCard({ item, totalBillAmount }) {
   const { product, seller } = item;
