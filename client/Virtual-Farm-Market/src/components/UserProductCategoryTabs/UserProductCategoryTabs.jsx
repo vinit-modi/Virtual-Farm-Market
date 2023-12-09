@@ -125,7 +125,7 @@ export default function UserProductCategoryTabs({ product }) {
             <>
               {" "}
               {categoryList.map((category, index) => (
-                <TabPanel value={category.name}>
+                <TabPanel value={category.name} key={index}>
                   <Grid container spacing={3}>
                     {productListFilter.length ? (
                       productListFilter.map((item, index) => (
