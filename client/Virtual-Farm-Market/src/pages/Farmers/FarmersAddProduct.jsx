@@ -12,6 +12,7 @@ import {
   Select,
   MenuItem,
   Stack,
+  Paper,
 } from "@mui/material";
 import { AddCircle } from "@mui/icons-material";
 import {
@@ -26,6 +27,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import authToken from "../../Utils/authToLocalStorage";
+import { green } from "@mui/material/colors";
 
 const initialValues = {
   productName: "",
@@ -134,226 +136,238 @@ function FarmersAddProduct() {
   return (
     <>
       <Container maxWidth="md" sx={{ mt: 15 }}>
-        <Box sx={{ mb: 4 }}>
-          <Typography variant="h4" sx={{ mb: 2 }}>
+        <Paper elevation={5} sx={{ borderRadius: "30px" }}>
+          <Typography
+            variant="h4"
+            sx={{
+              p: 2,
+              bgcolor: green["A400"],
+              color: "white",
+              borderTopLeftRadius: "30px",
+              borderTopRightRadius: "30px",
+              textAlign: "center",
+            }}
+          >
             Add Product
           </Typography>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-          >
-            {({ values, handleSubmit, setFieldValue }) => (
-              <Form>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <Typography variant="h5" sx={{ ml: 1, mt: 2 }}>
-                      Product name:
-                    </Typography>
-                    <Field
-                      as={TextField}
-                      fullWidth
-                      id="productName"
-                      name="productName"
-                      autoComplete="productName"
-                    />
-                    <ErrorMessage
-                      name="productName"
-                      id="productName"
-                      component="div"
-                      className="error text-danger"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant="h5" sx={{ ml: 1, mt: 2 }}>
-                      Product description:
-                    </Typography>
-                    <Field
-                      as={TextField}
-                      fullWidth
-                      id="productDescription"
-                      name="productDescription"
-                      autoComplete="productDescription"
-                    />
-                    <ErrorMessage
-                      name="productDescription"
-                      id="productDescription"
-                      component="div"
-                      className="error text-danger"
-                    />
-                  </Grid>
+          <Box sx={{ mb: 4, p: 4 }}>
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={handleSubmit}
+            >
+              {({ values, handleSubmit, setFieldValue }) => (
+                <Form>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <Typography variant="h5" sx={{ ml: 1, mt: 2 }}>
+                        Product name:
+                      </Typography>
+                      <Field
+                        as={TextField}
+                        fullWidth
+                        id="productName"
+                        name="productName"
+                        autoComplete="productName"
+                      />
+                      <ErrorMessage
+                        name="productName"
+                        id="productName"
+                        component="div"
+                        className="error text-danger"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography variant="h5" sx={{ ml: 1, mt: 2 }}>
+                        Product description:
+                      </Typography>
+                      <Field
+                        as={TextField}
+                        fullWidth
+                        id="productDescription"
+                        name="productDescription"
+                        autoComplete="productDescription"
+                      />
+                      <ErrorMessage
+                        name="productDescription"
+                        id="productDescription"
+                        component="div"
+                        className="error text-danger"
+                      />
+                    </Grid>
 
-                  <Grid item xs={12}>
-                    <Grid container alignItems="center">
-                      <Grid item xs={12} sm={2}>
-                        <Typography variant="h5">Category:</Typography>
-                      </Grid>
-                      <Grid item xs={12} sm={10}>
-                        <Field
-                          as={Select}
-                          fullWidth
-                          id="productCategory"
-                          name="productCategory"
-                          autoComplete="productCategory"
-                          sx={{ mt: 2 }}
-                        >
-                          {farmer.categoryList &&
-                            farmer.categoryList.map((item, index) => (
-                              <MenuItem value={item.name} key={item._id}>
-                                {item.name}
-                              </MenuItem>
-                            ))}
-                        </Field>
-                        <ErrorMessage
-                          name="productCategory"
-                          id="productCategory"
-                          component="div"
-                          className="error text-danger"
-                        />
+                    <Grid item xs={12}>
+                      <Grid container alignItems="center">
+                        <Grid item xs={12} sm={2}>
+                          <Typography variant="h5">Category:</Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={10}>
+                          <Field
+                            as={Select}
+                            fullWidth
+                            id="productCategory"
+                            name="productCategory"
+                            autoComplete="productCategory"
+                            sx={{ mt: 2 }}
+                          >
+                            {farmer.categoryList &&
+                              farmer.categoryList.map((item, index) => (
+                                <MenuItem value={item.name} key={item._id}>
+                                  {item.name}
+                                </MenuItem>
+                              ))}
+                          </Field>
+                          <ErrorMessage
+                            name="productCategory"
+                            id="productCategory"
+                            component="div"
+                            className="error text-danger"
+                          />
+                        </Grid>
                       </Grid>
                     </Grid>
-                  </Grid>
 
-                  <Grid item>
-                    <Stack direction={"row"}>
-                      <Stack>
-                        <Typography variant="h5" sx={{ ml: 1, mt: 2 }}>
-                          Product price($):
-                        </Typography>
-                        <Field
-                          as={TextField}
-                          fullWidth
-                          id="productPrice"
-                          name="productPrice"
-                          autoComplete="productPrice"
-                        />
-                        <ErrorMessage
-                          name="productPrice"
-                          id="productPrice"
-                          component="div"
-                          className="error text-danger"
-                        />{" "}
+                    <Grid item>
+                      <Stack direction={"row"}>
+                        <Stack>
+                          <Typography variant="h5" sx={{ ml: 1, mt: 2 }}>
+                            Product price($):
+                          </Typography>
+                          <Field
+                            as={TextField}
+                            fullWidth
+                            id="productPrice"
+                            name="productPrice"
+                            autoComplete="productPrice"
+                          />
+                          <ErrorMessage
+                            name="productPrice"
+                            id="productPrice"
+                            component="div"
+                            className="error text-danger"
+                          />{" "}
+                        </Stack>
+                        <Stack
+                          sx={{
+                            ml: 2,
+                            display: "flex",
+                            alignItems: "end",
+                            mt: 2,
+                          }}
+                        >
+                          <Grid container>
+                            <Grid item>
+                              <Typography variant="h5">Unit:</Typography>
+                            </Grid>
+                            <Grid item xs={12} sm={10}>
+                              <Field
+                                as={Select}
+                                fullWidth
+                                id="productUnit"
+                                name="productUnit"
+                                autoComplete="productUnit"
+                              >
+                                {farmer.unitList &&
+                                  farmer.unitList.map((item, index) => (
+                                    <MenuItem value={item.name} key={item._id}>
+                                      {item.name}
+                                    </MenuItem>
+                                  ))}
+                              </Field>
+                              <ErrorMessage
+                                name="productUnit"
+                                id="productUnit"
+                                component="div"
+                                className="error text-danger"
+                              />
+                            </Grid>
+                          </Grid>
+                        </Stack>
                       </Stack>
-                      <Stack
-                        sx={{
-                          ml: 2,
-                          display: "flex",
-                          alignItems: "end",
-                          mt: 2,
-                        }}
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <Typography variant="h5" sx={{ ml: 1, mt: 2 }}>
+                        Available quantity:
+                      </Typography>
+                      <Field
+                        as={TextField}
+                        fullWidth
+                        id="productQuantityAvailable"
+                        name="productQuantityAvailable"
+                        autoComplete="productQuantityAvailable"
+                      />
+                      <ErrorMessage
+                        name="productQuantityAvailable"
+                        id="productQuantityAvailable"
+                        component="div"
+                        className="error text-danger"
+                      />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <Typography variant="h5" sx={{ ml: 1, mt: 2 }}>
+                        Available at city:
+                      </Typography>
+
+                      <Field
+                        as={Select}
+                        fullWidth
+                        id="productCity"
+                        name="productCity"
+                        autoComplete="productCity"
                       >
-                        <Grid container>
-                          <Grid item>
-                            <Typography variant="h5">Unit:</Typography>
-                          </Grid>
-                          <Grid item xs={12} sm={10}>
-                            <Field
-                              as={Select}
-                              fullWidth
-                              id="productUnit"
-                              name="productUnit"
-                              autoComplete="productUnit"
-                            >
-                              {farmer.unitList &&
-                                farmer.unitList.map((item, index) => (
-                                  <MenuItem value={item.name} key={item._id}>
-                                    {item.name}
-                                  </MenuItem>
-                                ))}
-                            </Field>
-                            <ErrorMessage
-                              name="productUnit"
-                              id="productUnit"
-                              component="div"
-                              className="error text-danger"
-                            />
-                          </Grid>
-                        </Grid>
-                      </Stack>
-                    </Stack>
-                  </Grid>
+                        {auth.cityList &&
+                          auth.cityList.map((item, index) => (
+                            <MenuItem value={item.name} key={item._id}>
+                              {item.name}
+                            </MenuItem>
+                          ))}
+                      </Field>
+                      <ErrorMessage
+                        name="productCity"
+                        id="productCity"
+                        component="div"
+                        className="error text-danger"
+                      />
+                    </Grid>
 
-                  <Grid item xs={12}>
-                    <Typography variant="h5" sx={{ ml: 1, mt: 2 }}>
-                      Available quantity:
-                    </Typography>
-                    <Field
-                      as={TextField}
-                      fullWidth
-                      id="productQuantityAvailable"
-                      name="productQuantityAvailable"
-                      autoComplete="productQuantityAvailable"
-                    />
-                    <ErrorMessage
-                      name="productQuantityAvailable"
-                      id="productQuantityAvailable"
-                      component="div"
-                      className="error text-danger"
-                    />
-                  </Grid>
+                    <Grid item xs={12}>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={(event) => {
+                          setFieldValue(
+                            "productImages",
+                            event.currentTarget.files
+                          );
+                        }}
+                      />
+                      <ErrorMessage
+                        name="productImages"
+                        id="productImages"
+                        component="div"
+                        className="error text-danger"
+                      />
+                    </Grid>
 
-                  <Grid item xs={12}>
-                    <Typography variant="h5" sx={{ ml: 1, mt: 2 }}>
-                      Available at city:
-                    </Typography>
-
-                    <Field
-                      as={Select}
-                      fullWidth
-                      id="productCity"
-                      name="productCity"
-                      autoComplete="productCity"
-                    >
-                      {auth.cityList &&
-                        auth.cityList.map((item, index) => (
-                          <MenuItem value={item.name} key={item._id}>
-                            {item.name}
-                          </MenuItem>
-                        ))}
-                    </Field>
-                    <ErrorMessage
-                      name="productCity"
-                      id="productCity"
-                      component="div"
-                      className="error text-danger"
-                    />
+                    <Grid item xs={12}>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        type="submit"
+                        startIcon={<AddCircle />}
+                      >
+                        Add Product
+                      </Button>
+                    </Grid>
                   </Grid>
-
-                  <Grid item xs={12}>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      onChange={(event) => {
-                        setFieldValue(
-                          "productImages",
-                          event.currentTarget.files
-                        );
-                      }}
-                    />
-                    <ErrorMessage
-                      name="productImages"
-                      id="productImages"
-                      component="div"
-                      className="error text-danger"
-                    />
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      type="submit"
-                      startIcon={<AddCircle />}
-                    >
-                      Add Product
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Form>
-            )}
-          </Formik>
-        </Box>
+                </Form>
+              )}
+            </Formik>
+          </Box>
+        </Paper>
       </Container>
     </>
   );
