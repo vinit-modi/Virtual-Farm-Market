@@ -1,6 +1,72 @@
+<h1 align="center">
+🌐 Virtual Farm Market
+</h1>
+<p align="center">
+MongoDB, Expressjs, React/Redux, Nodejs
+</p>
+
+
+
+MERN stack is the idea of using Javascript/Node for full-stack web development.
+
+## clone or download
+```terminal
+$ git clone https://github.com/vinit-modi/Virtual-Farm-Market.git
+$ yarn # or npm i
+```
+
+## project structure
+```terminal
+LICENSE
+package.json
+server/
+   package.json
+   
+client/
+   Virtual-Farm-Market/
+      package.json
+...
+```
+
+# Usage (run full-stack app on your machine)
+
+## Prerequisites
+- [MongoDB](https://gist.github.com/nrollr/9f523ae17ecdbb50311980503409aeb3)
+- [Node](https://nodejs.org/en/download/) ^10.0.0
+- [npm](https://nodejs.org/en/download/package-manager/)
+
+notice, you need the client and server runs concurrently in a different terminal session, to make them talk to each other
+
+## Client-side usage(PORT: 3000)
+```terminal
+$ cd client          // go to client folder
+$ yarn # or npm i    // npm install packages
+$ npm run dev        // run it locally
+
+// deployment for client app
+$ npm run build // This will compile the react code using Webpack and generate a folder called docs in the root level
+$ npm run start // This will run the files in docs, this behavior is the same as how gh-pages will run your static site
+```
+
+## Server-side usage(PORT: 3000)
+
+run the script at the first level:
+
+```terminal
+// in the root level
+$ cd server
+```
+
+### Start
+
+```terminal
+$ cd server   // go to server folder
+$ npm i       // npm install packages
+$ npm start
+```
 # Virtual-Farm-Market
 
-"Virtual Farm Market" is a web-based project built on the MERN stack. Our Web App will connect farmers and customers, simplifying ordering fresh produce. Farmers can register on our platform to sell their products, while customers can directly purchase vegetables from local farms. Our platform incorporates a geolocation-based search feature, enabling customers to quickly identify and connect with nearby farmers. We also offer a self-pickup service, allowing customers to schedule the collection of their orders.
+"Virtual Farm Market" is a web-based project built on the MERN stack. Our Web App will connect farmers and customers, simplifying ordering fresh produce. Farmers can register on our platform to sell their products, while customers can directly purchase vegetables from local farms. Our platform incorporates a geolocation-based search feature, enabling customers to identify and connect with nearby farmers quickly. We also offer a self-pickup service, allowing customers to schedule the collection of their orders.
 
 At its core, "Virtual Farm Market" leverages technology to address the challenge of obtaining fresh produce daily. By eliminating intermediaries and connecting farmers directly with customers, the project not only simplifies the procurement process but also promotes the support of local agriculture. The platform's user-friendly interface and geolocation features ensure a seamless experience for farmers and customers, enhancing the accessibility of fresh produce.
 
