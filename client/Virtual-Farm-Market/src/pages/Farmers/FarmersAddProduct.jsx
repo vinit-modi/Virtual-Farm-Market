@@ -1,13 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import { logoutUser } from "./actions/authActions";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import {
-  AppBar,
-  Toolbar,
   Typography,
-  IconButton,
   Box,
   TextField,
   Button,
@@ -19,16 +15,17 @@ import {
 } from "@mui/material";
 import { AddCircle } from "@mui/icons-material";
 import {
+  CLEARE_MESSAGE_FARMER,
+  // GET_ADD_PRODUCT_FARMER,
   GET_CATEGORY_LIST_FOR_PRODUCT_FARMER,
   GET_UNIT_LIST_FOR_PRODUCT_FARMER,
 } from "../../Redux/Reducers/Farmer/farmerReducer";
-import {
-  GET_AUTH_LOGOUT,
-  GET_CITY_LIST,
-} from "../../Redux/Reducers/authReducer";
-import LogoutIcon from "@mui/icons-material/Logout";
-import { green } from "@mui/material/colors";
+import { GET_CITY_LIST } from "../../Redux/Reducers/authReducer";
+
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
+import authToken from "../../Utils/authToLocalStorage";
 
 const initialValues = {
   productName: "",
@@ -68,22 +65,6 @@ const validationSchema = Yup.object().shape({
     .matches(/^[0-9]+$/, "Quantity must be a non-decimal number")
     .required("Quantity Available is required"),
   productCity: Yup.string().required("Product City is required"),
-  productImages: Yup.mixed()
-    // .test("fileSize", "File Size is too large", (value) => {
-    //   if (!value) return true; // Validation is not required if no file is selected
-    //   return value.length <= 3; // Adjust the limit as needed
-    // })
-    // .test("fileType", "Unsupported File Format", (value) => {
-    //   if (!value) return true; // Validation is not required if no file is selected
-    //   const acceptedFormats = ["image/jpeg", "image/png"]; // Add more supported formats if needed
-    //   for (let i = 0; i < value.length; i++) {
-    //     if (!acceptedFormats.includes(value[i].type)) {
-    //       return false;
-    //     }
-    //   }
-    //   return true;
-    // })
-    .required("Images are required"),
 });
 
 function FarmersAddProduct() {
@@ -98,19 +79,56 @@ function FarmersAddProduct() {
     dispatch({ type: GET_CITY_LIST });
   }, []);
 
-  const handleSubmit = (values) => {
-    const finalProduct = {
-      name: values.productName,
-      description: values.productDescription,
-      category: values.productCategory,
-      price: values.productPrice,
-      unit: values.productUnit,
-      quantityAvailable: values.productQuantityAvailable,
-      image: values.productImages,
-      city: values.productCity,
-    };
-    console.log(finalProduct);
-    //Send finalProduct to BE
+  useEffect(() => {
+    if (farmer.message) {
+      toast.success(farmer.message);
+      dispatch({ type: CLEARE_MESSAGE_FARMER });
+    }
+  }, [farmer.message]);
+
+  const handleSubmit = async (values) => {
+    const imagesArray = Array.from(values.productImages);
+
+    const formData = new FormData();
+
+    imagesArray.forEach((image) => {
+      formData.append("images", image);
+    });
+
+    formData.append("name", values.productName);
+    formData.append("description", values.productDescription);
+    formData.append("category", values.productCategory);
+    formData.append("price", values.productPrice);
+    formData.append("unit", values.productUnit);
+    formData.append("quantityAvailable", values.productQuantityAvailable);
+    formData.append("city", values.productCity);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/api/addProduct",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Accept: "application/json",
+            Authorization: authToken(),
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        toast.success(response.data.message);
+      } else {
+        toast.error("Error to add product");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+
+    // dispatch({
+    //   type: GET_ADD_PRODUCT_FARMER,
+    //   payload: formData,
+    // });
   };
 
   return (

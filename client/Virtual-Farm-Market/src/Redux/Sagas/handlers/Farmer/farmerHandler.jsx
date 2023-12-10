@@ -2,12 +2,14 @@ import { call, put } from "redux-saga/effects";
 import {
   failRequestFarmer,
   makeRequestFarmer,
+  // setAddProductFarmer,
   setAllOrderFarmer,
   setCategoryListForProductFarmer,
   setUnitListForProductFarmer,
   setUpdateStatusOrderFarmer,
 } from "../../../Reducers/Farmer/farmerReducer";
 import {
+  // requestAddProductFarmer,
   requestAllOrderFarmer,
   requestCategoryListForProduct,
   requestUnitListForProduct,
@@ -40,6 +42,19 @@ export function* fetchUnitListForProductFarmer() {
   }
 }
 
+// export function* fetchAddProductFarmer(payload) {
+//   try {
+//     yield put(makeRequestFarmer());
+//     const response = yield call(requestAddProductFarmer, payload);
+
+//     response.status === 200
+//       ? yield put(setAddProductFarmer(response.data.message))
+//       : yield put(failRequestFarmer(response.data?.message));
+//   } catch (error) {
+//     yield put(failRequestFarmer(error.message));
+//   }
+// }
+
 export function* fetchAllOrderFarmer() {
   try {
     yield put(makeRequestFarmer());
@@ -53,10 +68,10 @@ export function* fetchAllOrderFarmer() {
   }
 }
 
-export function* fetchUpdateStatusOrderFarmer({payload}) {
+export function* fetchUpdateStatusOrderFarmer({ payload }) {
   try {
     yield put(makeRequestFarmer());
-    const response = yield call(requestUpdateStatusOrderFarmer,payload);
+    const response = yield call(requestUpdateStatusOrderFarmer, payload);
 
     response.status === 200
       ? yield put(setUpdateStatusOrderFarmer(response.data.message))

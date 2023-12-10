@@ -8,6 +8,12 @@ export function requestUnitListForProduct() {
   const response = Axios.get("/api/getAllUnits");
   return response;
 }
+
+// export function requestAddProductFarmer(payload) {
+//   const response = Axios.post("/api/addProduct", payload);
+//   return response;
+// }
+
 export function requestAllOrderFarmer() {
   const response = Axios.get("/api/getAllOrdersForFarmer");
   return response;

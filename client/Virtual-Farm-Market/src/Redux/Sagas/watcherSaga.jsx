@@ -139,12 +139,14 @@ import {
   fetchRemoveProductCart,
 } from "./handlers/cartHandler";
 import {
+  // GET_ADD_PRODUCT_FARMER,
   GET_ALL_ORDER_FARMER,
   GET_CATEGORY_LIST_FOR_PRODUCT_FARMER,
   GET_UNIT_LIST_FOR_PRODUCT_FARMER,
   GET_UPDATE_STATUS_ORDER_FARMER,
 } from "../Reducers/Farmer/farmerReducer";
 import {
+  // fetchAddProductFarmer,
   fetchAllOrderFarmer,
   fetchCategoryListForProductFarmer,
   fetchUnitListForProductFarmer,
@@ -285,10 +287,8 @@ function* farmer() {
     GET_UNIT_LIST_FOR_PRODUCT_FARMER,
     fetchUnitListForProductFarmer
   );
-  yield takeLatest(
-    GET_ALL_ORDER_FARMER,
-    fetchAllOrderFarmer
-  );
+  // yield takeLatest(GET_ADD_PRODUCT_FARMER, fetchAddProductFarmer);
+  yield takeLatest(GET_ALL_ORDER_FARMER, fetchAllOrderFarmer);
   yield takeLatest(
     GET_UPDATE_STATUS_ORDER_FARMER,
     fetchUpdateStatusOrderFarmer
