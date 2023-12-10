@@ -88,7 +88,7 @@ function FarmersAddProduct() {
     }
   }, [farmer.message]);
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, { resetForm }) => {
     const imagesArray = Array.from(values.productImages);
 
     const formData = new FormData();
@@ -120,6 +120,7 @@ function FarmersAddProduct() {
 
       if (response.status === 200) {
         toast.success(response.data.message);
+        resetForm();
       } else {
         toast.error("Error to add product");
       }

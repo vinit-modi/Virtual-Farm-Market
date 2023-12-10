@@ -522,7 +522,9 @@ function UserHeader() {
                           "&:hover": { bgcolor: orange["A400"] },
                           left: 210,
                         }}
-                        disabled={!cart.cartProductList.length}
+                        disabled={
+                          cart.cartProductList && !cart.cartProductList.length
+                        }
                       >
                         CHECKOUT ({totalAmount})
                       </Button>
